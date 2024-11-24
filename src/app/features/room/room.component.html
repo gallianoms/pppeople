@@ -1,0 +1,83 @@
+<div class="h-screen flex flex-col items-center pt-8">
+  <div class="absolute top-8 right-8">
+    <div
+      class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-800/50 transition-all duration-300"
+      (click)="copyRoomCode()"
+    >
+      <p class="text-gray-300 font-mono">Share code room</p>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 text-gray-300"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div class="mb-12">
+    <img
+      src="images/planning-poker.png"
+      alt="Planning Poker"
+      class="h-80 w-auto rounded-full shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300"
+    />
+  </div>
+
+  <div class="mb-16">
+    <div class="flex flex-wrap justify-center gap-4">
+      @for (vote of votes; track vote.id) {
+        <div
+          class="w-16 h-24 bg-gray-900/40 backdrop-blur-sm border border-gray-700/50 rounded-lg relative transition-all duration-300"
+          [ngClass]="{ 'border-indigo-500/50': vote.value }"
+        >
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-2xl font-mono text-gray-300">
+              {{ vote.value ?? '?' }}
+            </span>
+          </div>
+          <div
+            class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full"
+            [class]="vote.value ? 'bg-emerald-500' : 'bg-gray-500'"
+          ></div>
+        </div>
+      }
+    </div>
+    <p class="text-gray-300 text-center font-mono mt-6">2/4 players voted</p>
+  </div>
+
+  <div class="flex justify-center items-center gap-4">
+    @for (number of numbers; track number) {
+      <div
+        (click)="onNumberSelect(number)"
+        [ngClass]="{
+          'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber === number,
+          'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber !== number
+        }"
+        class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
+      >
+        <span class="text-2xl font-mono">{{ number }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="mt-12 flex gap-4">
+    <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
+      <p class="text-gray-300 font-mono">
+        Average:
+        <span class="text-indigo-300 font-bold text-xl">0.0</span>
+      </p>
+    </div>
+    <button
+      class="px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
+    >
+      Reset votes
+    </button>
+  </div>
+</div>
