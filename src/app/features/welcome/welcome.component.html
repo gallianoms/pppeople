@@ -1,0 +1,62 @@
+<div class="h-screen flex flex-col items-center justify-center">
+  <div
+    class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-14 shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300 w-[520px]"
+  >
+    <div class="flex flex-col items-center justify-center space-y-8">
+      <button
+        class="shadow-lg bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 hover:from-indigo-500 hover:via-indigo-400 hover:to-indigo-500 text-white font-mono py-3 px-6 rounded-full w-[400px] text-lg transform hover:scale-105 transition-all duration-300"
+        (click)="createRoom()"
+      >
+        Create Room
+      </button>
+
+      <div class="flex items-center w-[400px]">
+        <div class="border-t border-gray-500/50 flex-grow"></div>
+        <span class="mx-6 text-gray-300 font-mono">OR</span>
+        <div class="border-t border-gray-500/50 flex-grow"></div>
+      </div>
+
+      <div class="flex flex-col space-y-4 items-center">
+        <div class="flex flex-col space-y-4 items-center">
+          <div class="flex items-center space-x-4">
+            <input
+              type="text"
+              [(ngModel)]="roomCode"
+              placeholder="Enter code"
+              class="font-mono h-12 bg-gray-800/50 border border-gray-600/50 rounded-full px-4 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 w-[260px] text-white placeholder-gray-400 transition-all duration-300"
+            />
+            <div class="flex items-center space-x-2 text-white font-mono group relative">
+              <input
+                type="checkbox"
+                id="spectator"
+                [(ngModel)]="isSpectator"
+                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500 border-gray-600 bg-gray-800/50 transition-colors duration-300"
+              />
+              <label
+                for="spectator"
+                class="cursor-help"
+              >
+                Spectator
+              </label>
+              <div
+                class="absolute bottom-full mb-2 hidden group-hover:block w-48 bg-gray-800/90 backdrop-blur-sm text-sm text-gray-300 py-2 px-3 rounded-lg shadow-lg transform transition-all duration-300"
+              >
+                <div class="text-center text-amber-200">Spectators can only watch and cannot vote</div>
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                  <div class="border-8 border-transparent border-t-gray-800/90"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="shadow-lg h-12 border border-indigo-500/50 hover:bg-indigo-500/20 hover:border-indigo-400 text-white font-mono py-2 px-6 rounded-full w-[400px] transform hover:scale-105 transition-all duration-300"
+            (click)="joinRoom()"
+          >
+            Join Room
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
