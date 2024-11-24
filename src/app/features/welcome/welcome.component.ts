@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { RoomConfig } from '../../core/types/room.types';
+
 @Component({
   selector: 'app-welcome',
   imports: [FormsModule],
@@ -9,25 +11,40 @@ import { Router } from '@angular/router';
   styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
-  public roomCode = '';
+  public roomId = '';
   public isSpectator = false;
 
   private router = inject(Router);
 
   public createRoom() {
-    const generateId = crypto.randomUUID();
-    this.router.navigate(['/room/' + generateId]);
+    const roomId = crypto.randomUUID();
+    const userId = crypto.randomUUID();
+
+    this.navigateToRoom({
+      roomId,
+      userId,
+      isHost: true
+    });
   }
 
   public joinRoom() {
-    if (this.checkRoomExists(this.roomCode)) {
-      this.router.navigate(['/room/' + this.roomCode]);
-    } else {
-      alert('No valide room code');
-    }
+    if (this.checkRoomExists(this.roomId)) {
+      const userId = crypto.randomUUID();
+
+      this.navigateToRoom({
+        roomId: this.roomId,
+        userId,
+        isHost: false,
+        isSpectator: this.isSpectator
+      });
+    } else alert('No valide room code');
   }
 
-  private checkRoomExists(roomCode: string): boolean {
+  private checkRoomExists(roomId: string): boolean {
     return false;
+  }
+
+  private navigateToRoom(config: RoomConfig): void {
+    this.router.navigate(['/room/' + config.roomId], { state: config });
   }
 }
