@@ -11,7 +11,7 @@ export const routes: Routes = [
     loadComponent: () => import('./features/welcome/welcome.component').then(c => c.WelcomeComponent)
   },
   {
-    path: 'room/:id',
+    path: 'room/:roomId',
     loadComponent: () => import('./features/room/room.component').then(c => c.RoomComponent)
   }
 ];
