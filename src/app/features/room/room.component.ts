@@ -1,5 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { RoomConfig } from '../../core/types/room.types';
 
 interface Vote {
   id: string;
@@ -12,7 +13,7 @@ interface Vote {
   templateUrl: './room.component.html',
   styleUrl: './room.component.css'
 })
-export class RoomComponent {
+export class RoomComponent implements OnInit {
   numbers = [1, 2, 3, 5, 8];
   selectedNumber: number | null = null;
   votes: Vote[] = [
@@ -21,6 +22,15 @@ export class RoomComponent {
     { id: '3', value: null },
     { id: '4', value: null }
   ];
+  state!: RoomConfig;
+  copying = false;
+
+  private location = inject(Location);
+
+  public ngOnInit(): void {
+    this.state = this.location.getState() as RoomConfig;
+    console.log(this.state);
+  }
 
   onNumberSelect(number: number): void {
     this.selectedNumber = number;
@@ -28,7 +38,8 @@ export class RoomComponent {
   }
 
   copyRoomCode() {
-    navigator.clipboard.writeText('a60a1ce8-22eb-44b7-8959-db7ace0cc29c');
-    // Opcional: añadir algún tipo de feedback visual
+    navigator.clipboard.writeText(this.state.roomId);
+    this.copying = true;
+    setTimeout(() => (this.copying = false), 2000);
   }
 }
