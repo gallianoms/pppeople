@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { RoomConfig } from '../../core/types/room.types';
+import { RoomService } from '../../core/services/room.service';
 
 @Component({
   selector: 'app-welcome',
@@ -15,21 +16,21 @@ export class WelcomeComponent {
   public isSpectator = false;
 
   private router = inject(Router);
+  private roomService = inject(RoomService);
 
-  public createRoom() {
-    const roomId = crypto.randomUUID();
-    const userId = crypto.randomUUID();
+  public async createRoom() {
+    const { roomId, hostId } = await this.roomService.createRoom();
 
     this.navigateToRoom({
       roomId,
-      userId,
+      userId: hostId,
       isHost: true
     });
   }
 
-  public joinRoom() {
-    if (this.checkRoomExists(this.roomId)) {
-      const userId = crypto.randomUUID();
+  public async joinRoom() {
+    try {
+      const { userId } = await this.roomService.joinRoom(this.roomId, this.isSpectator);
 
       this.navigateToRoom({
         roomId: this.roomId,
@@ -37,11 +38,10 @@ export class WelcomeComponent {
         isHost: false,
         isSpectator: this.isSpectator
       });
-    } else alert('No valide room code');
-  }
-
-  private checkRoomExists(roomId: string): boolean {
-    return false;
+    } catch (error) {
+      if (error instanceof Error) alert(error.message);
+      else alert('An unexpected error occurred');
+    }
   }
 
   private navigateToRoom(config: RoomConfig): void {
