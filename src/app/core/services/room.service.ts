@@ -20,13 +20,6 @@ export class RoomService {
   private app = initializeApp(environment.firebaseConfig);
   private db = getDatabase(this.app);
 
-  public getUsersInRoom(roomId: string): Observable<number> {
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
-    return new Observable(subs =>
-      onValue(participantsRef, snapshot => subs.next(snapshot.exists() ? Object.keys(snapshot.val()).length : 0))
-    );
-  }
-
   public async createRoom(): Promise<CreateRoomResponse> {
     const roomsRef = ref(this.db, 'rooms');
     const newRoomRef = push(roomsRef);
@@ -71,6 +64,13 @@ export class RoomService {
     return {
       userId
     };
+  }
+
+  public getUsersInRoom(roomId: string): Observable<number> {
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    return new Observable(subs =>
+      onValue(participantsRef, snapshot => subs.next(snapshot.exists() ? Object.keys(snapshot.val()).length : 0))
+    );
   }
 
   private async checkRoomExists(roomId: string): Promise<boolean> {
