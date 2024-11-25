@@ -36,9 +36,8 @@ export class RoomComponent implements OnInit {
     this.usersConnected$ = this.roomService.getUsersInRoom(this.state.roomId);
   }
 
-  onNumberSelect(number: number): void {
-    this.selectedNumber = number;
-    console.log('Selected number:', number);
+  onNumberSelect(vote: number): void {
+    this.roomService.addVote(this.state.roomId, this.state.userId, vote);
   }
 
   copyRoomCode() {

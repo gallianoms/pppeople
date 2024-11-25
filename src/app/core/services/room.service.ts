@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { get, getDatabase, onValue, push, ref, set } from 'firebase/database';
+import { get, getDatabase, onValue, push, ref, set, update } from 'firebase/database';
 import { environment } from '../../../environments/environment.development';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Participant } from '../types/participant.types';
 
 export type CreateRoomResponse = {
   roomId: string;
@@ -69,8 +70,28 @@ export class RoomService {
   public getUsersInRoom(roomId: string): Observable<number> {
     const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
     return new Observable(subs =>
-      onValue(participantsRef, snapshot => subs.next(snapshot.exists() ? Object.keys(snapshot.val()).length : 0))
+      onValue(participantsRef, snapshot => {
+        if (!snapshot.exists()) return subs.next(0);
+
+        const participants = snapshot.val();
+        const activeParticipants = Object.values(participants).filter(
+          participant => !(participant as Participant).isSpectator
+        );
+
+        subs.next(activeParticipants.length);
+      })
     );
+  }
+
+  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
+    const hasVoted = await this.hasUserVoted(roomId, userId);
+
+    if (hasVoted) return;
+
+    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    await update(participantRef, {
+      vote
+    });
   }
 
   private async checkRoomExists(roomId: string): Promise<boolean> {
@@ -82,5 +103,11 @@ export class RoomService {
         console.error(error);
         return false;
       });
+  }
+
+  private async hasUserVoted(roomId: string, userId: string): Promise<boolean> {
+    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
+    const snapshot = await get(voteRef);
+    return snapshot.exists() && snapshot.val() !== null;
   }
 }

@@ -73,17 +73,19 @@
   </div>
 
   <div class="flex justify-center items-center gap-4">
-    @for (number of numbers; track number) {
-      <div
-        (click)="onNumberSelect(number)"
-        [ngClass]="{
-          'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber === number,
-          'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber !== number
-        }"
-        class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
-      >
-        <span class="text-2xl font-mono">{{ number }}</span>
-      </div>
+    @if (!state.isSpectator) {
+      @for (number of numbers; track number) {
+        <div
+          (click)="onNumberSelect(number)"
+          [ngClass]="{
+            'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber === number,
+            'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber !== number
+          }"
+          class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
+        >
+          <span class="text-2xl font-mono">{{ number }}</span>
+        </div>
+      }
     }
   </div>
 
