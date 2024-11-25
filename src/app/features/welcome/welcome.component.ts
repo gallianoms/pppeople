@@ -24,7 +24,8 @@ export class WelcomeComponent {
     this.navigateToRoom({
       roomId,
       userId: hostId,
-      isHost: true
+      isHost: true,
+      isSpectator: false
     });
   }
 
