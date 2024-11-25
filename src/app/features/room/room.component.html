@@ -67,7 +67,9 @@
         </div>
       }
     </div>
-    <p class="text-gray-300 text-center font-mono mt-6">2/4 players voted</p>
+    @if (usersConnected$ | async; as usersConnected) {
+      <p class="text-gray-300 text-center font-mono mt-6">2/{{ usersConnected }} players voted</p>
+    }
   </div>
 
   <div class="flex justify-center items-center gap-4">

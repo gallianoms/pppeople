@@ -1,6 +1,8 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RoomConfig } from '../../core/types/room.types';
+import { RoomService } from '../../core/services/room.service';
+import { Observable } from 'rxjs';
 
 interface Vote {
   id: string;
@@ -24,12 +26,14 @@ export class RoomComponent implements OnInit {
   ];
   state!: RoomConfig;
   copying = false;
+  usersConnected$!: Observable<number>;
 
   private location = inject(Location);
+  private roomService = inject(RoomService);
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;
-    console.log(this.state);
+    this.usersConnected$ = this.roomService.getUsersInRoom(this.state.roomId);
   }
 
   onNumberSelect(number: number): void {

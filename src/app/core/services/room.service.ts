@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { get, getDatabase, push, ref, set } from 'firebase/database';
+import { get, getDatabase, onValue, push, ref, set } from 'firebase/database';
 import { environment } from '../../../environments/environment.development';
+import { from, Observable } from 'rxjs';
 
 export type CreateRoomResponse = {
   roomId: string;
@@ -19,22 +20,31 @@ export class RoomService {
   private app = initializeApp(environment.firebaseConfig);
   private db = getDatabase(this.app);
 
+  public getUsersInRoom(roomId: string): Observable<number> {
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    return new Observable(subs =>
+      onValue(participantsRef, snapshot => subs.next(snapshot.exists() ? Object.keys(snapshot.val()).length : 0))
+    );
+  }
+
   public async createRoom(): Promise<CreateRoomResponse> {
-    const usersRef = ref(this.db, 'users');
-    const newHostRef = push(usersRef);
-    const hostId = newHostRef.key!;
-
-    await set(newHostRef, {
-      isSpectator: false
-    });
-
     const roomsRef = ref(this.db, 'rooms');
     const newRoomRef = push(roomsRef);
     const roomId = newRoomRef.key!;
 
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const newHostRef = push(participantsRef);
+    const hostId = newHostRef.key!;
+
     await set(newRoomRef, {
       hostId,
-      participants: {}
+      participants: {
+        [hostId]: {
+          isHost: true,
+          isSpectator: false,
+          vote: null
+        }
+      }
     });
 
     return {
@@ -48,17 +58,13 @@ export class RoomService {
 
     if (!roomExists) throw new Error('Room does not exist');
 
-    const usersRef = ref(this.db, 'users');
-    const newUserRef = push(usersRef);
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const newUserRef = push(participantsRef);
     const userId = newUserRef.key!;
 
     await set(newUserRef, {
-      isSpectator
-    });
-
-    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
-
-    await set(participantRef, {
+      isHost: false,
+      isSpectator,
       vote: null
     });
 
