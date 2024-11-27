@@ -14,6 +14,14 @@ export type JoinRoomResponse = {
   userId: string;
 };
 
+interface Participants {
+  [key: string]: {
+    isHost: boolean;
+    isSpectator: boolean;
+    vote: number | null;
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -91,6 +99,21 @@ export class RoomService {
     const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
     await update(participantRef, {
       vote
+    });
+  }
+
+  public getVotedParticipantsCount(roomId: string): Observable<number> {
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    return new Observable(subs => {
+      onValue(participantsRef, snapshot => {
+        if (!snapshot.exists()) return subs.next(0);
+
+        const participants: Participants = snapshot.val();
+        const votedParticipants = Object.values(participants).filter(
+          participant => participant.vote !== null && participant.vote > 0
+        );
+        subs.next(votedParticipants.length);
+      });
     });
   }
 

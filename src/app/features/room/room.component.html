@@ -68,7 +68,9 @@
       }
     </div>
     @if (usersConnected$ | async; as usersConnected) {
-      <p class="text-gray-300 text-center font-mono mt-6">2/{{ usersConnected }} players voted</p>
+      @if (usersVoted$ | async; as usersVoted) {
+        <p class="text-gray-300 text-center font-mono mt-6">{{ usersVoted }}/{{ usersConnected }} players voted</p>
+      }
     }
   </div>
 
