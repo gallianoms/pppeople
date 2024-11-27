@@ -67,7 +67,7 @@ export class RoomService {
     };
   }
 
-  public getUsersInRoom(roomId: string): Observable<number> {
+  public getActiveParticipantsCount(roomId: string): Observable<number> {
     const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
     return new Observable(subs =>
       onValue(participantsRef, snapshot => {

@@ -33,7 +33,7 @@ export class RoomComponent implements OnInit {
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;
-    this.usersConnected$ = this.roomService.getUsersInRoom(this.state.roomId);
+    this.usersConnected$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
   }
 
   onNumberSelect(vote: number): void {
