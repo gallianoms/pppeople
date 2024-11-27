@@ -37,6 +37,7 @@ export class RoomComponent implements OnInit {
   }
 
   onNumberSelect(vote: number): void {
+    if (this.selectedNumber === null) this.selectedNumber = vote;
     this.roomService.addVote(this.state.roomId, this.state.userId, vote);
   }
 
