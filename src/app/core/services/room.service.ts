@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { get, getDatabase, onValue, push, ref, set, update } from 'firebase/database';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Participant } from '../types/participant.types';
 
 export type CreateRoomResponse = {
@@ -125,11 +125,17 @@ export class RoomService {
 
         const participants: Participants = snapshot.val();
         const votes = Object.values(participants)
+          .filter(participant => !participant.isSpectator)
           .map(participant => participant.vote)
           .filter(vote => vote !== null);
         subs.next(votes);
       });
     });
+  }
+
+  public calcAverageVote(roomId: string): Observable<number> {
+    const votes = this.getVotes(roomId);
+    return votes.pipe(map(votes => votes.reduce((a, b) => a + b, 0) / votes.length));
   }
 
   private async checkRoomExists(roomId: string): Promise<boolean> {

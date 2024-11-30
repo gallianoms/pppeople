@@ -74,6 +74,8 @@
         <p class="text-gray-300 text-center font-mono mt-6">
           {{ usersVotedCount }}/{{ usersConnectedCount }} players voted
         </p>
+      } @else {
+        <p class="text-gray-300 text-center font-mono mt-6">Waiting for players to vote...</p>
       }
     }
   </div>
@@ -101,7 +103,7 @@
     <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
       <p class="text-gray-300 font-mono">
         Average:
-        <span class="text-indigo-300 font-bold text-xl">0.0</span>
+        <span class="text-indigo-300 font-bold text-xl">{{ averageVotes$ | async | number: '1.1-1' }}</span>
       </p>
     </div>
     <button

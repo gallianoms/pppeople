@@ -2,7 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-room',
@@ -18,6 +18,7 @@ export class RoomComponent implements OnInit {
   usersConnectedCount$!: Observable<number>;
   usersVotedCount$!: Observable<number>;
   votes$!: Observable<number[]>;
+  averageVotes$!: Observable<number | null>;
 
   private location = inject(Location);
   private roomService = inject(RoomService);
@@ -27,6 +28,15 @@ export class RoomComponent implements OnInit {
     this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
     this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
     this.votes$ = this.roomService.getVotes(this.state.roomId);
+
+    this.averageVotes$ = combineLatest([this.usersConnectedCount$, this.usersVotedCount$]).pipe(
+      switchMap(([connected, voted]) => {
+        if (connected === voted && connected > 0) {
+          return this.roomService.calcAverageVote(this.state.roomId);
+        }
+        return of(0.0);
+      })
+    );
   }
 
   onNumberSelect(vote: number): void {
