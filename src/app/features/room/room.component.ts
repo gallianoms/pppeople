@@ -26,16 +26,16 @@ export class RoomComponent implements OnInit {
   ];
   state!: RoomConfig;
   copying = false;
-  usersConnected$!: Observable<number>;
-  usersVoted$!: Observable<number>;
+  usersConnectedCount$!: Observable<number>;
+  usersVotedCount$!: Observable<number>;
 
   private location = inject(Location);
   private roomService = inject(RoomService);
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;
-    this.usersConnected$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
-    this.usersVoted$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
+    this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
+    this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
   }
 
   onNumberSelect(vote: number): void {
