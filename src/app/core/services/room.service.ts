@@ -117,6 +117,21 @@ export class RoomService {
     });
   }
 
+  public getVotes(roomId: string): Observable<number[]> {
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    return new Observable(subs => {
+      onValue(participantsRef, snapshot => {
+        if (!snapshot.exists()) return subs.next([]);
+
+        const participants: Participants = snapshot.val();
+        const votes = Object.values(participants)
+          .map(participant => participant.vote)
+          .filter(vote => vote !== null);
+        subs.next(votes);
+      });
+    });
+  }
+
   private async checkRoomExists(roomId: string): Promise<boolean> {
     return await get(ref(this.db, `rooms/${roomId}`))
       .then(snapshot => {

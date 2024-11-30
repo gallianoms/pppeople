@@ -4,11 +4,6 @@ import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { Observable } from 'rxjs';
 
-interface Vote {
-  id: string;
-  value: number | null;
-}
-
 @Component({
   selector: 'app-room',
   imports: [CommonModule],
@@ -18,16 +13,11 @@ interface Vote {
 export class RoomComponent implements OnInit {
   numbers = [1, 2, 3, 5, 8];
   selectedNumber: number | null = null;
-  votes: Vote[] = [
-    { id: '1', value: 5 },
-    { id: '2', value: 3 },
-    { id: '3', value: null },
-    { id: '4', value: null }
-  ];
   state!: RoomConfig;
   copying = false;
   usersConnectedCount$!: Observable<number>;
   usersVotedCount$!: Observable<number>;
+  votes$!: Observable<number[]>;
 
   private location = inject(Location);
   private roomService = inject(RoomService);
@@ -36,6 +26,7 @@ export class RoomComponent implements OnInit {
     this.state = this.location.getState() as RoomConfig;
     this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
     this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
+    this.votes$ = this.roomService.getVotes(this.state.roomId);
   }
 
   onNumberSelect(vote: number): void {
