@@ -138,6 +138,31 @@ export class RoomService {
     return votes.pipe(map(votes => votes.reduce((a, b) => a + b, 0) / votes.length));
   }
 
+  public async resetVotes(roomId: string, userId: string): Promise<void> {
+    const userRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const userSnapshot = await get(userRef);
+
+    if (!userSnapshot.exists() || !userSnapshot.val().isHost) {
+      throw new Error('Only the host can reset votes');
+    }
+
+    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const snapshot = await get(participantsRef);
+
+    if (!snapshot.exists()) return;
+
+    const participants: Participants = snapshot.val();
+    const updates: { [key: string]: any } = {};
+
+    Object.entries(participants).forEach(([participantId, participant]) => {
+      if (!participant.isSpectator) {
+        updates[`${participantId}/vote`] = null;
+      }
+    });
+
+    await update(participantsRef, updates);
+  }
+
   private async checkRoomExists(roomId: string): Promise<boolean> {
     return await get(ref(this.db, `rooms/${roomId}`))
       .then(snapshot => {
@@ -153,5 +178,14 @@ export class RoomService {
     const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
     const snapshot = await get(voteRef);
     return snapshot.exists() && snapshot.val() !== null;
+  }
+
+  public getUserVote(roomId: string, userId: string): Observable<number | null> {
+    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
+    return new Observable(subs => {
+      onValue(voteRef, snapshot => {
+        subs.next(snapshot.exists() ? snapshot.val() : null);
+      });
+    });
   }
 }

@@ -106,10 +106,13 @@
         <span class="text-indigo-300 font-bold text-xl">{{ averageVotes$ | async | number: '1.1-1' }}</span>
       </p>
     </div>
-    <button
-      class="px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
-    >
-      Reset votes
-    </button>
+    @if (state.isHost) {
+      <button
+        (click)="onResetVotes()"
+        class="px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
+      >
+        Reset votes
+      </button>
+    }
   </div>
 </div>

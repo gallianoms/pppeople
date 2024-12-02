@@ -37,6 +37,10 @@ export class RoomComponent implements OnInit {
         return of(0.0);
       })
     );
+
+    this.roomService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
+      this.selectedNumber = vote;
+    });
   }
 
   onNumberSelect(vote: number): void {
@@ -48,5 +52,14 @@ export class RoomComponent implements OnInit {
     navigator.clipboard.writeText(this.state.roomId);
     this.copying = true;
     setTimeout(() => (this.copying = false), 2000);
+  }
+
+  async onResetVotes(): Promise<void> {
+    try {
+      await this.roomService.resetVotes(this.state.roomId, this.state.userId);
+      this.selectedNumber = null;
+    } catch (error) {
+      console.error('Error resetting votes:', error);
+    }
   }
 }
