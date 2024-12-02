@@ -1,3 +1,17 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "ng build",
+        "outputDirectory": "dist/nombre-de-tu-proyecto"
+      }
+    }
+  ],
+  "routes": [
+    { "src": "^/public/(.*)", "dest": "/public/$1" },
+    { "src": "^/favicon.ico$", "dest": "/favicon.ico" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
