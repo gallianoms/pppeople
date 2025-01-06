@@ -62,4 +62,8 @@ export class RoomComponent implements OnInit {
       console.error('Error resetting votes:', error);
     }
   }
+
+  public hasNullVotes(votes: (number | null)[]): boolean {
+    return votes.some(v => v === undefined);
+  }
 }

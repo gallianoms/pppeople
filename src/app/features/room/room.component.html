@@ -58,7 +58,11 @@
           >
             <div class="absolute inset-0 flex items-center justify-center">
               <span class="text-2xl font-mono text-gray-300">
-                {{ vote ?? '?' }}
+                @if (hasNullVotes(votes)) {
+                  {{ vote ? '✓' : '?' }}
+                } @else {
+                  {{ vote }}
+                }
               </span>
             </div>
             <div
