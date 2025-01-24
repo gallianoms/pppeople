@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, HostListener } from '@angular/core';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
@@ -65,5 +65,12 @@ export class RoomComponent implements OnInit {
 
   public hasNullVotes(votes: (number | null)[]): boolean {
     return votes.some(v => v === undefined);
+  }
+
+  @HostListener('window:beforeunload')
+  private handleWindowClose(): void {
+    if (this.state?.roomId && this.state?.userId) {
+      this.roomService.removeParticipant(this.state.roomId, this.state.userId);
+    }
   }
 }

@@ -163,6 +163,11 @@ export class RoomService {
     await update(participantsRef, updates);
   }
 
+  public async removeParticipant(roomId: string, userId: string): Promise<void> {
+    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    await set(participantRef, null);
+  }
+
   private async checkRoomExists(roomId: string): Promise<boolean> {
     return await get(ref(this.db, `rooms/${roomId}`))
       .then(snapshot => {
