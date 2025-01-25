@@ -79,11 +79,16 @@ export class RoomComponent implements OnInit {
   @HostListener('window:beforeunload')
   private handleWindowClose(): void {
     if (this.state?.roomId && this.state?.userId) {
-      if (this.state.isHost) {
-        this.roomService.deleteRoom(this.state.roomId, this.state.userId).catch(console.error);
-      } else {
-        this.roomService.removeParticipant(this.state.roomId, this.state.userId);
-      }
+      this.leaveRoom();
     }
+  }
+
+  leaveRoom(): void {
+    if (this.state.isHost) {
+      this.roomService.deleteRoom(this.state.roomId, this.state.userId).catch(console.error);
+    } else {
+      this.roomService.removeParticipant(this.state.roomId, this.state.userId);
+    }
+    this.router.navigate(['/welcome']);
   }
 }
