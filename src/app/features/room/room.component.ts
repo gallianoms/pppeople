@@ -1,5 +1,6 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
@@ -22,9 +23,17 @@ export class RoomComponent implements OnInit {
 
   private location = inject(Location);
   private roomService = inject(RoomService);
+  private router = inject(Router);
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;
+
+    if (!this.state.isHost) {
+      this.roomService.listenToRoomDeletion(this.state.roomId).subscribe(() => {
+        this.router.navigate(['/welcome']);
+      });
+    }
+
     this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
     this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
     this.votes$ = this.roomService.getVotes(this.state.roomId);
@@ -70,7 +79,11 @@ export class RoomComponent implements OnInit {
   @HostListener('window:beforeunload')
   private handleWindowClose(): void {
     if (this.state?.roomId && this.state?.userId) {
-      this.roomService.removeParticipant(this.state.roomId, this.state.userId);
+      if (this.state.isHost) {
+        this.roomService.deleteRoom(this.state.roomId, this.state.userId).catch(console.error);
+      } else {
+        this.roomService.removeParticipant(this.state.roomId, this.state.userId);
+      }
     }
   }
 }

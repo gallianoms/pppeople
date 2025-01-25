@@ -168,6 +168,29 @@ export class RoomService {
     await set(participantRef, null);
   }
 
+  public async deleteRoom(roomId: string, userId: string): Promise<void> {
+    const userRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const userSnapshot = await get(userRef);
+
+    if (!userSnapshot.exists() || !userSnapshot.val().isHost) {
+      throw new Error('Only the host can delete the room');
+    }
+
+    const roomRef = ref(this.db, `rooms/${roomId}`);
+    await set(roomRef, null);
+  }
+
+  public listenToRoomDeletion(roomId: string): Observable<void> {
+    const roomRef = ref(this.db, `rooms/${roomId}`);
+    return new Observable(subs => {
+      onValue(roomRef, snapshot => {
+        if (!snapshot.exists()) {
+          subs.next();
+        }
+      });
+    });
+  }
+
   private async checkRoomExists(roomId: string): Promise<boolean> {
     return await get(ref(this.db, `rooms/${roomId}`))
       .then(snapshot => {
