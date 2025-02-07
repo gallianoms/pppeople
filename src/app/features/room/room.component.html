@@ -1,4 +1,4 @@
-<div class="h-screen flex flex-col items-center pt-8">
+<div class="min-h-screen flex flex-col items-center pt-8 pb-8">
   <div class="absolute top-8 right-8 flex flex-col gap-2">
     <div
       class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-indigo-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-500/20 transition-all duration-300 min-w-[206px]"
@@ -124,17 +124,34 @@
     }
   </div>
 
-  <div class="mt-12 flex gap-4">
-    <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
-      <p class="text-gray-300 font-mono">
-        Average:
-        <span class="text-indigo-300 font-bold text-xl">{{ averageVotes$ | async | number: '1.1-1' }}</span>
-      </p>
+  <div class="mt-12 flex flex-col gap-4">
+    <div class="flex gap-4">
+      <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
+        <p class="text-gray-300 font-mono">
+          Average:
+          <span class="text-indigo-300 font-bold text-xl">{{ averageVotes$ | async | number: '1.1-1' }}</span>
+        </p>
+      </div>
+      <button
+        *ngIf="!state.isSpectator"
+        (click)="deleteMyVote()"
+        [disabled]="selectedNumber === null || (usersConnectedCount$ | async) === (usersVotedCount$ | async)"
+        class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-full font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
+        [class.opacity-50]="selectedNumber === null || (usersConnectedCount$ | async) === (usersVotedCount$ | async)"
+        [class.cursor-not-allowed]="
+          selectedNumber === null || (usersConnectedCount$ | async) === (usersVotedCount$ | async)
+        "
+        [class.hover:text-yellow-500]="
+          selectedNumber !== null && (usersConnectedCount$ | async) !== (usersVotedCount$ | async)
+        "
+      >
+        Change vote
+      </button>
     </div>
     @if (state.isHost) {
       <button
         (click)="onResetVotes()"
-        class="px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
+        class="w-full px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
       >
         Reset votes
       </button>

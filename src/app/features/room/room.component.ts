@@ -57,6 +57,11 @@ export class RoomComponent implements OnInit {
     this.roomService.addVote(this.state.roomId, this.state.userId, vote);
   }
 
+  deleteMyVote(): void {
+    this.roomService.removeVote(this.state.roomId, this.state.userId);
+    this.selectedNumber = null;
+  }
+
   copyRoomCode() {
     navigator.clipboard.writeText(this.state.roomId);
     this.copying = true;

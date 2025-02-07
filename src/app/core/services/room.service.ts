@@ -102,6 +102,13 @@ export class RoomService {
     });
   }
 
+  public async removeVote(roomId: string, userId: string): Promise<void> {
+    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    await update(participantRef, {
+      vote: null
+    });
+  }
+
   public getVotedParticipantsCount(roomId: string): Observable<number> {
     const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
     return new Observable(subs => {
