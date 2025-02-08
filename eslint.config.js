@@ -1,7 +1,8 @@
-// @ts-check
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
+const prettier = require('eslint-config-prettier');
+const eslintPluginPrettier = require('eslint-plugin-prettier');
 
 module.exports = tseslint.config(
   {
@@ -10,8 +11,12 @@ module.exports = tseslint.config(
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
-      ...angular.configs.tsRecommended
+      ...angular.configs.tsRecommended,
+      prettier
     ],
+    plugins: {
+      prettier: eslintPluginPrettier
+    },
     processor: angular.processInlineTemplates,
     rules: {
       '@angular-eslint/directive-selector': [
@@ -29,7 +34,8 @@ module.exports = tseslint.config(
           prefix: 'app',
           style: 'kebab-case'
         }
-      ]
+      ],
+      'prettier/prettier': ['error', {}, { usePrettierrc: true }]
     }
   },
   {
