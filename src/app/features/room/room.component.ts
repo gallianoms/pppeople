@@ -1,17 +1,21 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject, OnInit, HostListener } from '@angular/core';
+import { Component, inject, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
+import { RoomHeaderComponent } from './components/room-header/room-header.component';
+import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
+import { RoomStatsComponent } from './components/room-stats/room-stats.component';
+import { VoteCardComponent } from './components/vote-card/vote-card.component';
 
 @Component({
   selector: 'app-room',
-  imports: [CommonModule],
-  templateUrl: './room.component.html',
-  styleUrl: './room.component.css'
+  standalone: true,
+  imports: [CommonModule, RoomHeaderComponent, VoteControlsComponent, RoomStatsComponent, VoteCardComponent],
+  templateUrl: './room.component.html'
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent {
   numbers = [1, 2, 3, 5, 8];
   selectedNumber: number | null = null;
   state!: RoomConfig;
