@@ -199,6 +199,15 @@ export class RoomService {
     });
   }
 
+  public getUserVote(roomId: string, userId: string): Observable<number | null> {
+    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
+    return new Observable(subs => {
+      onValue(voteRef, snapshot => {
+        subs.next(snapshot.exists() ? snapshot.val() : null);
+      });
+    });
+  }
+
   private async checkRoomExists(roomId: string): Promise<boolean> {
     return await get(ref(this.db, `rooms/${roomId}`))
       .then(snapshot => {
@@ -214,14 +223,5 @@ export class RoomService {
     const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
     const snapshot = await get(voteRef);
     return snapshot.exists() && snapshot.val() !== null;
-  }
-
-  public getUserVote(roomId: string, userId: string): Observable<number | null> {
-    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
-    return new Observable(subs => {
-      onValue(voteRef, snapshot => {
-        subs.next(snapshot.exists() ? snapshot.val() : null);
-      });
-    });
   }
 }
