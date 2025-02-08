@@ -8,8 +8,12 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="absolute top-8 right-8 flex flex-col gap-2">
       <div
+        role="button"
+        tabindex="0"
         class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-indigo-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-500/20 transition-all duration-300 min-w-[206px]"
         (click)="onCopyCode()"
+        (keyup.enter)="onCopyCode()"
+        [attr.aria-label]="copying ? 'Code copied' : 'Copy room code'"
       >
         <p class="text-gray-300 font-mono">
           {{ copying ? 'Copied code!' : 'Share code room' }}
@@ -21,6 +25,7 @@ import { CommonModule } from '@angular/common';
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
@@ -36,6 +41,7 @@ import { CommonModule } from '@angular/common';
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
@@ -47,8 +53,12 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <div
+        role="button"
+        tabindex="0"
         class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300"
         (click)="onLeave()"
+        (keyup.enter)="onLeave()"
+        aria-label="Leave room"
       >
         <p class="text-gray-300 font-mono">Leave room</p>
         <svg
@@ -57,6 +67,7 @@ import { CommonModule } from '@angular/common';
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"

@@ -5,22 +5,23 @@ import { environment } from '../../../environments/environment.development';
 import { map, Observable } from 'rxjs';
 import { Participant } from '../types/participant.types';
 
-export type CreateRoomResponse = {
+export interface CreateRoomResponse {
   roomId: string;
   hostId: string;
-};
-
-export type JoinRoomResponse = {
-  userId: string;
-};
-
-interface Participants {
-  [key: string]: {
-    isHost: boolean;
-    isSpectator: boolean;
-    vote: number | null;
-  };
 }
+
+export interface JoinRoomResponse {
+  userId: string;
+}
+
+interface ParticipantData {
+  isHost: boolean;
+  isSpectator: boolean;
+  vote: number | null;
+}
+
+type Participants = Record<string, ParticipantData>;
+type ParticipantUpdates = Record<string, ParticipantData['vote']>;
 
 @Injectable({
   providedIn: 'root'
@@ -159,7 +160,7 @@ export class RoomService {
     if (!snapshot.exists()) return;
 
     const participants: Participants = snapshot.val();
-    const updates: { [key: string]: any } = {};
+    const updates: ParticipantUpdates = {};
 
     Object.entries(participants).forEach(([participantId, participant]) => {
       if (!participant.isSpectator) {

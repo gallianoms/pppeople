@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
       @for (number of numbers; track number) {
         <div
           (click)="onSelect(number)"
+          (keyup.enter)="onSelect(number)"
+          [tabindex]="selectedNumber === null ? 0 : -1"
           [ngClass]="{
             'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber === number,
             'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber !== number,

@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
@@ -15,7 +15,7 @@ import { VoteCardComponent } from './components/vote-card/vote-card.component';
   imports: [CommonModule, RoomHeaderComponent, VoteControlsComponent, RoomStatsComponent, VoteCardComponent],
   templateUrl: './room.component.html'
 })
-export class RoomComponent {
+export class RoomComponent implements OnInit {
   numbers = [1, 2, 3, 5, 8];
   selectedNumber: number | null = null;
   state!: RoomConfig;

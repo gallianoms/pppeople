@@ -1,4 +1,4 @@
-export type Participant = {
+export interface Participant {
   isHost: boolean;
   isSpectator: boolean;
-};
+}
