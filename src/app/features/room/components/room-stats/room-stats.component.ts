@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,22 +11,22 @@ import { CommonModule } from '@angular/common';
         <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
           <p class="text-gray-300 font-mono">
             Average:
-            <span class="text-indigo-300 font-bold text-xl">{{ average | number: '1.1-1' }}</span>
+            <span class="text-indigo-300 font-bold text-xl">{{ average() | number: '1.1-1' }}</span>
           </p>
         </div>
         <button
-          *ngIf="!isSpectator"
+          *ngIf="!isSpectator()"
           (click)="onDeleteVote()"
-          [disabled]="!canChangeVote"
+          [disabled]="!canChangeVote()"
           class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-full font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
-          [class.opacity-50]="!canChangeVote"
-          [class.cursor-not-allowed]="!canChangeVote"
-          [class.hover:text-yellow-500]="canChangeVote"
+          [class.opacity-50]="!canChangeVote()"
+          [class.cursor-not-allowed]="!canChangeVote()"
+          [class.hover:text-yellow-500]="canChangeVote()"
         >
           Change vote
         </button>
       </div>
-      @if (isHost) {
+      @if (isHost()) {
         <button
           (click)="onReset()"
           class="w-full px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
@@ -38,10 +38,10 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class RoomStatsComponent {
-  @Input() average = 0;
-  @Input() isHost = false;
-  @Input() isSpectator = false;
-  @Input() canChangeVote = false;
+  public readonly average = input(0);
+  public readonly isHost = input(false);
+  public readonly isSpectator = input(false);
+  public readonly canChangeVote = input(false);
   @Output() deleteVote = new EventEmitter<void>();
   @Output() resetVotes = new EventEmitter<void>();
 

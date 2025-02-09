@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,13 +13,13 @@ import { CommonModule } from '@angular/common';
         class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-indigo-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-500/20 transition-all duration-300 min-w-[206px]"
         (click)="onCopyCode()"
         (keyup.enter)="onCopyCode()"
-        [attr.aria-label]="copying ? 'Code copied' : 'Copy room code'"
+        [attr.aria-label]="copying() ? 'Code copied' : 'Copy room code'"
       >
         <p class="text-gray-300 font-mono">
-          {{ copying ? 'Copied code!' : 'Share code room' }}
+          {{ copying() ? 'Copied code!' : 'Share code room' }}
         </p>
         <svg
-          *ngIf="!copying"
+          *ngIf="!copying()"
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-gray-300"
           fill="none"
@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
           />
         </svg>
         <svg
-          *ngIf="copying"
+          *ngIf="copying()"
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-green-400"
           fill="none"
@@ -81,7 +81,7 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class RoomHeaderComponent {
-  @Input() copying = false;
+  public readonly copying = input(false);
   @Output() copyCode = new EventEmitter<void>();
   @Output() leave = new EventEmitter<void>();
 

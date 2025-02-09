@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,16 +7,16 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="flex justify-center items-center gap-4">
-      @for (number of numbers; track number) {
+      @for (number of numbers(); track number) {
         <div
           (click)="onSelect(number)"
           (keyup.enter)="onSelect(number)"
-          [tabindex]="selectedNumber === null ? 0 : -1"
+          [tabindex]="selectedNumber() === null ? 0 : -1"
           [ngClass]="{
-            'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber === number,
-            'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber !== number,
-            'cursor-not-allowed opacity-50': selectedNumber !== null && selectedNumber !== number,
-            'cursor-pointer': selectedNumber === null
+            'bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white': selectedNumber() === number,
+            'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber() !== number,
+            'cursor-not-allowed opacity-50': selectedNumber() !== null && selectedNumber() !== number,
+            'cursor-pointer': selectedNumber() === null
           }"
           class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
         >
@@ -27,12 +27,12 @@ import { CommonModule } from '@angular/common';
   `
 })
 export class VoteControlsComponent {
-  @Input() numbers: number[] = [];
-  @Input() selectedNumber: number | null = null;
+  public readonly numbers = input<number[]>([]);
+  public readonly selectedNumber = input<number | null>(null);
   @Output() numberSelected = new EventEmitter<number>();
 
   onSelect(number: number) {
-    if (this.selectedNumber === null) {
+    if (this.selectedNumber() === null) {
       this.numberSelected.emit(number);
     }
   }
