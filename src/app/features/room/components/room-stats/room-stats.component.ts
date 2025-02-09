@@ -14,17 +14,18 @@ import { CommonModule } from '@angular/common';
             <span class="text-indigo-300 font-bold text-xl">{{ average() | number: '1.1-1' }}</span>
           </p>
         </div>
-        <button
-          *ngIf="!isSpectator()"
-          (click)="onDeleteVote()"
-          [disabled]="!canChangeVote()"
-          class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-full font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
-          [class.opacity-50]="!canChangeVote()"
-          [class.cursor-not-allowed]="!canChangeVote()"
-          [class.hover:text-yellow-500]="canChangeVote()"
-        >
-          Change vote
-        </button>
+        @if (!isSpectator()) {
+          <button
+            (click)="onDeleteVote()"
+            [disabled]="!canChangeVote()"
+            class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-full font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
+            [class.opacity-50]="!canChangeVote()"
+            [class.cursor-not-allowed]="!canChangeVote()"
+            [class.hover:text-yellow-500]="canChangeVote()"
+          >
+            Change vote
+          </button>
+        }
       </div>
       @if (isHost()) {
         <button
