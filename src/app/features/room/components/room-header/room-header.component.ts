@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -82,8 +82,8 @@ import { CommonModule } from '@angular/common';
 })
 export class RoomHeaderComponent {
   public readonly copying = input(false);
-  @Output() copyCode = new EventEmitter<void>();
-  @Output() leave = new EventEmitter<void>();
+  public readonly copyCode = output<void>();
+  public readonly leave = output<void>();
 
   onCopyCode() {
     this.copyCode.emit();

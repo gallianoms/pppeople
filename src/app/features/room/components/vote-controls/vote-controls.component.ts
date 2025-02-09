@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -29,7 +29,7 @@ import { CommonModule } from '@angular/common';
 export class VoteControlsComponent {
   public readonly numbers = input<number[]>([]);
   public readonly selectedNumber = input<number | null>(null);
-  @Output() numberSelected = new EventEmitter<number>();
+  public readonly numberSelected = output<number>();
 
   onSelect(number: number) {
     if (this.selectedNumber() === null) {

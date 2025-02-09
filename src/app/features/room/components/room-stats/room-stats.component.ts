@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -42,8 +42,8 @@ export class RoomStatsComponent {
   public readonly isHost = input(false);
   public readonly isSpectator = input(false);
   public readonly canChangeVote = input(false);
-  @Output() deleteVote = new EventEmitter<void>();
-  @Output() resetVotes = new EventEmitter<void>();
+  public readonly deleteVote = output<void>();
+  public readonly resetVotes = output<void>();
 
   onDeleteVote() {
     this.deleteVote.emit();
