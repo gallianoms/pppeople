@@ -8,6 +8,7 @@ import { RoomHeaderComponent } from './components/room-header/room-header.compon
 import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-room',
@@ -41,6 +42,15 @@ export class RoomComponent implements OnInit {
     this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
     this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
     this.votes$ = this.roomService.getVotes(this.state.roomId);
+
+    // Replace the simple votes subscription with a combined check
+    combineLatest([this.votes$, this.usersConnectedCount$, this.usersVotedCount$]).subscribe(
+      ([votes, connected, voted]) => {
+        if (connected === voted && connected > 0 && this.checkUnanimousVotes(votes)) {
+          this.triggerConfetti();
+        }
+      }
+    );
 
     this.averageVotes$ = combineLatest([this.usersConnectedCount$, this.usersVotedCount$]).pipe(
       switchMap(([connected, voted]) => {
@@ -83,6 +93,33 @@ export class RoomComponent implements OnInit {
 
   public hasNullVotes(votes: (number | null)[]): boolean {
     return votes.some(v => v === undefined);
+  }
+
+  private checkUnanimousVotes(votes: number[]): boolean {
+    const validVotes = votes.filter(vote => typeof vote === 'number');
+    return validVotes.length > 1 && validVotes.every(vote => vote === validVotes[0]);
+  }
+
+  private triggerConfetti(): void {
+    const duration = 15 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    const randomInRange = (min: number, max: number) => {
+      return Math.random() * (max - min) + min;
+    };
+
+    const interval = setInterval(function () {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
+      }
+
+      const particleCount = 50 * (timeLeft / duration);
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+    }, 250);
   }
 
   @HostListener('window:beforeunload')
