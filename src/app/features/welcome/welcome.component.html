@@ -1,10 +1,10 @@
 <div class="h-screen flex flex-col items-center justify-center relative">
   <div
-    class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-14 shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300 w-[520px]"
+    class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-14 shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 w-[520px]"
   >
     <div class="flex flex-col items-center justify-center space-y-8">
       <button
-        class="shadow-lg bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 hover:from-indigo-500 hover:via-indigo-400 hover:to-indigo-500 text-white font-mono py-3 px-6 rounded-full w-[400px] text-lg transform hover:scale-105 transition-all duration-300"
+        class="shadow-lg bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white font-mono py-3 px-6 rounded-full w-[400px] text-lg transform hover:scale-105 transition-all duration-300"
         (click)="createRoom()"
       >
         Create Room
@@ -23,14 +23,14 @@
               type="text"
               [(ngModel)]="roomId"
               placeholder="Enter code"
-              class="font-mono h-12 bg-gray-800/50 border border-gray-600/50 rounded-full px-4 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/50 w-[260px] text-white placeholder-gray-400 transition-all duration-300"
+              class="font-mono h-12 bg-gray-800/50 border border-gray-600/50 rounded-full px-4 py-2 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/50 w-[260px] text-white placeholder-gray-400 transition-all duration-300"
             />
             <div class="flex items-center space-x-2 text-white font-mono group relative">
               <input
                 type="checkbox"
                 id="spectator"
                 [(ngModel)]="isSpectator"
-                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500 border-gray-600 bg-gray-800/50 transition-colors duration-300"
+                class="form-checkbox h-5 w-5 text-emerald-600 rounded focus:ring-emerald-500 border-gray-600 bg-gray-800/50 transition-colors duration-300"
               />
               <label
                 for="spectator"
@@ -50,7 +50,7 @@
           </div>
 
           <button
-            class="shadow-lg h-12 border border-indigo-500/50 hover:bg-indigo-500/20 hover:border-indigo-400 text-white font-mono py-2 px-6 rounded-full w-[400px] transform hover:scale-105 transition-all duration-300"
+            class="shadow-lg h-12 border border-emerald-500/50 hover:bg-emerald-500/20 hover:border-emerald-400 text-white font-mono py-2 px-6 rounded-full w-[400px] transform hover:scale-105 transition-all duration-300"
             (click)="joinRoom()"
           >
             Join Room
@@ -60,13 +60,13 @@
     </div>
   </div>
 
-  <!-- Add this at the end, before the closing div -->
+  <!-- Footer links -->
   <div class="absolute bottom-4 right-4 flex items-center gap-2">
     <a
       href="https://www.linkedin.com/in/gallianoms/"
       target="_blank"
       rel="noopener noreferrer"
-      class="text-gray-400 hover:text-indigo-400 transition-colors duration-300"
+      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300"
       aria-label="Galliano's LinkedIn profile"
     >
       <svg
@@ -85,7 +85,7 @@
       href="https://jsalvadev.github.io/"
       target="_blank"
       rel="noopener noreferrer"
-      class="text-gray-400 hover:text-indigo-400 transition-colors duration-300 font-mono"
+      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300 font-mono"
       aria-label="jsalvadev.github.io"
     >
       jsalvadev.github.io

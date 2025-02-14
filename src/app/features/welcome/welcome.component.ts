@@ -8,8 +8,7 @@ import { RoomService } from '../../core/services/room.service';
 @Component({
   selector: 'app-welcome',
   imports: [FormsModule],
-  templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
+  templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent {
   public roomId = '';

@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
         href="https://www.linkedin.com/in/gallianoms/"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-gray-400 hover:text-indigo-400 transition-colors duration-300"
+        class="text-gray-400 hover:text-emerald-400 transition-colors duration-300"
         aria-label="Galliano's LinkedIn profile"
       >
         <svg
@@ -30,7 +30,7 @@ import { CommonModule } from '@angular/common';
         href="https://jsalvadev.github.io/"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-gray-400 hover:text-indigo-400 transition-colors duration-300 font-mono"
+        class="text-gray-400 hover:text-emerald-400 transition-colors duration-300 font-mono"
         aria-label="jsalvadev.github.io"
       >
         jsalvadev.github.io

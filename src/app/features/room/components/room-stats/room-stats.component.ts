@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
         <div class="flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full">
           <p class="text-gray-300 font-mono">
             Average:
-            <span class="text-indigo-300 font-bold text-xl">{{ average() | number: '1.1-1' }}</span>
+            <span class="text-emerald-300 font-bold text-xl">{{ average() | number: '1.1-1' }}</span>
           </p>
         </div>
         @if (!isSpectator()) {

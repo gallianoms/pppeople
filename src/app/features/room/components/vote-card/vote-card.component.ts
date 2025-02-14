@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   template: `
     <div
       class="w-16 h-24 bg-gray-900/40 backdrop-blur-sm border border-gray-700/50 rounded-lg relative transition-all duration-300"
-      [ngClass]="{ 'border-indigo-500/50': vote() }"
+      [ngClass]="{ 'border-emerald-500/50': vote() }"
     >
       <div class="absolute inset-0 flex items-center justify-center">
         <span class="text-2xl font-mono text-gray-300">

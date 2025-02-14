@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
       <div
         role="button"
         tabindex="0"
-        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-indigo-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-indigo-500/20 transition-all duration-300 min-w-[206px]"
+        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 min-w-[206px]"
         (click)="onCopyCode()"
         (keyup.enter)="onCopyCode()"
         [attr.aria-label]="copying() ? 'Code copied' : 'Copy room code'"
@@ -38,7 +38,7 @@ import { CommonModule } from '@angular/common';
         @if (copying()) {
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-green-400"
+            class="h-5 w-5 text-emerald-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -57,7 +57,7 @@ import { CommonModule } from '@angular/common';
       <div
         role="button"
         tabindex="0"
-        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300"
+        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-gray-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-500/20 transition-all duration-300"
         (click)="onLeave()"
         (keyup.enter)="onLeave()"
         aria-label="Leave room"
