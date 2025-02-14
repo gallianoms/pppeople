@@ -13,7 +13,7 @@
     />
   </div>
 
-  <div class="mb-16">
+  <div class="mb-16 min-h-[144px]">
     <div class="grid grid-cols-6 gap-4 justify-center">
       @if (votes$ | async; as votes) {
         @for (vote of votes; track $index) {
