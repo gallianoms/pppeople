@@ -31,6 +31,11 @@ export class WelcomeComponent {
   }
 
   public async joinRoom() {
+    if (!this.roomId?.trim()) {
+      this.notificationService.showError('Please enter a room code');
+      return;
+    }
+
     try {
       const { userId } = await this.roomService.joinRoom(this.roomId, this.isSpectator);
 

@@ -20,6 +20,9 @@ export class NotificationService {
   }
 
   private formatCasinoMessage(message: string): string {
+    if (message.includes('Please enter a room code')) {
+      return 'Please enter a table number to join';
+    }
     if (message.includes('Room does not exist')) {
       return 'Table not found in the casino';
     }
