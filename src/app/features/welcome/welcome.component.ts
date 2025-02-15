@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-welcome',
@@ -16,6 +17,7 @@ export class WelcomeComponent {
 
   private router = inject(Router);
   private roomService = inject(RoomService);
+  private notificationService = inject(NotificationService);
 
   public async createRoom() {
     const { roomId, hostId } = await this.roomService.createRoom();
@@ -39,8 +41,11 @@ export class WelcomeComponent {
         isSpectator: this.isSpectator
       });
     } catch (error) {
-      if (error instanceof Error) alert(error.message);
-      else alert('An unexpected error occurred');
+      this.notificationService.showError(
+        error instanceof Error
+          ? `The table is currently unavailable. ${error.message}`
+          : 'The table is not ready for new players at the moment'
+      );
     }
   }
 
