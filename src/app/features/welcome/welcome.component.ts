@@ -5,15 +5,17 @@ import { Router } from '@angular/router';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { HelpModalComponent } from '../../shared/components/help-modal/help-modal.component';
 
 @Component({
   selector: 'app-welcome',
-  imports: [FormsModule],
+  imports: [FormsModule, HelpModalComponent],
   templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent {
   public roomId = '';
   public isSpectator = false;
+  public showHelpModal = false;
 
   private router = inject(Router);
   private roomService = inject(RoomService);
