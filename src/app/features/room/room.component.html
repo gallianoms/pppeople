@@ -1,11 +1,13 @@
-<div class="min-h-screen flex flex-col items-center pt-8 pb-8 relative">
+<div
+  class="min-h-screen flex flex-col items-center pt-8 pb-8 relative animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
+>
   <app-room-header
     [copying]="copying"
     (copyCode)="copyRoomCode()"
     (leave)="leaveRoom()"
   ></app-room-header>
 
-  <div class="mb-12">
+  <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
     <img
       src="images/planning-poker.webp"
       alt="Planning Poker"
