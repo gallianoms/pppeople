@@ -9,7 +9,7 @@ import { NotificationService } from '../../../core/services/notification.service
   template: `
     <div
       *ngIf="notificationService.notification$ | async as notification"
-      class="casino-notification"
+      class="casino-notification animate-fadeIn"
     >
       <div class="notification-content">
         <div class="suits">♠️ ♥️</div>
@@ -34,7 +34,7 @@ import { NotificationService } from '../../../core/services/notification.service
         color: #ffffff;
         border: 1px solid #2d724a;
         box-shadow: 0 2px 8px rgba(13, 51, 33, 0.4);
-        animation: casinoSlide 0.5s ease-out;
+
         z-index: 1000;
       }
 
