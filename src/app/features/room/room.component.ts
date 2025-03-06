@@ -9,11 +9,19 @@ import { VoteControlsComponent } from './components/vote-controls/vote-controls.
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
 import confetti from 'canvas-confetti';
+import { TablerIconComponent } from 'angular-tabler-icons';
 
 @Component({
   selector: 'app-room',
   standalone: true,
-  imports: [CommonModule, RoomHeaderComponent, VoteControlsComponent, RoomStatsComponent, VoteCardComponent],
+  imports: [
+    CommonModule,
+    RoomHeaderComponent,
+    VoteControlsComponent,
+    RoomStatsComponent,
+    VoteCardComponent,
+    TablerIconComponent
+  ],
   templateUrl: './room.component.html'
 })
 export class RoomComponent implements OnInit {

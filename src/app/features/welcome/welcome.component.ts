@@ -6,10 +6,11 @@ import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { HelpModalComponent } from '../../shared/components/help-modal/help-modal.component';
+import { TablerIconComponent } from 'angular-tabler-icons';
 
 @Component({
   selector: 'app-welcome',
-  imports: [FormsModule, HelpModalComponent],
+  imports: [FormsModule, HelpModalComponent, TablerIconComponent],
   templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent {

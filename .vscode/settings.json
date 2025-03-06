@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["Galliano's", "jsalvadev", "noopener", "noreferrer", "pppeople"]
+  "cSpell.words": [
+    "Galliano's",
+    "jsalvadev",
+    "noopener",
+    "noreferrer",
+    "pppeople"
+  ],
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "skipStyle": true
+    }
+  }
 }
