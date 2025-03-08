@@ -11,7 +11,7 @@ import { TablerIconComponent } from 'angular-tabler-icons';
       <div
         role="button"
         tabindex="0"
-        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 min-w-[206px]"
+        class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 w-auto min-w-48"
         (click)="onCopyCode()"
         (keyup.enter)="onCopyCode()"
         [attr.aria-label]="copying() ? 'Code copied' : 'Copy room code'"
@@ -29,14 +29,14 @@ import { TablerIconComponent } from 'angular-tabler-icons';
           ></i-tabler>
         }
         <p class="text-gray-300 font-mono">
-          {{ copying() ? 'Copied code' : 'Share code room' }}
+          {{ copying() ? 'Copied code' : 'Share code' }}
         </p>
       </div>
 
       <div
         role="button"
         tabindex="0"
-        class="flex items-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-gray-400/50 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-500/20 transition-all duration-300"
+        class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-gray-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-gray-500/20 transition-all duration-300 w-auto min-w-48"
         (click)="onLeave()"
         (keyup.enter)="onLeave()"
         aria-label="Leave room"
