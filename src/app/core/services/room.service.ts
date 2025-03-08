@@ -8,6 +8,7 @@ import { Participant } from '../types/participant.types';
 export interface CreateRoomResponse {
   roomId: string;
   hostId: string;
+  estimationType?: 'fibonacci' | 'tshirt';
 }
 
 export interface JoinRoomResponse {
@@ -30,7 +31,7 @@ export class RoomService {
   private app = initializeApp(environment.firebaseConfig);
   private db = getDatabase(this.app);
 
-  public async createRoom(): Promise<CreateRoomResponse> {
+  public async createRoom(estimationType: 'fibonacci' | 'tshirt' = 'fibonacci'): Promise<CreateRoomResponse> {
     const roomsRef = ref(this.db, 'rooms');
     const newRoomRef = push(roomsRef);
     const roomId = newRoomRef.key!;
@@ -41,6 +42,7 @@ export class RoomService {
 
     await set(newRoomRef, {
       hostId,
+      estimationType,
       participants: {
         [hostId]: {
           isHost: true,

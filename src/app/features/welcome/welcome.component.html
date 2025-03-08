@@ -5,12 +5,41 @@
     class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl py-10 px-6 md:py-16 md:px-16 shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 w-full max-w-[520px] animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
   >
     <div class="flex flex-col items-center justify-center space-y-8 md:space-y-8">
-      <button
-        class="shadow-lg bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white font-mono py-3 px-6 rounded-full w-full max-w-[400px] text-lg transform hover:scale-105 transition-all duration-300 animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
-        (click)="createRoom()"
-      >
-        Create Room
-      </button>
+      <div class="w-full max-w-[400px]">
+        <button
+          class="shadow-lg bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white font-mono py-3 px-6 rounded-full w-full text-lg transform hover:scale-105 transition-all duration-300 animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
+          (click)="createRoom()"
+        >
+          Create Room
+        </button>
+
+        <div class="mt-8 flex justify-center space-x-4">
+          <label class="flex items-center space-x-2 cursor-pointer group">
+            <input
+              type="radio"
+              [(ngModel)]="estimationType"
+              name="estimationType"
+              value="fibonacci"
+              class="form-radio h-5 w-5 text-emerald-600 border-gray-600 bg-gray-800/50 focus:ring-emerald-500 transition-colors duration-300"
+            />
+            <span class="text-gray-300 group-hover:text-emerald-400 transition-colors duration-300 font-mono">
+              Fibonacci
+            </span>
+          </label>
+          <label class="flex items-center space-x-2 cursor-pointer group">
+            <input
+              type="radio"
+              [(ngModel)]="estimationType"
+              name="estimationType"
+              value="t-shirt"
+              class="form-radio h-5 w-5 text-emerald-600 border-gray-600 bg-gray-800/50 focus:ring-emerald-500 transition-colors duration-300"
+            />
+            <span class="text-gray-300 group-hover:text-emerald-400 transition-colors duration-300 font-mono">
+              T-Shirt
+            </span>
+          </label>
+        </div>
+      </div>
 
       <div class="flex items-center w-full max-w-[400px] my-4">
         <div class="border-t border-gray-500/50 flex-grow"></div>

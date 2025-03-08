@@ -1,6 +1,7 @@
 interface BaseRoomConfig {
   roomId: string;
   userId: string;
+  estimationType?: 'fibonacci' | 'tshirt';
 }
 
 interface HostConfig extends BaseRoomConfig {

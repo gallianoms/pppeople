@@ -17,19 +17,21 @@ export class WelcomeComponent {
   public roomId = '';
   public isSpectator = false;
   public showHelpModal = false;
+  public estimationType: 'fibonacci' | 'tshirt' = 'fibonacci';
 
   private router = inject(Router);
   private roomService = inject(RoomService);
   private notificationService = inject(NotificationService);
 
   public async createRoom() {
-    const { roomId, hostId } = await this.roomService.createRoom();
+    const { roomId, hostId } = await this.roomService.createRoom(this.estimationType);
 
     this.navigateToRoom({
       roomId,
       userId: hostId,
       isHost: true,
-      isSpectator: false
+      isSpectator: false,
+      estimationType: this.estimationType
     });
   }
 
@@ -46,7 +48,8 @@ export class WelcomeComponent {
         roomId: this.roomId,
         userId,
         isHost: false,
-        isSpectator: this.isSpectator
+        isSpectator: this.isSpectator,
+        estimationType: this.estimationType
       });
     } catch (error) {
       this.notificationService.showError(
