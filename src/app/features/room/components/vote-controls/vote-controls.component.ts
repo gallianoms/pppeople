@@ -5,26 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-vote-controls',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="flex justify-center items-center gap-4">
-      @for (number of numbers(); track number) {
-        <div
-          (click)="onSelect(number)"
-          (keyup.enter)="onSelect(number)"
-          [tabindex]="selectedNumber() === null ? 0 : -1"
-          [ngClass]="{
-            'bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 text-white': selectedNumber() === number,
-            'bg-gray-400/10 backdrop-blur-sm border border-gray-300/30 text-gray-300': selectedNumber() !== number,
-            'cursor-not-allowed opacity-50': selectedNumber() !== null && selectedNumber() !== number,
-            'cursor-pointer': selectedNumber() === null
-          }"
-          class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 shadow-lg"
-        >
-          <span class="text-2xl font-mono">{{ number }}</span>
-        </div>
-      }
-    </div>
-  `
+  templateUrl: './vote-controls.component.html'
 })
 export class VoteControlsComponent {
   public readonly numbers = input<number[]>([]);

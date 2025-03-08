@@ -6,49 +6,7 @@ import { TablerIconComponent } from 'angular-tabler-icons';
   selector: 'app-room-header',
   standalone: true,
   imports: [CommonModule, TablerIconComponent],
-  template: `
-    <div class="absolute top-8 right-8 flex flex-col gap-2">
-      <div
-        role="button"
-        tabindex="0"
-        class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-emerald-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 w-auto min-w-48"
-        (click)="onCopyCode()"
-        (keyup.enter)="onCopyCode()"
-        [attr.aria-label]="copying() ? 'Code copied' : 'Copy room code'"
-      >
-        @if (!copying()) {
-          <i-tabler
-            name="clipboard"
-            class="text-gray-300"
-          ></i-tabler>
-        }
-        @if (copying()) {
-          <i-tabler
-            name="clipboard-check"
-            class="text-emerald-300"
-          ></i-tabler>
-        }
-        <p class="text-gray-300 font-mono">
-          {{ copying() ? 'Copied code' : 'Share code' }}
-        </p>
-      </div>
-
-      <div
-        role="button"
-        tabindex="0"
-        class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-sm border border-gray-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-gray-500/20 transition-all duration-300 w-auto min-w-48"
-        (click)="onLeave()"
-        (keyup.enter)="onLeave()"
-        aria-label="Leave room"
-      >
-        <i-tabler
-          name="door-exit"
-          class="text-gray-300"
-        ></i-tabler>
-        <p class="text-gray-300 font-mono">Leave room</p>
-      </div>
-    </div>
-  `
+  templateUrl: './room-header.component.html'
 })
 export class RoomHeaderComponent {
   public readonly copying = input(false);
