@@ -1,15 +1,15 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
-import { combineLatest, Observable, of, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
 import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
 import { TablerIconComponent } from 'angular-tabler-icons';
-import { ConfettiService } from '../../core/services/confetti.service';
+import { VoteStateService } from '../../core/services/vote-state.service';
+import { UIStateService } from '../../core/services/ui-state.service';
 
 @Component({
   selector: 'app-room',
@@ -32,43 +32,27 @@ export class RoomComponent implements OnInit {
   usersConnectedCount$!: Observable<number>;
   usersVotedCount$!: Observable<number>;
   votes$!: Observable<number[]>;
-  averageVotes$!: Observable<number | null>;
+  averageVotes$!: Observable<number>;
 
   private location = inject(Location);
   private roomService = inject(RoomService);
-  private router = inject(Router);
-  private confettiService = inject(ConfettiService);
+  private voteStateService = inject(VoteStateService);
+  private uiStateService = inject(UIStateService);
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;
 
     if (!this.state.isHost) {
-      this.roomService.listenToRoomDeletion(this.state.roomId).subscribe(() => {
-        this.router.navigate(['/welcome']);
-      });
+      this.uiStateService.setupRoomDeletionListener(this.state.roomId);
     }
 
-    this.usersConnectedCount$ = this.roomService.getActiveParticipantsCount(this.state.roomId);
-    this.usersVotedCount$ = this.roomService.getVotedParticipantsCount(this.state.roomId);
-    this.votes$ = this.roomService.getVotes(this.state.roomId);
-
-    // Replace the simple votes subscription with a combined check
-    combineLatest([this.votes$, this.usersConnectedCount$, this.usersVotedCount$]).subscribe(
-      ([votes, connected, voted]) => {
-        if (connected === voted && connected > 0 && this.checkUnanimousVotes(votes)) {
-          this.confettiService.trigger();
-        }
-      }
-    );
-
-    this.averageVotes$ = combineLatest([this.usersConnectedCount$, this.usersVotedCount$]).pipe(
-      switchMap(([connected, voted]) => {
-        if (connected === voted && connected > 0) {
-          return this.roomService.calcAverageVote(this.state.roomId);
-        }
-        return of(0.0);
-      })
-    );
+    const voteState$ = this.voteStateService.getVoteState(this.state.roomId);
+    voteState$.subscribe(({ votes, usersConnectedCount, usersVotedCount, averageVote }) => {
+      this.votes$ = new Observable(observer => observer.next(votes));
+      this.usersConnectedCount$ = new Observable(observer => observer.next(usersConnectedCount));
+      this.usersVotedCount$ = new Observable(observer => observer.next(usersVotedCount));
+      this.averageVotes$ = new Observable(observer => observer.next(averageVote));
+    });
 
     this.roomService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
       this.selectedNumber = vote;
@@ -77,17 +61,17 @@ export class RoomComponent implements OnInit {
 
   onNumberSelect(vote: number): void {
     if (this.selectedNumber === null) this.selectedNumber = vote;
-    this.roomService.addVote(this.state.roomId, this.state.userId, vote);
+    this.voteStateService.handleVote(this.state.roomId, this.state.userId, vote);
   }
 
   deleteMyVote(): void {
-    this.roomService.removeVote(this.state.roomId, this.state.userId);
+    this.voteStateService.handleVote(this.state.roomId, this.state.userId, null);
     this.selectedNumber = null;
   }
 
   copyRoomCode() {
-    navigator.clipboard.writeText(this.state.roomId);
     this.copying = true;
+    this.uiStateService.copyRoomCode(this.state.roomId);
     setTimeout(() => (this.copying = false), 2000);
   }
 
@@ -101,12 +85,7 @@ export class RoomComponent implements OnInit {
   }
 
   public hasNullVotes(votes: (number | null)[]): boolean {
-    return votes.some(v => v === undefined);
-  }
-
-  private checkUnanimousVotes(votes: number[]): boolean {
-    const validVotes = votes.filter(vote => typeof vote === 'number');
-    return validVotes.length > 1 && validVotes.every(vote => vote === validVotes[0]);
+    return this.voteStateService.hasNullVotes(votes);
   }
 
   @HostListener('window:beforeunload')
@@ -117,11 +96,6 @@ export class RoomComponent implements OnInit {
   }
 
   leaveRoom(): void {
-    if (this.state.isHost) {
-      this.roomService.deleteRoom(this.state.roomId, this.state.userId).catch(console.error);
-    } else {
-      this.roomService.removeParticipant(this.state.roomId, this.state.userId);
-    }
-    this.router.navigate(['/welcome']);
+    this.uiStateService.leaveRoom(this.state.roomId, this.state.userId, this.state.isHost);
   }
 }
