@@ -13,11 +13,11 @@ export class RoomHeaderComponent {
   public readonly copyCode = output<void>();
   public readonly leave = output<void>();
 
-  onCopyCode() {
+  public onCopyCode(): void {
     this.copyCode.emit();
   }
 
-  onLeave() {
+  public onLeave(): void {
     this.leave.emit();
   }
 }

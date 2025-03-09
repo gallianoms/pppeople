@@ -15,11 +15,11 @@ export class RoomStatsComponent {
   public readonly deleteVote = output<void>();
   public readonly resetVotes = output<void>();
 
-  onDeleteVote() {
+  public onDeleteVote(): void {
     this.deleteVote.emit();
   }
 
-  onReset() {
+  public onReset(): void {
     this.resetVotes.emit();
   }
 }

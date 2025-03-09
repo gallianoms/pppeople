@@ -25,14 +25,14 @@ import { UIStateService } from '../../core/services/ui-state.service';
   templateUrl: './room.component.html'
 })
 export class RoomComponent implements OnInit {
-  numbers = [1, 2, 3, 5, 8];
-  selectedNumber: number | null = null;
-  state!: RoomConfig;
-  copying = false;
-  usersConnectedCount$!: Observable<number>;
-  usersVotedCount$!: Observable<number>;
-  votes$!: Observable<number[]>;
-  averageVotes$!: Observable<number>;
+  public numbers = [1, 2, 3, 5, 8];
+  public selectedNumber: number | null = null;
+  public state!: RoomConfig;
+  public copying = false;
+  public usersConnectedCount$!: Observable<number>;
+  public usersVotedCount$!: Observable<number>;
+  public votes$!: Observable<number[]>;
+  public averageVotes$!: Observable<number>;
 
   private location = inject(Location);
   private roomService = inject(RoomService);
@@ -59,23 +59,23 @@ export class RoomComponent implements OnInit {
     });
   }
 
-  onNumberSelect(vote: number): void {
+  public onNumberSelect(vote: number): void {
     if (this.selectedNumber === null) this.selectedNumber = vote;
     this.voteStateService.handleVote(this.state.roomId, this.state.userId, vote);
   }
 
-  deleteMyVote(): void {
+  public deleteMyVote(): void {
     this.voteStateService.handleVote(this.state.roomId, this.state.userId, null);
     this.selectedNumber = null;
   }
 
-  copyRoomCode() {
+  public copyRoomCode(): void {
     this.copying = true;
     this.uiStateService.copyRoomCode(this.state.roomId);
     setTimeout(() => (this.copying = false), 2000);
   }
 
-  async onResetVotes(): Promise<void> {
+  public async onResetVotes(): Promise<void> {
     try {
       await this.roomService.resetVotes(this.state.roomId, this.state.userId);
       this.selectedNumber = null;
@@ -95,7 +95,7 @@ export class RoomComponent implements OnInit {
     }
   }
 
-  leaveRoom(): void {
+  public leaveRoom(): void {
     this.uiStateService.leaveRoom(this.state.roomId, this.state.userId, this.state.isHost);
   }
 }

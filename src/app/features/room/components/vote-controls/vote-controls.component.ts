@@ -12,7 +12,7 @@ export class VoteControlsComponent {
   public readonly selectedNumber = input<number | null>(null);
   public readonly numberSelected = output<number>();
 
-  onSelect(number: number) {
+  public onSelect(number: number): void {
     if (this.selectedNumber() === null) {
       this.numberSelected.emit(number);
     }
