@@ -3,6 +3,7 @@ import { Component, inject, HostListener, OnInit } from '@angular/core';
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomService } from '../../core/services/room.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
 import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
@@ -47,12 +48,11 @@ export class RoomComponent implements OnInit {
     }
 
     const voteState$ = this.voteStateService.getVoteState(this.state.roomId);
-    voteState$.subscribe(({ votes, usersConnectedCount, usersVotedCount, averageVote }) => {
-      this.votes$ = new Observable(observer => observer.next(votes));
-      this.usersConnectedCount$ = new Observable(observer => observer.next(usersConnectedCount));
-      this.usersVotedCount$ = new Observable(observer => observer.next(usersVotedCount));
-      this.averageVotes$ = new Observable(observer => observer.next(averageVote));
-    });
+
+    this.votes$ = voteState$.pipe(map(state => state.votes));
+    this.usersConnectedCount$ = voteState$.pipe(map(state => state.usersConnectedCount));
+    this.usersVotedCount$ = voteState$.pipe(map(state => state.usersVotedCount));
+    this.averageVotes$ = voteState$.pipe(map(state => state.averageVote));
 
     this.roomService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
       this.selectedNumber = vote;
@@ -70,9 +70,8 @@ export class RoomComponent implements OnInit {
   }
 
   public copyRoomCode(): void {
-    this.copying = true;
     this.uiStateService.copyRoomCode(this.state.roomId);
-    setTimeout(() => (this.copying = false), 2000);
+    this.uiStateService.setTemporaryState(value => (this.copying = value));
   }
 
   public async onResetVotes(): Promise<void> {

@@ -11,11 +11,13 @@ export class UIStateService {
     private roomService: RoomService
   ) {}
 
-  public copyRoomCode(roomId: string): () => void {
+  public copyRoomCode(roomId: string): void {
     navigator.clipboard.writeText(roomId);
-    return () => {
-      return;
-    };
+  }
+
+  public setTemporaryState(callback: (value: boolean) => void, duration = 2000): void {
+    callback(true);
+    setTimeout(() => callback(false), duration);
   }
 
   public async leaveRoom(roomId: string, userId: string, isHost: boolean): Promise<void> {
