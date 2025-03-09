@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { DataSnapshot, get, getDatabase, onValue, push, ref, set, update } from 'firebase/database';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { filter, map, Observable } from 'rxjs';
 import { Participant } from '../types/participant.types';
 
 export interface CreateRoomResponse {
@@ -30,48 +30,6 @@ type ParticipantUpdates = Record<string, ParticipantData['vote']>;
 export class RoomService {
   private app = initializeApp(environment.firebaseConfig);
   private db = getDatabase(this.app);
-
-  // Helper methods for path generation
-  private getRoomPath(roomId: string): string {
-    return `rooms/${roomId}`;
-  }
-
-  private getParticipantsPath(roomId: string): string {
-    return `${this.getRoomPath(roomId)}/participants`;
-  }
-
-  private getParticipantPath(roomId: string, userId: string): string {
-    return `${this.getParticipantsPath(roomId)}/${userId}`;
-  }
-
-  private getVotePath(roomId: string, userId: string): string {
-    return `${this.getParticipantPath(roomId, userId)}/vote`;
-  }
-
-  // Reusable methods for common Firebase operations
-  private createObservable<T>(dbPath: string, transformFn: (snapshot: DataSnapshot) => T): Observable<T> {
-    const dbRef = ref(this.db, dbPath);
-    return new Observable<T>(subscriber => {
-      const unsubscribe = onValue(
-        dbRef,
-        snapshot => {
-          subscriber.next(transformFn(snapshot));
-        },
-        error => {
-          subscriber.error(error);
-        }
-      );
-
-      // Return cleanup function
-      return () => unsubscribe();
-    });
-  }
-
-  private async checkIsHost(roomId: string, userId: string): Promise<boolean> {
-    const userRef = ref(this.db, this.getParticipantPath(roomId, userId));
-    const userSnapshot = await get(userRef);
-    return userSnapshot.exists() && userSnapshot.val().isHost;
-  }
 
   public async createRoom(estimationType: 'fibonacci' | 'tshirt' = 'fibonacci'): Promise<CreateRoomResponse> {
     const roomsRef = ref(this.db, 'rooms');
@@ -129,6 +87,24 @@ export class RoomService {
     });
   }
 
+  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
+    const hasVoted = await this.hasUserVoted(roomId, userId);
+
+    if (hasVoted) return;
+
+    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
+    await update(participantRef, {
+      vote
+    });
+  }
+
+  public async removeVote(roomId: string, userId: string): Promise<void> {
+    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
+    await update(participantRef, {
+      vote: null
+    });
+  }
+
   public getVotedParticipantsCount(roomId: string): Observable<number> {
     return this.createObservable(this.getParticipantsPath(roomId), snapshot => {
       if (!snapshot.exists()) return 0;
@@ -149,6 +125,11 @@ export class RoomService {
         .map(participant => participant.vote)
         .filter(vote => vote !== null);
     });
+  }
+
+  public calcAverageVote(roomId: string): Observable<number> {
+    const votes = this.getVotes(roomId);
+    return votes.pipe(map(votes => votes.reduce((a, b) => a + b, 0) / votes.length));
   }
 
   public async resetVotes(roomId: string, userId: string): Promise<void> {
@@ -194,9 +175,14 @@ export class RoomService {
   public listenToRoomDeletion(roomId: string): Observable<void> {
     return this.createObservable(this.getRoomPath(roomId), snapshot => {
       if (!snapshot.exists()) {
-        return undefined;
+        return void 0; // This still returns undefined
       }
-    });
+      return null;
+    }).pipe(
+      // Filter out null values and map to void
+      filter(value => value !== null),
+      map(() => undefined)
+    );
   }
 
   public getUserVote(roomId: string, userId: string): Observable<number | null> {
@@ -222,13 +208,44 @@ export class RoomService {
     return snapshot.exists() && snapshot.val() !== null;
   }
 
-  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
-    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
-    await set(voteRef, vote);
+  private getRoomPath(roomId: string): string {
+    return `rooms/${roomId}`;
   }
 
-  public async removeVote(roomId: string, userId: string): Promise<void> {
-    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
-    await set(voteRef, null);
+  private getParticipantsPath(roomId: string): string {
+    return `${this.getRoomPath(roomId)}/participants`;
+  }
+
+  private getParticipantPath(roomId: string, userId: string): string {
+    return `${this.getParticipantsPath(roomId)}/${userId}`;
+  }
+
+  private getVotePath(roomId: string, userId: string): string {
+    return `${this.getParticipantPath(roomId, userId)}/vote`;
+  }
+
+  // Reusable methods for common Firebase operations
+  private createObservable<T>(dbPath: string, transformFn: (snapshot: DataSnapshot) => T): Observable<T> {
+    const dbRef = ref(this.db, dbPath);
+    return new Observable<T>(subscriber => {
+      const unsubscribe = onValue(
+        dbRef,
+        snapshot => {
+          subscriber.next(transformFn(snapshot));
+        },
+        error => {
+          subscriber.error(error);
+        }
+      );
+
+      // Return cleanup function
+      return () => unsubscribe();
+    });
+  }
+
+  private async checkIsHost(roomId: string, userId: string): Promise<boolean> {
+    const userRef = ref(this.db, this.getParticipantPath(roomId, userId));
+    const userSnapshot = await get(userRef);
+    return userSnapshot.exists() && userSnapshot.val().isHost;
   }
 }
