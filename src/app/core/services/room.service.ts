@@ -36,7 +36,7 @@ export class RoomService {
     const newRoomRef = push(roomsRef);
     const roomId = newRoomRef.key!;
 
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     const newHostRef = push(participantsRef);
     const hostId = newHostRef.key!;
 
@@ -63,7 +63,7 @@ export class RoomService {
 
     if (!roomExists) throw new Error('Room does not exist');
 
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     const newUserRef = push(participantsRef);
     const userId = newUserRef.key!;
 
@@ -79,7 +79,7 @@ export class RoomService {
   }
 
   public getActiveParticipantsCount(roomId: string): Observable<number> {
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     return new Observable(subs =>
       onValue(participantsRef, snapshot => {
         if (!snapshot.exists()) return subs.next(0);
@@ -99,21 +99,21 @@ export class RoomService {
 
     if (hasVoted) return;
 
-    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
     await update(participantRef, {
       vote
     });
   }
 
   public async removeVote(roomId: string, userId: string): Promise<void> {
-    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
     await update(participantRef, {
       vote: null
     });
   }
 
   public getVotedParticipantsCount(roomId: string): Observable<number> {
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     return new Observable(subs => {
       onValue(participantsRef, snapshot => {
         if (!snapshot.exists()) return subs.next(0);
@@ -128,7 +128,7 @@ export class RoomService {
   }
 
   public getVotes(roomId: string): Observable<number[]> {
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     return new Observable(subs => {
       onValue(participantsRef, snapshot => {
         if (!snapshot.exists()) return subs.next([]);
@@ -149,14 +149,14 @@ export class RoomService {
   }
 
   public async resetVotes(roomId: string, userId: string): Promise<void> {
-    const userRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const userRef = ref(this.db, this.getParticipantPath(roomId, userId));
     const userSnapshot = await get(userRef);
 
     if (!userSnapshot.exists() || !userSnapshot.val().isHost) {
       throw new Error('Only the host can reset votes');
     }
 
-    const participantsRef = ref(this.db, `rooms/${roomId}/participants`);
+    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     const snapshot = await get(participantsRef);
 
     if (!snapshot.exists()) return;
@@ -174,24 +174,24 @@ export class RoomService {
   }
 
   public async removeParticipant(roomId: string, userId: string): Promise<void> {
-    const participantRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
     await set(participantRef, null);
   }
 
   public async deleteRoom(roomId: string, userId: string): Promise<void> {
-    const userRef = ref(this.db, `rooms/${roomId}/participants/${userId}`);
+    const userRef = ref(this.db, this.getParticipantPath(roomId, userId));
     const userSnapshot = await get(userRef);
 
     if (!userSnapshot.exists() || !userSnapshot.val().isHost) {
       throw new Error('Only the host can delete the room');
     }
 
-    const roomRef = ref(this.db, `rooms/${roomId}`);
+    const roomRef = ref(this.db, this.getRoomPath(roomId));
     await set(roomRef, null);
   }
 
   public listenToRoomDeletion(roomId: string): Observable<void> {
-    const roomRef = ref(this.db, `rooms/${roomId}`);
+    const roomRef = ref(this.db, this.getRoomPath(roomId));
     return new Observable(subs => {
       onValue(roomRef, snapshot => {
         if (!snapshot.exists()) {
@@ -202,7 +202,7 @@ export class RoomService {
   }
 
   public getUserVote(roomId: string, userId: string): Observable<number | null> {
-    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
+    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
     return new Observable(subs => {
       onValue(voteRef, snapshot => {
         subs.next(snapshot.exists() ? snapshot.val() : null);
@@ -211,7 +211,7 @@ export class RoomService {
   }
 
   private async checkRoomExists(roomId: string): Promise<boolean> {
-    return await get(ref(this.db, `rooms/${roomId}`))
+    return await get(ref(this.db, this.getRoomPath(roomId)))
       .then(snapshot => {
         return snapshot.exists();
       })
@@ -222,8 +222,24 @@ export class RoomService {
   }
 
   private async hasUserVoted(roomId: string, userId: string): Promise<boolean> {
-    const voteRef = ref(this.db, `rooms/${roomId}/participants/${userId}/vote`);
+    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
     const snapshot = await get(voteRef);
     return snapshot.exists() && snapshot.val() !== null;
+  }
+
+  private getRoomPath(roomId: string): string {
+    return `rooms/${roomId}`;
+  }
+
+  private getParticipantsPath(roomId: string): string {
+    return `${this.getRoomPath(roomId)}/participants`;
+  }
+
+  private getParticipantPath(roomId: string, userId: string): string {
+    return `${this.getParticipantsPath(roomId)}/${userId}`;
+  }
+
+  private getVotePath(roomId: string, userId: string): string {
+    return `${this.getParticipantPath(roomId, userId)}/vote`;
   }
 }
