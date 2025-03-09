@@ -4,7 +4,8 @@
     "jsalvadev",
     "noopener",
     "noreferrer",
-    "pppeople"
+    "pppeople",
+    "tshirt"
   ],
   "angular-schematics.schematicsDefaultOptions": {
     "angular-*": {

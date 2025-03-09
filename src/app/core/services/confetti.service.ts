@@ -5,12 +5,8 @@ import confetti from 'canvas-confetti';
   providedIn: 'root'
 })
 export class ConfettiService {
-  /**
-   * Triggers a confetti animation on the screen
-   * Creates a celebratory effect with confetti particles
-   */
   public trigger(): void {
-    const duration = 15 * 1000;
+    const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 

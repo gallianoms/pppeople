@@ -20,18 +20,19 @@ export class NotificationService {
   }
 
   private formatCasinoMessage(message: string): string {
-    if (message.includes('Please enter a room code')) {
-      return 'Please enter a table number to join';
+    const messagePatterns = {
+      'Please enter a room code': 'Please enter a table number to join',
+      'Room does not exist': 'Table not found in the casino',
+      'Only the host can reset': 'Only the dealer can reset the table',
+      'unexpected error': 'Casino servers are busy'
+    };
+
+    for (const [pattern, response] of Object.entries(messagePatterns)) {
+      if (message.includes(pattern)) {
+        return response;
+      }
     }
-    if (message.includes('Room does not exist')) {
-      return 'Table not found in the casino';
-    }
-    if (message.includes('Only the host can reset')) {
-      return 'Only the dealer can reset the table';
-    }
-    if (message.includes('unexpected error')) {
-      return 'Casino servers are busy';
-    }
+
     return 'Table temporarily unavailable';
   }
 }
