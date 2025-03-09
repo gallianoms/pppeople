@@ -221,4 +221,14 @@ export class RoomService {
     const snapshot = await get(voteRef);
     return snapshot.exists() && snapshot.val() !== null;
   }
+
+  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
+    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
+    await set(voteRef, vote);
+  }
+
+  public async removeVote(roomId: string, userId: string): Promise<void> {
+    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
+    await set(voteRef, null);
+  }
 }
