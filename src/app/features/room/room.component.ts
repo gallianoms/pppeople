@@ -26,7 +26,7 @@ import { UIStateService } from '../../core/services/ui-state.service';
   templateUrl: './room.component.html'
 })
 export class RoomComponent implements OnInit {
-  public numbers = [1, 2, 3, 5, 8];
+  public numbers = [1, 2, 3, 5, 8, 13, 21];
   public tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
   public selectedNumber: number | null = null;
   public selectedSize: string | null = null;
