@@ -27,7 +27,9 @@ import { UIStateService } from '../../core/services/ui-state.service';
 })
 export class RoomComponent implements OnInit {
   public numbers = [1, 2, 3, 5, 8];
+  public tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
   public selectedNumber: number | null = null;
+  public selectedSize: string | null = null;
   public state!: RoomConfig;
   public copying = false;
   public usersConnectedCount$!: Observable<number>;
@@ -55,18 +57,40 @@ export class RoomComponent implements OnInit {
     this.averageVotes$ = voteState$.pipe(map(state => state.averageVote));
 
     this.roomService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
-      this.selectedNumber = vote;
+      if (vote === null) {
+        this.selectedNumber = null;
+        this.selectedSize = null;
+        return;
+      }
+
+      if (this.state.estimationType === 'tshirt') {
+        this.selectedSize = this.tshirtSizes[vote - 1] || null;
+        this.selectedNumber = vote;
+      } else {
+        this.selectedNumber = vote;
+      }
     });
   }
 
-  public onNumberSelect(vote: number): void {
-    if (this.selectedNumber === null) this.selectedNumber = vote;
-    this.voteStateService.handleVote(this.state.roomId, this.state.userId, vote);
+  public onNumberSelect(vote: number | string): void {
+    let numericVote: number;
+    if (this.state.estimationType === 'tshirt') {
+      numericVote = this.tshirtSizes.indexOf(vote as string) + 1;
+      this.selectedSize = vote as string;
+    } else {
+      numericVote = vote as number;
+    }
+
+    if (this.selectedNumber === null) {
+      this.selectedNumber = numericVote;
+    }
+    this.voteStateService.handleVote(this.state.roomId, this.state.userId, numericVote);
   }
 
   public deleteMyVote(): void {
     this.voteStateService.handleVote(this.state.roomId, this.state.userId, null);
     this.selectedNumber = null;
+    this.selectedSize = null;
   }
 
   public copyRoomCode(): void {

@@ -9,12 +9,15 @@ import { CommonModule } from '@angular/common';
 })
 export class VoteControlsComponent {
   public readonly numbers = input<number[]>([]);
+  public readonly tshirtSizes = input<string[]>([]);
   public readonly selectedNumber = input<number | null>(null);
-  public readonly numberSelected = output<number>();
+  public readonly selectedSize = input<string | null>(null);
+  public readonly estimationType = input<'fibonacci' | 'tshirt'>('fibonacci');
+  public readonly numberSelected = output<number | string>();
 
-  public onSelect(number: number): void {
-    if (this.selectedNumber() === null) {
-      this.numberSelected.emit(number);
+  public onSelect(value: number | string): void {
+    if (this.selectedNumber() === null && this.selectedSize() === null) {
+      this.numberSelected.emit(value);
     }
   }
 }

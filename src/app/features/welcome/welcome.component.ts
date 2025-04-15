@@ -42,14 +42,14 @@ export class WelcomeComponent {
     }
 
     try {
-      const { userId } = await this.roomService.joinRoom(this.roomId, this.isSpectator);
+      const { userId, estimationType } = await this.roomService.joinRoom(this.roomId, this.isSpectator);
 
       this.navigateToRoom({
         roomId: this.roomId,
         userId,
         isHost: false,
         isSpectator: this.isSpectator,
-        estimationType: this.estimationType
+        estimationType
       });
     } catch (error) {
       this.notificationService.showError(

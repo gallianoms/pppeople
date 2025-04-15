@@ -13,6 +13,7 @@ export interface CreateRoomResponse {
 
 export interface JoinRoomResponse {
   userId: string;
+  estimationType: 'fibonacci' | 'tshirt';
 }
 
 interface ParticipantData {
@@ -54,7 +55,8 @@ export class RoomService {
 
     return {
       roomId,
-      hostId
+      hostId,
+      estimationType
     };
   }
 
@@ -62,6 +64,10 @@ export class RoomService {
     const roomExists = await this.checkRoomExists(roomId);
 
     if (!roomExists) throw new Error('Room does not exist');
+
+    const roomRef = ref(this.db, this.getRoomPath(roomId));
+    const roomSnapshot = await get(roomRef);
+    const estimationType = roomSnapshot.val().estimationType || 'fibonacci';
 
     const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
     const newUserRef = push(participantsRef);
@@ -74,7 +80,8 @@ export class RoomService {
     });
 
     return {
-      userId
+      userId,
+      estimationType
     };
   }
 
@@ -189,6 +196,12 @@ export class RoomService {
     return this.createObservable(this.getVotePath(roomId, userId), snapshot =>
       snapshot.exists() ? snapshot.val() : null
     );
+  }
+
+  public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 'tshirt'> {
+    const roomRef = ref(this.db, this.getRoomPath(roomId));
+    const snapshot = await get(roomRef);
+    return snapshot.val()?.estimationType || 'fibonacci';
   }
 
   private async checkRoomExists(roomId: string): Promise<boolean> {

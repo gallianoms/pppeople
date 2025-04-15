@@ -4,7 +4,7 @@
 >
   <div class="absolute inset-0 flex items-center justify-center">
     <span class="text-2xl font-mono text-gray-300">
-      {{ showNullVote() ? (vote() ? '✓' : '?') : vote() }}
+      {{ showNullVote() ? (vote() ? '✓' : '?') : getDisplayValue() }}
     </span>
   </div>
   <div

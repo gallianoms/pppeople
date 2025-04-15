@@ -10,4 +10,18 @@ import { CommonModule } from '@angular/common';
 export class VoteCardComponent {
   public readonly vote = input<number | null>(null);
   public readonly showNullVote = input(false);
+  public readonly estimationType = input<'fibonacci' | 'tshirt'>('fibonacci');
+  public readonly tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
+
+  public getDisplayValue(): string {
+    if (this.vote() === null) {
+      return '?';
+    }
+
+    if (this.estimationType() === 'tshirt') {
+      return this.tshirtSizes[this.vote()! - 1] || this.vote()!.toString();
+    }
+
+    return this.vote()!.toString();
+  }
 }

@@ -22,6 +22,7 @@
           <app-vote-card
             [vote]="vote"
             [showNullVote]="hasNullVotes(votes)"
+            [estimationType]="state.estimationType || 'fibonacci'"
           ></app-vote-card>
         }
       }
@@ -40,7 +41,10 @@
   @if (!state.isSpectator) {
     <app-vote-controls
       [numbers]="numbers"
+      [tshirtSizes]="tshirtSizes"
       [selectedNumber]="selectedNumber"
+      [selectedSize]="selectedSize"
+      [estimationType]="state.estimationType || 'fibonacci'"
       (numberSelected)="onNumberSelect($event)"
     ></app-vote-controls>
   }
