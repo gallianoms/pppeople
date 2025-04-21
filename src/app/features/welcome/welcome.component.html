@@ -1,6 +1,7 @@
 <div
-  class="fixed inset-0 flex flex-col items-center justify-center px-4 py-12 md:py-8 animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
+  class="fixed inset-0 flex flex-col items-center justify-center px-4 py-12 md:py-8 animate-fadeIn motion-safe:transition-all motion-safe:duration-300 border-solid"
 >
+  <!-- Card -->
   <div
     class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl py-10 px-6 md:py-16 md:px-16 shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 w-full max-w-[520px] animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
   >
@@ -93,7 +94,7 @@
     </div>
   </div>
 
-  <!-- Simplified help button with question text -->
+  <!-- Modal Open -->
   <button
     (click)="showHelpModal = true"
     class="mt-8 text-gray-400 hover:text-emerald-400 transition-colors duration-300 font-mono flex items-center gap-2"
@@ -102,7 +103,7 @@
     Need help getting started?
   </button>
 
-  <!-- Footer links -->
+  <!-- Links -->
   <div class="fixed bottom-4 right-4 z-10 hidden md:flex items-center gap-2">
     <a
       href="https://www.linkedin.com/in/gallianoms/"
@@ -127,7 +128,8 @@
       jsalvadev.github.io
     </a>
   </div>
-  <!-- Add this at the end of the template -->
+
+  <!-- Modal Close-->
   @if (showHelpModal) {
     <app-help-modal (close)="showHelpModal = false" />
   }
