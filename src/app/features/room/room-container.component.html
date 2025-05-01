@@ -1,0 +1,17 @@
+<app-room-presentation
+  [numbers]="numbers"
+  [tshirtSizes]="tshirtSizes"
+  [selectedNumber]="selectedNumber"
+  [selectedSize]="selectedSize"
+  [state]="state"
+  [copying]="copying"
+  [votes]="votes$ | async"
+  [usersConnectedCount]="usersConnectedCount$ | async"
+  [usersVotedCount]="usersVotedCount$ | async"
+  [averageVotes]="(averageVotes$ | async) ?? 0"
+  (numberSelected)="onNumberSelect($event)"
+  (deleteVote)="deleteMyVote()"
+  (resetVotes)="onResetVotes()"
+  (copyCode)="copyRoomCode()"
+  (leave)="leaveRoom()"
+></app-room-presentation>
