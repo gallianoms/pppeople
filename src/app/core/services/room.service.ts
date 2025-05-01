@@ -1,264 +1,109 @@
 import { Injectable } from '@angular/core';
-import { initializeApp } from 'firebase/app';
-import { DataSnapshot, get, getDatabase, onValue, push, ref, set, update } from 'firebase/database';
-import { environment } from '../../../environments/environment.development';
-import { filter, map, Observable } from 'rxjs';
-import { Participant } from '../types/participant.types';
-
-export interface CreateRoomResponse {
-  roomId: string;
-  hostId: string;
-  estimationType?: 'fibonacci' | 'tshirt';
-}
-
-export interface JoinRoomResponse {
-  userId: string;
-  estimationType: 'fibonacci' | 'tshirt';
-}
-
-interface ParticipantData {
-  isHost: boolean;
-  isSpectator: boolean;
-  vote: number | null;
-}
-
-type Participants = Record<string, ParticipantData>;
-type ParticipantUpdates = Record<string, ParticipantData['vote']>;
+import { Observable } from 'rxjs';
+import { FirebaseConnectionService } from './firebase-connection.service';
+import { RoomManagementService, CreateRoomResponse, JoinRoomResponse } from './room-management.service';
+import { ParticipantService } from './participant.service';
+import { VotingService } from './voting.service';
+import { RoomAuthorizationService } from './room-authorization.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-  private app = initializeApp(environment.firebaseConfig);
-  private db = getDatabase(this.app);
+  constructor(
+    private firebaseService: FirebaseConnectionService,
+    private roomManagementService: RoomManagementService,
+    private participantService: ParticipantService,
+    private votingService: VotingService,
+    private authService: RoomAuthorizationService
+  ) {}
 
+  // Room Management
   public async createRoom(estimationType: 'fibonacci' | 'tshirt' = 'fibonacci'): Promise<CreateRoomResponse> {
-    const roomsRef = ref(this.db, 'rooms');
-    const newRoomRef = push(roomsRef);
-    const roomId = newRoomRef.key!;
-
-    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
-    const newHostRef = push(participantsRef);
-    const hostId = newHostRef.key!;
-
-    await set(newRoomRef, {
-      hostId,
-      estimationType,
-      participants: {
-        [hostId]: {
-          isHost: true,
-          isSpectator: false,
-          vote: null
-        }
-      }
-    });
-
-    return {
-      roomId,
-      hostId,
-      estimationType
-    };
+    return this.roomManagementService.createRoom(estimationType);
   }
 
   public async joinRoom(roomId: string, isSpectator = false): Promise<JoinRoomResponse> {
-    const roomExists = await this.checkRoomExists(roomId);
-
-    if (!roomExists) throw new Error('Room does not exist');
-
-    const roomRef = ref(this.db, this.getRoomPath(roomId));
-    const roomSnapshot = await get(roomRef);
-    const estimationType = roomSnapshot.val().estimationType || 'fibonacci';
-
-    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
-    const newUserRef = push(participantsRef);
-    const userId = newUserRef.key!;
-
-    await set(newUserRef, {
-      isHost: false,
-      isSpectator,
-      vote: null
-    });
-
-    return {
-      userId,
-      estimationType
-    };
-  }
-
-  public getActiveParticipantsCount(roomId: string): Observable<number> {
-    return this.createObservable(this.getParticipantsPath(roomId), snapshot => {
-      if (!snapshot.exists()) return 0;
-
-      const participants = snapshot.val();
-      return Object.values(participants).filter(participant => !(participant as Participant).isSpectator).length;
-    });
-  }
-
-  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
-    const hasVoted = await this.hasUserVoted(roomId, userId);
-
-    if (hasVoted) return;
-
-    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
-    await update(participantRef, {
-      vote
-    });
-  }
-
-  public async removeVote(roomId: string, userId: string): Promise<void> {
-    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
-    await update(participantRef, {
-      vote: null
-    });
-  }
-
-  public getVotedParticipantsCount(roomId: string): Observable<number> {
-    return this.createObservable(this.getParticipantsPath(roomId), snapshot => {
-      if (!snapshot.exists()) return 0;
-
-      const participants: Participants = snapshot.val();
-      return Object.values(participants).filter(participant => participant.vote !== null && participant.vote > 0)
-        .length;
-    });
-  }
-
-  public getVotes(roomId: string): Observable<number[]> {
-    return this.createObservable(this.getParticipantsPath(roomId), snapshot => {
-      if (!snapshot.exists()) return [];
-
-      const participants: Participants = snapshot.val();
-      return Object.values(participants)
-        .filter(participant => !participant.isSpectator)
-        .map(participant => participant.vote)
-        .filter(vote => vote !== null);
-    });
-  }
-
-  public calcAverageVote(roomId: string): Observable<number> {
-    const votes = this.getVotes(roomId);
-    return votes.pipe(map(votes => votes.reduce((a, b) => a + b, 0) / votes.length));
-  }
-
-  public async resetVotes(roomId: string, userId: string): Promise<void> {
-    const isHost = await this.checkIsHost(roomId, userId);
-
-    if (!isHost) {
-      throw new Error('Only the host can reset votes');
-    }
-
-    const participantsRef = ref(this.db, this.getParticipantsPath(roomId));
-    const snapshot = await get(participantsRef);
-
-    if (!snapshot.exists()) return;
-
-    const participants: Participants = snapshot.val();
-    const updates: ParticipantUpdates = {};
-
-    Object.entries(participants).forEach(([participantId, participant]) => {
-      if (!participant.isSpectator) {
-        updates[`${participantId}/vote`] = null;
-      }
-    });
-
-    await update(participantsRef, updates);
-  }
-
-  public async removeParticipant(roomId: string, userId: string): Promise<void> {
-    const participantRef = ref(this.db, this.getParticipantPath(roomId, userId));
-    await set(participantRef, null);
+    return this.roomManagementService.joinRoom(roomId, isSpectator);
   }
 
   public async deleteRoom(roomId: string, userId: string): Promise<void> {
-    const isHost = await this.checkIsHost(roomId, userId);
-
-    if (!isHost) {
-      throw new Error('Only the host can delete the room');
-    }
-
-    const roomRef = ref(this.db, this.getRoomPath(roomId));
-    await set(roomRef, null);
+    return this.roomManagementService.deleteRoom(roomId, userId);
   }
 
   public listenToRoomDeletion(roomId: string): Observable<void> {
-    return this.createObservable(this.getRoomPath(roomId), snapshot => {
-      if (!snapshot.exists()) {
-        return void 0; // This still returns undefined
-      }
-      return null;
-    }).pipe(
-      // Filter out null values and map to void
-      filter(value => value !== null),
-      map(() => undefined)
-    );
-  }
-
-  public getUserVote(roomId: string, userId: string): Observable<number | null> {
-    return this.createObservable(this.getVotePath(roomId, userId), snapshot =>
-      snapshot.exists() ? snapshot.val() : null
-    );
+    return this.roomManagementService.listenToRoomDeletion(roomId);
   }
 
   public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 'tshirt'> {
-    const roomRef = ref(this.db, this.getRoomPath(roomId));
-    const snapshot = await get(roomRef);
-    return snapshot.val()?.estimationType || 'fibonacci';
+    return this.roomManagementService.getRoomEstimationType(roomId);
   }
 
-  private async checkRoomExists(roomId: string): Promise<boolean> {
-    return await get(ref(this.db, this.getRoomPath(roomId)))
-      .then(snapshot => {
-        return snapshot.exists();
-      })
-      .catch(error => {
-        console.error(error);
-        return false;
-      });
+  // Participant Management
+  public getActiveParticipantsCount(roomId: string): Observable<number> {
+    return this.participantService.getActiveParticipantsCount(roomId);
   }
 
-  private async hasUserVoted(roomId: string, userId: string): Promise<boolean> {
-    const voteRef = ref(this.db, this.getVotePath(roomId, userId));
-    const snapshot = await get(voteRef);
-    return snapshot.exists() && snapshot.val() !== null;
+  public async removeParticipant(roomId: string, userId: string): Promise<void> {
+    return this.participantService.removeParticipant(roomId, userId);
   }
 
-  private getRoomPath(roomId: string): string {
-    return `rooms/${roomId}`;
+  // Voting
+  public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
+    return this.votingService.addVote(roomId, userId, vote);
   }
 
-  private getParticipantsPath(roomId: string): string {
-    return `${this.getRoomPath(roomId)}/participants`;
+  public async removeVote(roomId: string, userId: string): Promise<void> {
+    return this.votingService.removeVote(roomId, userId);
   }
 
-  private getParticipantPath(roomId: string, userId: string): string {
-    return `${this.getParticipantsPath(roomId)}/${userId}`;
+  public getVotedParticipantsCount(roomId: string): Observable<number> {
+    return this.votingService.getVotedParticipantsCount(roomId);
   }
 
-  private getVotePath(roomId: string, userId: string): string {
-    return `${this.getParticipantPath(roomId, userId)}/vote`;
+  public getVotes(roomId: string): Observable<number[]> {
+    return this.votingService.getVotes(roomId);
   }
 
-  // Reusable methods for common Firebase operations
-  private createObservable<T>(dbPath: string, transformFn: (snapshot: DataSnapshot) => T): Observable<T> {
-    const dbRef = ref(this.db, dbPath);
-    return new Observable<T>(subscriber => {
-      const unsubscribe = onValue(
-        dbRef,
-        snapshot => {
-          subscriber.next(transformFn(snapshot));
-        },
-        error => {
-          subscriber.error(error);
-        }
-      );
-
-      // Return cleanup function
-      return () => unsubscribe();
-    });
+  public calcAverageVote(roomId: string): Observable<number> {
+    return this.votingService.calcAverageVote(roomId);
   }
 
-  private async checkIsHost(roomId: string, userId: string): Promise<boolean> {
-    const userRef = ref(this.db, this.getParticipantPath(roomId, userId));
-    const userSnapshot = await get(userRef);
-    return userSnapshot.exists() && userSnapshot.val().isHost;
+  public async resetVotes(roomId: string, userId: string): Promise<void> {
+    return this.votingService.resetVotes(roomId, userId);
+  }
+
+  public getUserVote(roomId: string, userId: string): Observable<number | null> {
+    return this.votingService.getUserVote(roomId, userId);
+  }
+
+  // Authorization
+  public async checkRoomExists(roomId: string): Promise<boolean> {
+    return this.authService.checkRoomExists(roomId);
+  }
+
+  public async hasUserVoted(roomId: string, userId: string): Promise<boolean> {
+    return this.authService.hasUserVoted(roomId, userId);
+  }
+
+  public async checkIsHost(roomId: string, userId: string): Promise<boolean> {
+    return this.authService.checkIsHost(roomId, userId);
+  }
+
+  // Path Helpers (for compatibility)
+  public getRoomPath(roomId: string): string {
+    return this.firebaseService.getRoomPath(roomId);
+  }
+
+  public getParticipantsPath(roomId: string): string {
+    return this.firebaseService.getParticipantsPath(roomId);
+  }
+
+  public getParticipantPath(roomId: string, userId: string): string {
+    return this.firebaseService.getParticipantPath(roomId, userId);
+  }
+
+  public getVotePath(roomId: string, userId: string): string {
+    return this.firebaseService.getVotePath(roomId, userId);
   }
 }
