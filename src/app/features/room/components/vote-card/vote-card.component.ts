@@ -19,9 +19,25 @@ export class VoteCardComponent {
     }
 
     if (this.estimationType() === 'tshirt') {
-      return this.tshirtSizes[this.vote()! - 1] || this.vote()!.toString();
+      // Convertir el número a tamaño de camiseta
+      const index = this.vote()! - 1;
+      if (index >= 0 && index < this.tshirtSizes.length) {
+        return this.tshirtSizes[index];
+      }
     }
 
     return this.vote()!.toString();
+  }
+
+  public getImageSrc(): string {
+    if (!this.vote()) return '';
+
+    if (this.estimationType() === 'fibonacci') {
+      return `images/numbers/${this.vote()}.webp`;
+    } else {
+      // Para tshirt, usamos el valor de visualización
+      const tshirtSize = this.getDisplayValue();
+      return `images/tshirts/${tshirtSize.toLowerCase()}.webp`;
+    }
   }
 }
