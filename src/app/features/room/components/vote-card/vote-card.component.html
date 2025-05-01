@@ -7,6 +7,11 @@
     alt="Deck Card"
     class="w-[64px] h-[96px]"
   />
+  <div class="absolute inset-0 flex items-center justify-center">
+    <span class="text-2xl font-mono text-gray-300">
+      {{ showNullVote() ? (vote() ? '✓' : '?') : getDisplayValue() }}
+    </span>
+  </div>
   <div
     class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full"
     [class]="vote() ? 'bg-emerald-500' : 'bg-gray-500'"
