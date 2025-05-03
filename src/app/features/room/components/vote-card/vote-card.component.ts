@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 export class VoteCardComponent {
   public readonly vote = input<number | null>(null);
   public readonly showNullVote = input(false);
+  public readonly allVoted = input(false);
   public readonly estimationType = input<'fibonacci' | 't-shirt'>('fibonacci');
   public readonly tshirtSizes = ['XS', 'S', 'M', 'L', 'XL'];
 

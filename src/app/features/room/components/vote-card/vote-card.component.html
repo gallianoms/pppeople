@@ -3,14 +3,14 @@
   [ngClass]="{ 'border-emerald-500/50': vote() }"
 >
   <img
-    *ngIf="showNullVote() || !vote()"
+    *ngIf="!allVoted() || showNullVote() || !vote()"
     src="images/deck-card.webp"
     alt="Deck Card Back"
     class="w-[64px] h-[96px]"
   />
 
   <img
-    *ngIf="!showNullVote() && vote()"
+    *ngIf="allVoted() && !showNullVote() && vote()"
     [src]="getImageSrc()"
     [alt]="'Card ' + getDisplayValue()"
     class="w-[64px] h-[96px]"

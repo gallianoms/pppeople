@@ -23,6 +23,7 @@
             [vote]="vote"
             [showNullVote]="hasNullVotes(votes)"
             [estimationType]="state.estimationType || 'fibonacci'"
+            [allVoted]="(usersVotedCount ?? 0) === (usersConnectedCount ?? 0) && (usersConnectedCount ?? 0) > 0"
           ></app-vote-card>
         }
       }
