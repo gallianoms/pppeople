@@ -17,7 +17,7 @@ export class WelcomeComponent {
   public roomId = '';
   public isSpectator = false;
   public showHelpModal = false;
-  public estimationType: 'fibonacci' | 'tshirt' = 'fibonacci';
+  public estimationType: 'fibonacci' | 't-shirt' = 'fibonacci';
 
   private router = inject(Router);
   private roomService = inject(RoomService);

@@ -19,7 +19,7 @@ export class RoomService {
   ) {}
 
   // Room Management
-  public async createRoom(estimationType: 'fibonacci' | 'tshirt' = 'fibonacci'): Promise<CreateRoomResponse> {
+  public async createRoom(estimationType: 'fibonacci' | 't-shirt' = 'fibonacci'): Promise<CreateRoomResponse> {
     return this.roomManagementService.createRoom(estimationType);
   }
 
@@ -35,7 +35,7 @@ export class RoomService {
     return this.roomManagementService.listenToRoomDeletion(roomId);
   }
 
-  public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 'tshirt'> {
+  public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 't-shirt'> {
     return this.roomManagementService.getRoomEstimationType(roomId);
   }
 

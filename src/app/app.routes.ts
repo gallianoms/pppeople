@@ -8,7 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 'room/:roomId',
-    loadComponent: () => import('./features/room/room.component').then(c => c.RoomComponent),
+    loadComponent: () => import('./features/room/room-container.component').then(c => c.RoomContainerComponent),
     canActivate: [authGuard]
   },
   {

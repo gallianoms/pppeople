@@ -7,12 +7,12 @@ import { RoomAuthorizationService } from './room-authorization.service';
 export interface CreateRoomResponse {
   roomId: string;
   hostId: string;
-  estimationType?: 'fibonacci' | 'tshirt';
+  estimationType?: 'fibonacci' | 't-shirt';
 }
 
 export interface JoinRoomResponse {
   userId: string;
-  estimationType: 'fibonacci' | 'tshirt';
+  estimationType: 'fibonacci' | 't-shirt';
 }
 
 @Injectable({
@@ -24,7 +24,7 @@ export class RoomManagementService {
     private authService: RoomAuthorizationService
   ) {}
 
-  public async createRoom(estimationType: 'fibonacci' | 'tshirt' = 'fibonacci'): Promise<CreateRoomResponse> {
+  public async createRoom(estimationType: 'fibonacci' | 't-shirt' = 'fibonacci'): Promise<CreateRoomResponse> {
     const roomId = await this.firebaseService.pushData('rooms');
     const hostId = await this.firebaseService.pushData(this.firebaseService.getParticipantsPath(roomId));
 
@@ -91,7 +91,7 @@ export class RoomManagementService {
       );
   }
 
-  public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 'tshirt'> {
+  public async getRoomEstimationType(roomId: string): Promise<'fibonacci' | 't-shirt'> {
     const roomData = await this.firebaseService.getData(this.firebaseService.getRoomPath(roomId));
     return roomData?.estimationType || 'fibonacci';
   }

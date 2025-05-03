@@ -54,7 +54,7 @@ export class RoomContainerComponent implements OnInit {
         return;
       }
 
-      if (this.state.estimationType === 'tshirt') {
+      if (this.state.estimationType === 't-shirt') {
         this.selectedSize = this.tshirtSizes[vote - 1] || null;
         this.selectedNumber = vote;
       } else {
@@ -65,7 +65,7 @@ export class RoomContainerComponent implements OnInit {
 
   public onNumberSelect(vote: number | string): void {
     let numericVote: number;
-    if (this.state.estimationType === 'tshirt') {
+    if (this.state.estimationType === 't-shirt') {
       numericVote = this.tshirtSizes.indexOf(vote as string) + 1;
       this.selectedSize = vote as string;
     } else {

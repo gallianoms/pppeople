@@ -12,12 +12,10 @@ export class VoteControlsComponent {
   public readonly tshirtSizes = input<string[]>([]);
   public readonly selectedNumber = input<number | null>(null);
   public readonly selectedSize = input<string | null>(null);
-  public readonly estimationType = input<'fibonacci' | 'tshirt'>('fibonacci');
+  public readonly estimationType = input<'fibonacci' | 't-shirt'>('fibonacci');
   public readonly numberSelected = output<number | string>();
 
   public onSelect(value: number | string): void {
-    if (this.selectedNumber() === null && this.selectedSize() === null) {
-      this.numberSelected.emit(value);
-    }
+    this.numberSelected.emit(value);
   }
 }
