@@ -63,7 +63,7 @@ export class RoomContainerComponent implements OnInit {
     });
   }
 
-  public onNumberSelect(vote: number | string): void {
+  public onValueSelect(vote: number | string): void {
     let numericVote: number;
     if (this.state.estimationType === 't-shirt') {
       numericVote = this.tshirtSizes.indexOf(vote as string) + 1;

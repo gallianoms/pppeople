@@ -45,7 +45,7 @@
       [selectedNumber]="selectedNumber"
       [selectedSize]="selectedSize"
       [estimationType]="state.estimationType || 'fibonacci'"
-      (numberSelected)="numberSelected.emit($event)"
+      (valueSelected)="valueSelected.emit($event)"
     ></app-vote-controls>
   }
 

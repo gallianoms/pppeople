@@ -32,7 +32,7 @@ export class RoomPresentationComponent {
   @Input() usersVotedCount: number | null = 0;
   @Input() averageVotes = 0;
 
-  @Output() numberSelected = new EventEmitter<number | string>();
+  @Output() valueSelected = new EventEmitter<number | string>();
   @Output() deleteVote = new EventEmitter<void>();
   @Output() resetVotes = new EventEmitter<void>();
   @Output() copyCode = new EventEmitter<void>();
