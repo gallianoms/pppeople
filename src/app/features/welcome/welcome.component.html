@@ -5,7 +5,7 @@
   <div
     class="bg-gray-800/30 backdrop-blur-xs border border-gray-700/50 rounded-xl py-10 px-6 md:py-16 md:px-16 shadow-2xl hover:shadow-emerald-500/20 transition-all duration-300 w-full max-w-[520px] animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
   >
-    <div class="flex flex-col items-center justify-center space-y-8 md:space-y-8">
+    <div class="flex flex-col items-center justify-center gap-y-8 md:gap-y-8">
       <div class="w-full max-w-[400px]">
         <button
           class="shadow-lg bg-linear-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white font-mono py-3 px-6 rounded-full w-full text-lg transform hover:scale-105 transition-all duration-300 animate-scaleIn motion-safe:transition-all motion-safe:duration-300"
@@ -14,8 +14,8 @@
           Create Room
         </button>
 
-        <div class="mt-8 flex justify-center space-x-4">
-          <label class="flex items-center space-x-2 cursor-pointer group">
+        <div class="mt-8 flex justify-center gap-x-4">
+          <label class="flex items-center gap-x-2 cursor-pointer group">
             <input
               type="radio"
               [(ngModel)]="estimationType"
@@ -27,7 +27,7 @@
               Fibonacci
             </span>
           </label>
-          <label class="flex items-center space-x-2 cursor-pointer group">
+          <label class="flex items-center gap-x-2 cursor-pointer group">
             <input
               type="radio"
               [(ngModel)]="estimationType"
@@ -42,16 +42,16 @@
         </div>
       </div>
 
-      <div class="flex items-center w-full max-w-[400px] my-4">
+      <div class="flex items-center w-full max-w-[400px] my-2">
         <div class="border-t border-gray-500/50 grow"></div>
         <span class="mx-6 text-gray-300 font-mono">OR</span>
         <div class="border-t border-gray-500/50 grow"></div>
       </div>
 
-      <div class="flex flex-col space-y-6 sm:space-y-4 items-center w-full">
-        <div class="flex flex-col space-y-6 sm:space-y-4 items-center w-full">
+      <div class="flex flex-col gap-y-5 sm:gap-y-3 items-center w-full">
+        <div class="flex flex-col gap-y-5 sm:gap-y-3 items-center w-full">
           <div
-            class="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 w-full max-w-[400px] justify-between mb-4 gap-2"
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-y-4 sm:gap-y-0 w-full max-w-[400px] justify-between mb-4 gap-2"
           >
             <input
               type="text"
@@ -59,7 +59,7 @@
               placeholder="Enter code"
               class="font-mono h-12 bg-gray-800/50 border border-gray-600/50 rounded-full px-4 py-2 focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/50 w-full sm:w-full text-white placeholder-gray-400 transition-all duration-300"
             />
-            <div class="flex items-center space-x-2 text-white font-mono group relative ml-2">
+            <div class="flex items-center gap-x-2 text-white font-mono group relative ml-2">
               <input
                 type="checkbox"
                 id="spectator"
