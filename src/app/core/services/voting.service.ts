@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { FirebaseConnectionService } from './firebase-connection.service';
@@ -17,10 +17,8 @@ type ParticipantUpdates = Record<string, ParticipantData['vote']>;
   providedIn: 'root'
 })
 export class VotingService {
-  constructor(
-    private firebaseService: FirebaseConnectionService,
-    private authService: RoomAuthorizationService
-  ) {}
+  private firebaseService = inject(FirebaseConnectionService);
+  private authService = inject(RoomAuthorizationService);
 
   public async addVote(roomId: string, userId: string, vote: number): Promise<void> {
     const hasVoted = await this.authService.hasUserVoted(roomId, userId);

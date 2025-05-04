@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,12 +26,10 @@ export class RoomContainerComponent implements OnInit {
   public votes$!: Observable<number[]>;
   public averageVotes$!: Observable<number>;
 
-  constructor(
-    private location: Location,
-    private votingService: VotingService,
-    private voteStateService: VoteStateService,
-    private uiStateService: UIStateService
-  ) {}
+  private location = inject(Location);
+  private votingService = inject(VotingService);
+  private voteStateService = inject(VoteStateService);
+  private uiStateService = inject(UIStateService);
 
   public ngOnInit(): void {
     this.state = this.location.getState() as RoomConfig;

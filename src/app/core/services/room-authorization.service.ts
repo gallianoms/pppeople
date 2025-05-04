@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { FirebaseConnectionService } from './firebase-connection.service';
 
@@ -6,7 +6,7 @@ import { FirebaseConnectionService } from './firebase-connection.service';
   providedIn: 'root'
 })
 export class RoomAuthorizationService {
-  constructor(private firebaseService: FirebaseConnectionService) {}
+  private firebaseService = inject(FirebaseConnectionService);
 
   public async checkRoomExists(roomId: string): Promise<boolean> {
     try {

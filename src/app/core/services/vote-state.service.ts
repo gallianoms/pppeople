@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { VotingService } from './voting.service';
@@ -9,11 +9,9 @@ import { ConfettiService } from './confetti.service';
   providedIn: 'root'
 })
 export class VoteStateService {
-  constructor(
-    private votingService: VotingService,
-    private participantService: ParticipantService,
-    private confettiService: ConfettiService
-  ) {}
+  private votingService = inject(VotingService);
+  private participantService = inject(ParticipantService);
+  private confettiService = inject(ConfettiService);
 
   public getVoteState(roomId: string): Observable<{
     votes: number[];

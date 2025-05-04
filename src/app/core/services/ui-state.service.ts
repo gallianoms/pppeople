@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoomManagementService } from './room-management.service';
 import { ParticipantService } from './participant.service';
@@ -7,11 +7,9 @@ import { ParticipantService } from './participant.service';
   providedIn: 'root'
 })
 export class UIStateService {
-  constructor(
-    private router: Router,
-    private roomManagementService: RoomManagementService,
-    private participantService: ParticipantService
-  ) {}
+  private router = inject(Router);
+  private roomManagementService = inject(RoomManagementService);
+  private participantService = inject(ParticipantService);
 
   public copyRoomCode(roomId: string): void {
     navigator.clipboard.writeText(roomId);

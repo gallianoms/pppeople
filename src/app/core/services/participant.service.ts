@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { type Participant } from '../types/participant.types';
@@ -8,7 +8,7 @@ import { FirebaseConnectionService } from './firebase-connection.service';
   providedIn: 'root'
 })
 export class ParticipantService {
-  constructor(private firebaseService: FirebaseConnectionService) {}
+  private firebaseService = inject(FirebaseConnectionService);
 
   public getActiveParticipantsCount(roomId: string): Observable<number> {
     return this.firebaseService.createObservable(this.firebaseService.getParticipantsPath(roomId), snapshot => {

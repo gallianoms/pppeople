@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
 
 import { FirebaseConnectionService } from './firebase-connection.service';
@@ -19,10 +19,8 @@ export interface JoinRoomResponse {
   providedIn: 'root'
 })
 export class RoomManagementService {
-  constructor(
-    private firebaseService: FirebaseConnectionService,
-    private authService: RoomAuthorizationService
-  ) {}
+  private firebaseService = inject(FirebaseConnectionService);
+  private authService = inject(RoomAuthorizationService);
 
   public async createRoom(estimationType: 'fibonacci' | 't-shirt' = 'fibonacci'): Promise<CreateRoomResponse> {
     const roomId = await this.firebaseService.pushData('rooms');
