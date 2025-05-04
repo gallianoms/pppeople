@@ -8,7 +8,7 @@
     </div>
     @if (!isSpectator()) {
       <button
-        (click)="onDeleteVote()"
+        (click)="deleteVote.emit()"
         [disabled]="!canChangeVote()"
         class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-full font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
         [class.opacity-50]="!canChangeVote()"
@@ -21,7 +21,7 @@
   </div>
   @if (isHost()) {
     <button
-      (click)="onReset()"
+      (click)="resetVotes.emit()"
       class="w-full px-4 py-2 border border-red-500/50 text-red-400 rounded-full hover:text-red-500 font-mono transition-all duration-300 bg-gray-800/30 backdrop-blur-sm"
     >
       Reset votes

@@ -2,8 +2,8 @@
   @if (estimationType() === 'fibonacci') {
     @for (number of numbers(); track number) {
       <div
-        (click)="onSelect(number)"
-        (keyup.enter)="onSelect(number)"
+        (click)="valueSelected.emit(number)"
+        (keyup.enter)="valueSelected.emit(number)"
         [tabindex]="selectedNumber() === null ? 0 : -1"
         [ngClass]="{
           'bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 text-white': selectedNumber() === number,
@@ -19,8 +19,8 @@
   } @else {
     @for (size of tshirtSizes(); track size) {
       <div
-        (click)="onSelect(size)"
-        (keyup.enter)="onSelect(size)"
+        (click)="valueSelected.emit(size)"
+        (keyup.enter)="valueSelected.emit(size)"
         [tabindex]="selectedSize() === null ? 0 : -1"
         [ngClass]="{
           'bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 text-white': selectedSize() === size,

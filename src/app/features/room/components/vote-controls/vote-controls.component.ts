@@ -14,8 +14,4 @@ export class VoteControlsComponent {
   public readonly selectedSize = input<string | null>(null);
   public readonly estimationType = input<'fibonacci' | 't-shirt'>('fibonacci');
   public readonly valueSelected = output<number | string>();
-
-  public onSelect(value: number | string): void {
-    this.valueSelected.emit(value);
-  }
 }
