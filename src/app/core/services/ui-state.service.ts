@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { RoomService } from './room.service';
+import { RoomManagementService } from './room-management.service';
+import { ParticipantService } from './participant.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { RoomService } from './room.service';
 export class UIStateService {
   constructor(
     private router: Router,
-    private roomService: RoomService
+    private roomManagementService: RoomManagementService,
+    private participantService: ParticipantService
   ) {}
 
   public copyRoomCode(roomId: string): void {
@@ -22,15 +24,15 @@ export class UIStateService {
 
   public async leaveRoom(roomId: string, userId: string, isHost: boolean): Promise<void> {
     if (isHost) {
-      await this.roomService.deleteRoom(roomId, userId).catch(console.error);
+      await this.roomManagementService.deleteRoom(roomId, userId).catch(console.error);
     } else {
-      await this.roomService.removeParticipant(roomId, userId);
+      await this.participantService.removeParticipant(roomId, userId);
     }
     this.router.navigate(['/welcome']);
   }
 
   public setupRoomDeletionListener(roomId: string): void {
-    this.roomService.listenToRoomDeletion(roomId).subscribe(() => {
+    this.roomManagementService.listenToRoomDeletion(roomId).subscribe(() => {
       this.router.navigate(['/welcome']);
     });
   }

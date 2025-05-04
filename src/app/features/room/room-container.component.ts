@@ -3,9 +3,9 @@ import { CommonModule, Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RoomConfig } from '../../core/types/room.types';
-import { RoomService } from '../../core/services/room.service';
 import { VoteStateService } from '../../core/services/vote-state.service';
 import { UIStateService } from '../../core/services/ui-state.service';
+import { VotingService } from '../../core/services/voting.service';
 import { RoomPresentationComponent } from './room-presentation.component';
 
 @Component({
@@ -28,7 +28,7 @@ export class RoomContainerComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private roomService: RoomService,
+    private votingService: VotingService,
     private voteStateService: VoteStateService,
     private uiStateService: UIStateService
   ) {}
@@ -47,7 +47,7 @@ export class RoomContainerComponent implements OnInit {
     this.usersVotedCount$ = voteState$.pipe(map(state => state.usersVotedCount));
     this.averageVotes$ = voteState$.pipe(map(state => state.averageVote));
 
-    this.roomService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
+    this.votingService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
       if (vote === null) {
         this.selectedNumber = null;
         this.selectedSize = null;
@@ -91,7 +91,7 @@ export class RoomContainerComponent implements OnInit {
 
   public async onResetVotes(): Promise<void> {
     try {
-      await this.roomService.resetVotes(this.state.roomId, this.state.userId);
+      await this.votingService.resetVotes(this.state.roomId, this.state.userId);
       this.selectedNumber = null;
     } catch (error) {
       console.error('Error resetting votes:', error);

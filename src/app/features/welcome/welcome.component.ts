@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { RoomConfig } from '../../core/types/room.types';
-import { RoomService } from '../../core/services/room.service';
+import { RoomManagementService } from '../../core/services/room-management.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { HelpModalComponent } from '../../shared/components/help-modal/help-modal.component';
 import { TablerIconComponent } from 'angular-tabler-icons';
@@ -20,11 +20,11 @@ export class WelcomeComponent {
   public estimationType: 'fibonacci' | 't-shirt' = 'fibonacci';
 
   private router = inject(Router);
-  private roomService = inject(RoomService);
+  private roomManagementService = inject(RoomManagementService);
   private notificationService = inject(NotificationService);
 
   public async createRoom() {
-    const { roomId, hostId } = await this.roomService.createRoom(this.estimationType);
+    const { roomId, hostId } = await this.roomManagementService.createRoom(this.estimationType);
 
     this.navigateToRoom({
       roomId,
@@ -42,7 +42,7 @@ export class WelcomeComponent {
     }
 
     try {
-      const { userId, estimationType } = await this.roomService.joinRoom(this.roomId, this.isSpectator);
+      const { userId, estimationType } = await this.roomManagementService.joinRoom(this.roomId, this.isSpectator);
 
       this.navigateToRoom({
         roomId: this.roomId,

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RoomService } from './room.service';
+import { VotingService } from './voting.service';
+import { ParticipantService } from './participant.service';
 import { ConfettiService } from './confetti.service';
 
 @Injectable({
@@ -9,7 +10,8 @@ import { ConfettiService } from './confetti.service';
 })
 export class VoteStateService {
   constructor(
-    private roomService: RoomService,
+    private votingService: VotingService,
+    private participantService: ParticipantService,
     private confettiService: ConfettiService
   ) {}
 
@@ -19,9 +21,9 @@ export class VoteStateService {
     usersVotedCount: number;
     averageVote: number;
   }> {
-    const votes$ = this.roomService.getVotes(roomId);
-    const usersConnectedCount$ = this.roomService.getActiveParticipantsCount(roomId);
-    const usersVotedCount$ = this.roomService.getVotedParticipantsCount(roomId);
+    const votes$ = this.votingService.getVotes(roomId);
+    const usersConnectedCount$ = this.participantService.getActiveParticipantsCount(roomId);
+    const usersVotedCount$ = this.votingService.getVotedParticipantsCount(roomId);
 
     return combineLatest([votes$, usersConnectedCount$, usersVotedCount$]).pipe(
       map(([votes, connected, voted]) => {
@@ -40,9 +42,9 @@ export class VoteStateService {
 
   public async handleVote(roomId: string, userId: string, vote: number | null): Promise<void> {
     if (vote === null) {
-      await this.roomService.removeVote(roomId, userId);
+      await this.votingService.removeVote(roomId, userId);
     } else {
-      await this.roomService.addVote(roomId, userId, vote);
+      await this.votingService.addVote(roomId, userId, vote);
     }
   }
 
