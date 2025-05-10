@@ -45,11 +45,9 @@
     </div>
     @if (usersConnectedCount) {
       @if (usersVotedCount) {
-        <p class="text-gray-300 text-center font-mono mt-6">
-          {{ usersVotedCount }}/{{ usersConnectedCount }} players voted
-        </p>
+        <p class="text-gray-300 text-center mt-6">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
       } @else {
-        <p class="text-gray-300 text-center font-mono mt-6">Waiting for players to vote...</p>
+        <p class="text-gray-300 text-center mt-6">Waiting for players to vote...</p>
       }
     }
   </div>
@@ -87,12 +85,12 @@
         class="`h-7! w-7!"
       ></i-tabler>
     </a>
-    <span class="text-gray-400 font-mono">|</span>
+    <span class="text-gray-400">|</span>
     <a
       href="https://jsalvadev.github.io/"
       target="_blank"
       rel="noopener noreferrer"
-      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300 font-mono"
+      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300"
       aria-label="jsalvadev.github.io"
     >
       jsalvadev.github.io
