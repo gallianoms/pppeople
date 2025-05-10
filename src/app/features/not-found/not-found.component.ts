@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
       <p class="text-xl text-gray-300 mb-8">Oops! Page not found</p>
       <a
         routerLink="/welcome"
-        class="px-6 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors duration-300"
+        class="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-300"
       >
         Go to Home
       </a>
