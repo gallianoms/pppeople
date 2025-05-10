@@ -21,7 +21,7 @@
     <div class="mb-6">
       <h2
         id="modal-title"
-        class="text-2xl font-semibold text-emerald-400 mb-2"
+        class="text-2xl font-semibold text-emerald-400/90 mb-2"
       >
         Poker97 Guide
       </h2>
@@ -34,10 +34,10 @@
           <div class="flex items-start gap-2">
             <i-tabler
               [name]="item.icon"
-              class="text-emerald-400 mt-0.5 flex-shrink-0"
+              class="text-emerald-300 mt-0.5 flex-shrink-0"
             ></i-tabler>
             <div>
-              <h3 class="text-lg font-medium text-white">{{ item.title }}</h3>
+              <h3 class="text-lg font-medium text-emerald-300">{{ item.title }}</h3>
               <p
                 class="text-gray-200 text-sm mt-1"
                 [class.mb-2]="item.list"
@@ -48,7 +48,7 @@
                 <ul class="text-gray-200 text-sm mt-2 space-y-1">
                   @for (listItem of item.list; track listItem) {
                     <li class="flex items-start gap-2">
-                      <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mt-1.5"></span>
+                      <span class="w-1.5 h-1.5 bg-emerald-300 rounded-full mt-1.5"></span>
                       <span>{{ listItem.text }}</span>
                     </li>
                   }
@@ -63,7 +63,7 @@
     <div class="mt-6 text-right">
       <button
         (click)="closeWithAnimation()"
-        class="text-white py-2 px-6 rounded bg-emerald-600/50 hover:bg-emerald-500/50 transition-all duration-300 hover:scale-105 text-sm"
+        class="text-emerald-100 py-2 px-6 rounded bg-emerald-600 hover:bg-emerald-500/50 transition-all duration-300 hover:scale-105 text-sm"
       >
         Got it
       </button>
