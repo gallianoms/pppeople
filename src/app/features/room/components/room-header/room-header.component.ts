@@ -6,7 +6,8 @@ import { TablerIconComponent } from 'angular-tabler-icons';
   selector: 'app-room-header',
   standalone: true,
   imports: [CommonModule, TablerIconComponent],
-  templateUrl: './room-header.component.html'
+  templateUrl: './room-header.component.html',
+  styleUrls: ['./styles/button-effect.css']
 })
 export class RoomHeaderComponent {
   public readonly copyingLink = input(false);
