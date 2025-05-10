@@ -27,6 +27,31 @@
   <div
     role="button"
     tabindex="0"
+    class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-emerald-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 w-auto min-w-48"
+    (click)="copyInviteLink.emit()"
+    (keyup.enter)="copyInviteLink.emit()"
+    [attr.aria-label]="copyingLink() ? 'Link copied' : 'Copy invite link'"
+  >
+    @if (!copyingLink()) {
+      <i-tabler
+        name="link"
+        class="text-gray-300"
+      ></i-tabler>
+    }
+    @if (copyingLink()) {
+      <i-tabler
+        name="check"
+        class="text-emerald-300"
+      ></i-tabler>
+    }
+    <p class="text-gray-300 font-mono">
+      {{ copyingLink() ? 'Copied link' : 'Share invite link' }}
+    </p>
+  </div>
+
+  <div
+    role="button"
+    tabindex="0"
     class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-gray-400/50 px-6 py-2 rounded-full cursor-pointer hover:bg-gray-500/20 transition-all duration-300 w-auto min-w-48"
     (click)="leave.emit()"
     (keyup.enter)="leave.emit()"

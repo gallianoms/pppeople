@@ -1,0 +1,14 @@
+{
+  "language_servers": [
+    "vtsls",
+    "typescript-language-server",
+    "eslint"
+  ],
+  "lsp": {
+    "eslint": {
+      "enabled": true
+    }
+  },
+  "format_on_save": "on",
+  "formatter": "language_server"
+}

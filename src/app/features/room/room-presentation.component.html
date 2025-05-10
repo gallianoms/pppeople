@@ -3,7 +3,9 @@
 >
   <app-room-header
     [copying]="copying"
+    [copyingLink]="copyingLink"
     (copyCode)="copyCode.emit()"
+    (copyInviteLink)="copyInviteLink.emit()"
     (leave)="leave.emit()"
   ></app-room-header>
 

@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomManagementService } from '../../core/services/room-management.service';
@@ -13,15 +13,26 @@ import { TablerIconComponent } from 'angular-tabler-icons';
   imports: [FormsModule, HelpModalComponent, TablerIconComponent],
   templateUrl: './welcome.component.html'
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements OnInit {
   public roomId = '';
   public isSpectator = false;
   public showHelpModal = false;
   public estimationType: 'fibonacci' | 't-shirt' = 'fibonacci';
 
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private roomManagementService = inject(RoomManagementService);
   private notificationService = inject(NotificationService);
+
+  ngOnInit(): void {
+    // Check if there's a room ID in the query parameters
+    this.route.queryParams.subscribe(params => {
+      if (params['roomId']) {
+        this.roomId = params['roomId'];
+        this.joinRoom();
+      }
+    });
+  }
 
   public async createRoom() {
     const { roomId, hostId } = await this.roomManagementService.createRoom(this.estimationType);

@@ -5,6 +5,7 @@
   [selectedSize]="selectedSize"
   [state]="state"
   [copying]="copying"
+  [copyingLink]="copyingLink"
   [votes]="votes$ | async"
   [usersConnectedCount]="usersConnectedCount$ | async"
   [usersVotedCount]="usersVotedCount$ | async"
@@ -13,5 +14,6 @@
   (deleteVote)="deleteMyVote()"
   (resetVotes)="onResetVotes()"
   (copyCode)="copyRoomCode()"
+  (copyInviteLink)="copyInviteLink()"
   (leave)="leaveRoom()"
 ></app-room-presentation>

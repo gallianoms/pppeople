@@ -123,6 +123,9 @@ importers:
       typescript-eslint:
         specifier: 8.18.0
         version: 8.18.0(eslint@9.20.0(jiti@2.4.2))(typescript@5.6.3)
+      vscode-uri:
+        specifier: ^3.1.0
+        version: 3.1.0
 
 packages:
 
@@ -4935,6 +4938,9 @@ packages:
   void-elements@2.0.1:
     resolution: {integrity: sha512-qZKX4RnBzH2ugr8Lxa7x+0V6XD9Sb/ouARtiasEQCHB1EVU4NXtmHsDDrx1dO4ne5fc3J6EW05BP1Dl0z0iung==}
     engines: {node: '>=0.10.0'}
+
+  vscode-uri@3.1.0:
+    resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
   watchpack@2.4.2:
     resolution: {integrity: sha512-TnbFSbcOCcDgjZ4piURLCbJ3nJhznVh9kw6F6iokjiFPl8ONxe9A6nMDVXDiNbrSfLILs6vB07F7wLBrwPYzJw==}
@@ -10379,6 +10385,8 @@ snapshots:
       yaml: 2.7.0
 
   void-elements@2.0.1: {}
+
+  vscode-uri@3.1.0: {}
 
   watchpack@2.4.2:
     dependencies:

@@ -15,6 +15,12 @@ export class UIStateService {
     navigator.clipboard.writeText(roomId);
   }
 
+  public copyInviteLink(roomId: string): void {
+    const baseUrl = window.location.origin;
+    const inviteLink = `${baseUrl}/room/${roomId}`;
+    navigator.clipboard.writeText(inviteLink);
+  }
+
   public setTemporaryState(callback: (value: boolean) => void, duration = 2000): void {
     callback(true);
     setTimeout(() => callback(false), duration);

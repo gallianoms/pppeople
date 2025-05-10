@@ -10,6 +10,8 @@ import { TablerIconComponent } from 'angular-tabler-icons';
 })
 export class RoomHeaderComponent {
   public readonly copying = input(false);
+  public readonly copyingLink = input(false);
   public readonly copyCode = output<void>();
+  public readonly copyInviteLink = output<void>();
   public readonly leave = output<void>();
 }

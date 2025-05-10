@@ -7,6 +7,7 @@ import { VoteStateService } from '../../core/services/vote-state.service';
 import { UIStateService } from '../../core/services/ui-state.service';
 import { VotingService } from '../../core/services/voting.service';
 import { RoomPresentationComponent } from './room-presentation.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room-container',
@@ -21,18 +22,48 @@ export class RoomContainerComponent implements OnInit {
   public selectedSize: string | null = null;
   public state!: RoomConfig;
   public copying = false;
+  public copyingLink = false;
   public usersConnectedCount$!: Observable<number>;
   public usersVotedCount$!: Observable<number>;
   public votes$!: Observable<number[]>;
   public averageVotes$!: Observable<number>;
 
   private location = inject(Location);
+  private router = inject(Router);
   private votingService = inject(VotingService);
   private voteStateService = inject(VoteStateService);
   private uiStateService = inject(UIStateService);
 
   public ngOnInit(): void {
-    this.state = this.location.getState() as RoomConfig;
+    // Check location state first, then fall back to history state, then sessionStorage
+    const locationState = this.location.getState() as RoomConfig;
+    const historyState = history.state as RoomConfig;
+
+    // Try to get room config from sessionStorage as last resort
+    let sessionState: RoomConfig | null = null;
+    const storedConfig = sessionStorage.getItem('roomConfig');
+    if (storedConfig) {
+      try {
+        sessionState = JSON.parse(storedConfig) as RoomConfig;
+      } catch (e) {
+        console.error('Failed to parse room config from sessionStorage', e);
+      }
+    }
+
+    // Use location state if valid, otherwise use history state, then session state
+    if (locationState && locationState.roomId && locationState.userId) {
+      this.state = locationState;
+    } else if (historyState && historyState.roomId && historyState.userId) {
+      this.state = historyState;
+    } else if (sessionState && sessionState.roomId && sessionState.userId) {
+      this.state = sessionState;
+      // Clean up after successful use
+      sessionStorage.removeItem('roomConfig');
+    } else {
+      // If no valid state found, redirect to welcome page
+      this.router.navigate(['/welcome']);
+      return;
+    }
 
     if (!this.state.isHost) {
       this.uiStateService.setupRoomDeletionListener(this.state.roomId);
@@ -85,6 +116,11 @@ export class RoomContainerComponent implements OnInit {
   public copyRoomCode(): void {
     this.uiStateService.copyRoomCode(this.state.roomId);
     this.uiStateService.setTemporaryState(value => (this.copying = value));
+  }
+
+  public copyInviteLink(): void {
+    this.uiStateService.copyInviteLink(this.state.roomId);
+    this.uiStateService.setTemporaryState(value => (this.copyingLink = value));
   }
 
   public async onResetVotes(): Promise<void> {
