@@ -11,7 +11,8 @@ import { SocialLinksFooterComponent } from '../../shared/components/social-links
 @Component({
   selector: 'app-welcome',
   imports: [FormsModule, HelpModalComponent, TablerIconComponent, SocialLinksFooterComponent],
-  templateUrl: './welcome.component.html'
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./styles/create-button-effect.css']
 })
 export class WelcomeComponent {
   public showHelpModal = false;

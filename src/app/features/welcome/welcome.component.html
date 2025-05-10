@@ -33,10 +33,13 @@
 
     <!-- Create Room Button -->
     <button
-      class="shadow-lg bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white py-3 rounded text-xl transform hover:scale-105 transition-all duration-300 animate-scaleIn motion-safe:transition-all motion-safe:duration-300 w-full"
+      class="relative overflow-hidden shadow-lg bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white py-3 rounded text-xl transform hover:scale-105 transition-all duration-300 animate-scaleIn motion-safe:transition-all motion-safe:duration-300 w-full"
       (click)="createRoom()"
     >
-      Create Room
+      <span
+        class="absolute top-0 left-0 w-full h-full bg-white/10 skew-x-[-15deg] animate-[shine_3s_ease-in-out_infinite]"
+      ></span>
+      <span class="relative z-10">Create Room</span>
     </button>
 
     <!-- Help Button -->

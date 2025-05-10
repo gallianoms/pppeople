@@ -1,0 +1,59 @@
+.create-button {
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.create-button::before,
+.create-button::after {
+  content: '';
+  position: absolute;
+  left: -50%;
+  top: -150%;
+  width: 200%;
+  height: 400%;
+  transform-origin: 0 100%;
+  pointer-events: none;
+}
+
+.create-button::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3.5s ease-in-out infinite;
+  z-index: 1;
+}
+
+.create-button::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.07) 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.07) 70%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3.5s ease-in-out 1s infinite;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateY(-50%) translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateY(-50%) translateX(100%) rotate(45deg);
+  }
+}
+
+.create-button-content {
+  position: relative;
+  z-index: 2;
+}
