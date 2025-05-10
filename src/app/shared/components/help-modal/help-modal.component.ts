@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
 import { TablerIconComponent } from 'angular-tabler-icons';
+import { CommonModule } from '@angular/common';
 
 interface HelpItem {
   icon: string;
@@ -11,11 +12,13 @@ interface HelpItem {
 @Component({
   selector: 'app-help-modal',
   standalone: true,
-  imports: [TablerIconComponent],
+  imports: [TablerIconComponent, CommonModule],
   templateUrl: './help-modal.component.html'
 })
-export class HelpModalComponent {
+export class HelpModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
+  isClosing = false;
+  isInitialized = false;
 
   helpItems: HelpItem[] = [
     {
@@ -41,15 +44,32 @@ export class HelpModalComponent {
     }
   ];
 
+  ngOnInit(): void {
+    // Set initialized after component is fully rendered to prevent animation glitches
+    setTimeout(() => {
+      this.isInitialized = true;
+    }, 0);
+  }
+
   @HostListener('document:keydown.escape')
   onEscapeKey(): void {
-    this.close.emit();
+    this.closeWithAnimation();
   }
 
   @HostListener('click', ['$event'])
   onBackdropClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('fixed')) {
-      this.close.emit();
+      this.closeWithAnimation();
     }
+  }
+
+  closeWithAnimation(): void {
+    if (this.isClosing) return;
+
+    this.isClosing = true;
+
+    setTimeout(() => {
+      this.close.emit();
+    }, 500); // Match animation duration
   }
 }

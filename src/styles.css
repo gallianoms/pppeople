@@ -2,28 +2,100 @@
 @import 'tailwindcss';
 
 :root {
-  --animate-fade-in: fadeIn 0.3s ease-out;
-  --animate-scale-in: scaleIn 0.3s ease-out;
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-scale-in: scaleIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
   0% {
     opacity: 0;
+    backdrop-filter: blur(0px);
   }
   100% {
     opacity: 1;
+    backdrop-filter: blur(8px);
   }
 }
 
 @keyframes scaleIn {
   0% {
-    transform: scale(0.95);
+    transform: scale(0.92);
     opacity: 0;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0);
   }
   100% {
     transform: scale(1);
     opacity: 1;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
   }
+}
+
+@keyframes modalFadeIn {
+  from {
+    background-color: rgba(10, 83, 63, 0);
+    backdrop-filter: blur(0px);
+    opacity: 0;
+  }
+  to {
+    background-color: rgba(10, 83, 63, 0.7);
+    backdrop-filter: blur(8px);
+    opacity: 1;
+  }
+}
+
+@keyframes modalFadeOut {
+  from {
+    background-color: rgba(10, 83, 63, 0.7);
+    backdrop-filter: blur(8px);
+    opacity: 1;
+  }
+  to {
+    background-color: rgba(10, 83, 63, 0);
+    backdrop-filter: blur(0px);
+    opacity: 0;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+.modal-open {
+  animation: modalFadeIn 0.5s forwards;
+  opacity: 0;
+  backdrop-filter: blur(0);
+}
+
+.modal-close {
+  animation: modalFadeOut 0.5s forwards;
+}
+
+.card-open {
+  animation: modalSlideIn 0.5s 0.1s forwards;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.card-close {
+  animation: modalSlideOut 0.5s forwards;
 }
 
 /*
