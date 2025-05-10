@@ -12,7 +12,7 @@
       <button
         (click)="deleteVote.emit()"
         [disabled]="!canChangeVote()"
-        class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-lg transition-all duration-300 bg-gray-800/30 backdrop-blur-xs"
+        class="px-4 py-2 border border-yellow-500/50 text-yellow-400 rounded-lg transition-all duration-300 bg-gray-800/30 backdrop-blur-xs cursor-pointer"
         [class.opacity-50]="!canChangeVote()"
         [class.cursor-not-allowed]="!canChangeVote()"
         [class.hover:text-yellow-500]="canChangeVote()"
