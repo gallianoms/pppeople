@@ -21,7 +21,6 @@ export class RoomContainerComponent implements OnInit {
   public selectedNumber: number | null = null;
   public selectedSize: string | null = null;
   public state!: RoomConfig;
-  public copying = false;
   public copyingLink = false;
   public usersConnectedCount$!: Observable<number>;
   public usersVotedCount$!: Observable<number>;
@@ -111,11 +110,6 @@ export class RoomContainerComponent implements OnInit {
     this.voteStateService.handleVote(this.state.roomId, this.state.userId, null);
     this.selectedNumber = null;
     this.selectedSize = null;
-  }
-
-  public copyRoomCode(): void {
-    this.uiStateService.copyRoomCode(this.state.roomId);
-    this.uiStateService.setTemporaryState(value => (this.copying = value));
   }
 
   public copyInviteLink(): void {

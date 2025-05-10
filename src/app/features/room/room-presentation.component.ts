@@ -26,7 +26,6 @@ export class RoomPresentationComponent {
   @Input() selectedNumber: number | null = null;
   @Input() selectedSize: string | null = null;
   @Input() state!: RoomConfig;
-  @Input() copying = false;
   @Input() copyingLink = false;
   @Input() votes: number[] | null = [];
   @Input() usersConnectedCount: number | null = 0;
@@ -36,7 +35,6 @@ export class RoomPresentationComponent {
   @Output() valueSelected = new EventEmitter<number | string>();
   @Output() deleteVote = new EventEmitter<void>();
   @Output() resetVotes = new EventEmitter<void>();
-  @Output() copyCode = new EventEmitter<void>();
   @Output() copyInviteLink = new EventEmitter<void>();
   @Output() leave = new EventEmitter<void>();
 

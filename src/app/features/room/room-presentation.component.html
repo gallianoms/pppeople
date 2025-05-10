@@ -2,9 +2,7 @@
   class="min-h-screen flex flex-col items-center pt-8 pb-8 relative animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
 >
   <app-room-header
-    [copying]="copying"
     [copyingLink]="copyingLink"
-    (copyCode)="copyCode.emit()"
     (copyInviteLink)="copyInviteLink.emit()"
     (leave)="leave.emit()"
   ></app-room-header>

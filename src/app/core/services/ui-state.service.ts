@@ -11,10 +11,6 @@ export class UIStateService {
   private roomManagementService = inject(RoomManagementService);
   private participantService = inject(ParticipantService);
 
-  public copyRoomCode(roomId: string): void {
-    navigator.clipboard.writeText(roomId);
-  }
-
   public copyInviteLink(roomId: string): void {
     const baseUrl = window.location.origin;
     const inviteLink = `${baseUrl}/room/${roomId}`;

@@ -42,54 +42,10 @@
         </div>
       </div>
 
-      <div class="flex items-center w-full max-w-[400px] my-2">
-        <div class="border-t border-gray-500/50 grow"></div>
-        <span class="mx-6 text-gray-300 font-mono">OR</span>
-        <div class="border-t border-gray-500/50 grow"></div>
-      </div>
-
-      <div class="flex flex-col gap-y-5 sm:gap-y-3 items-center w-full">
-        <div class="flex flex-col gap-y-5 sm:gap-y-3 items-center w-full">
-          <div
-            class="flex flex-col sm:flex-row items-start sm:items-center gap-y-4 sm:gap-y-0 w-full max-w-[400px] justify-between mb-4 gap-2"
-          >
-            <input
-              type="text"
-              [(ngModel)]="roomId"
-              placeholder="Enter code or use room URL"
-              class="font-mono h-12 bg-gray-800/50 border border-gray-600/50 rounded-full px-4 py-2 focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/50 w-full sm:w-full text-white placeholder-gray-400 transition-all duration-300"
-            />
-            <div class="flex items-center gap-x-2 text-white font-mono group relative ml-2">
-              <input
-                type="checkbox"
-                id="spectator"
-                [(ngModel)]="isSpectator"
-                class="form-checkbox h-5 w-5 text-emerald-600 rounded-sm focus:ring-emerald-500 border-gray-600 bg-gray-800/50 transition-colors duration-300"
-              />
-              <label
-                for="spectator"
-                class="cursor-help"
-              >
-                Spectator?
-              </label>
-              <div
-                class="absolute bottom-full mb-2 hidden group-hover:block w-48 bg-gray-800/90 backdrop-blur-xs text-sm text-gray-300 py-2 px-3 rounded-lg shadow-lg transform transition-all duration-300"
-              >
-                <div class="text-center text-amber-200">Spectators can only watch and cannot vote</div>
-                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
-                  <div class="border-8 border-transparent border-t-gray-800/90"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <button
-            class="shadow-lg h-12 border border-emerald-500/50 hover:bg-emerald-500/20 hover:border-emerald-400 text-white font-mono py-2 px-6 rounded-full w-full max-w-[400px] transform hover:scale-105 transition-all duration-300"
-            (click)="joinRoom()"
-          >
-            Join Room
-          </button>
-        </div>
+      <div class="flex flex-col mt-8 items-center w-full max-w-[400px]">
+        <p class="text-gray-300 text-center font-mono mb-4">
+          Create a room and share the link with your team to start planning poker!
+        </p>
       </div>
     </div>
   </div>
