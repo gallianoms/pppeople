@@ -1,0 +1,29 @@
+<div
+  class="flex items-center gap-3 py-2 px-4 rounded-lg"
+  [ngClass]="theme === 'light' ? 'text-emerald-200' : 'text-gray-400'"
+>
+  <a
+    href="https://www.linkedin.com/in/gallianoms/"
+    target="_blank"
+    rel="noopener noreferrer"
+    [ngClass]="theme === 'light' ? 'text-emerald-200 hover:text-emerald-300' : 'text-gray-400 hover:text-emerald-400'"
+    class="transition-colors duration-300 text-base"
+    aria-label="Galliano's LinkedIn profile"
+  >
+    <i-tabler
+      name="brand-linkedin"
+      class="`h-7! w-7!"
+    ></i-tabler>
+  </a>
+  <span [ngClass]="theme === 'light' ? 'text-emerald-200 text-lg' : 'text-gray-400'">|</span>
+  <a
+    href="https://jsalvadev.github.io/"
+    target="_blank"
+    rel="noopener noreferrer"
+    [ngClass]="theme === 'light' ? 'text-emerald-200 hover:text-emerald-300' : 'text-gray-400 hover:text-emerald-400'"
+    class="transition-colors duration-300"
+    aria-label="jsalvadev.github.io"
+  >
+    jsalvadev.github.io
+  </a>
+</div>

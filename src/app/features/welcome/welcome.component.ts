@@ -6,10 +6,11 @@ import { RoomConfig } from '../../core/types/room.types';
 import { RoomManagementService } from '../../core/services/room-management.service';
 import { HelpModalComponent } from '../../shared/components/help-modal/help-modal.component';
 import { TablerIconComponent } from 'angular-tabler-icons';
+import { SocialLinksFooterComponent } from '../../shared/components/social-links-footer/social-links-footer.component';
 
 @Component({
   selector: 'app-welcome',
-  imports: [FormsModule, HelpModalComponent, TablerIconComponent],
+  imports: [FormsModule, HelpModalComponent, TablerIconComponent, SocialLinksFooterComponent],
   templateUrl: './welcome.component.html'
 })
 export class WelcomeComponent {

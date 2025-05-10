@@ -72,28 +72,7 @@
     (resetVotes)="resetVotes.emit()"
   ></app-room-stats>
 
-  <div class="absolute bottom-4 right-4 z-10 hidden md:flex items-center gap-2">
-    <a
-      href="https://www.linkedin.com/in/gallianoms/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300"
-      aria-label="Galliano's LinkedIn profile"
-    >
-      <i-tabler
-        name="brand-linkedin"
-        class="`h-7! w-7!"
-      ></i-tabler>
-    </a>
-    <span class="text-gray-400">|</span>
-    <a
-      href="https://jsalvadev.github.io/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-gray-400 hover:text-emerald-400 transition-colors duration-300"
-      aria-label="jsalvadev.github.io"
-    >
-      jsalvadev.github.io
-    </a>
+  <div class="absolute bottom-4 right-4 z-10 hidden md:block">
+    <app-social-links-footer />
   </div>
 </div>
