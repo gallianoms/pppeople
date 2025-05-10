@@ -119,7 +119,7 @@
 @layer base {
   body {
     background: linear-gradient(to bottom right, #0a3d27, #104d35, #0a3d27);
-    min-height: 100vh;
+    min-height: 100dvh;
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     line-height: 1.5;
@@ -140,7 +140,7 @@
   input,
   select,
   textarea {
-    font-family: inherit;
+    font-family: 'Poppins', sans-serif;
   }
 
   /* Radio button custom styling */
