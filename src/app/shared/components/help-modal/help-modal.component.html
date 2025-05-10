@@ -6,7 +6,7 @@
   aria-labelledby="modal-title"
 >
   <div
-    class="bg-gradient-to-br from-gray-700/90 to-emerald-800/90 rounded-lg p-6 max-w-xl w-full relative border-l-2 border-emerald-500/50 shadow-lg transition-all duration-500 ease-out card-open"
+    class="bg-gradient-to-br from-gray-700/90 to-emerald-800/90 rounded-lg p-6 max-w-2xl w-full relative border-l-2 border-emerald-500/50 shadow-lg transition-all duration-500 ease-out card-open overflow-y-auto max-h-[90vh]"
     [ngClass]="{ 'card-close': isClosing }"
   >
     <!-- Button X -->
@@ -18,52 +18,52 @@
       <i-tabler name="x"></i-tabler>
     </button>
 
-    <div class="mb-6">
+    <div class="mb-4">
       <h2
         id="modal-title"
         class="text-2xl font-semibold text-emerald-400/90 mb-2"
       >
-        Poker97 Guide
+        Planning Poker Guide
       </h2>
-      <div class="w-10 h-0.5 bg-emerald-200/50 mb-6"></div>
+      <p class="text-gray-300/80 text-sm mb-4">Everything you need to know about estimating with your team</p>
+      <div class="w-16 h-0.5 bg-emerald-200/50 mb-4"></div>
     </div>
 
-    <div class="flex flex-col gap-y-6 text-gray-300">
+    <div class="flex flex-col text-gray-300 pr-1">
       @for (item of helpItems; track item) {
-        <div class="mb-4">
-          <div class="flex items-start gap-2">
-            <i-tabler
-              [name]="item.icon"
-              class="text-emerald-300 mt-0.5 flex-shrink-0"
-            ></i-tabler>
-            <div>
-              <h3 class="text-lg font-medium text-emerald-300">{{ item.title }}</h3>
-              <p
-                class="text-gray-200 text-sm mt-1"
-                [class.mb-2]="item.list"
-              >
-                {{ item.description }}
-              </p>
-              @if (item.list) {
-                <ul class="text-gray-200 text-sm mt-2 space-y-1">
-                  @for (listItem of item.list; track listItem) {
-                    <li class="flex items-start gap-2">
-                      <span class="w-1.5 h-1.5 bg-emerald-300 rounded-lg mt-1.5"></span>
-                      <span>{{ listItem.text }}</span>
-                    </li>
-                  }
-                </ul>
-              }
-            </div>
+        <div
+          class="mb-5 p-3 rounded-md hover:bg-emerald-900/20 transition-colors duration-300 border-b border-emerald-900/30"
+        >
+          <div>
+            <h3 class="text-lg font-medium text-emerald-300 mb-2 border-l-2 border-emerald-400/70 pl-3">
+              {{ item.title }}
+            </h3>
+            <p
+              class="text-gray-200 text-sm pl-3"
+              [class.mb-2]="item.list"
+            >
+              {{ item.description }}
+            </p>
+            @if (item.list) {
+              <ul class="text-gray-200 text-sm mt-3 space-y-2 pl-3">
+                @for (listItem of item.list; track listItem) {
+                  <li class="flex items-start gap-2">
+                    <span class="w-1.5 h-1.5 bg-emerald-300 rounded-lg mt-1.5"></span>
+                    <span>{{ listItem.text }}</span>
+                  </li>
+                }
+              </ul>
+            }
           </div>
         </div>
       }
     </div>
 
-    <div class="mt-6 text-right">
+    <div class="mt-6 flex justify-between items-center border-t border-emerald-800/50 pt-4">
+      <p class="text-emerald-300/70 text-xs">Press ESC or click outside to close</p>
       <button
         (click)="closeWithAnimation()"
-        class="text-emerald-100 py-2 px-6 rounded bg-emerald-600 hover:bg-emerald-500/50 transition-all duration-300 hover:scale-105 text-sm"
+        class="text-emerald-100 py-2 px-6 rounded bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 hover:scale-105 text-sm"
       >
         Got it
       </button>

@@ -3,7 +3,6 @@ import { TablerIconComponent } from 'angular-tabler-icons';
 import { CommonModule } from '@angular/common';
 
 interface HelpItem {
-  icon: string;
   title: string;
   description: string;
   list?: { text: string }[];
@@ -22,25 +21,48 @@ export class HelpModalComponent implements OnInit {
 
   helpItems: HelpItem[] = [
     {
-      icon: 'plus',
-      title: 'Creating a Room',
-      description:
-        'Start your planning session by clicking "Create Room". As the host, you\'ll have full control over the session.'
-    },
-    {
-      icon: 'user-plus',
-      title: 'Joining a Room',
-      description: 'Enter the room code and select your role:',
+      title: 'Estimation Methods',
+      description: "Choose the method that best fits your team's needs:",
       list: [
-        { text: 'Player: Actively participate in voting' },
-        { text: 'Spectator: Observe the session without voting' }
+        { text: 'Fibonacci (1, 2, 3, 5, 8, 13, 21): Best for story points estimation with increasing complexity' },
+        { text: 'T-Shirt Sizes (XS, S, M, L, XL): Ideal for quick, relative sizing of features' }
       ]
     },
     {
-      icon: 'check',
-      title: 'Voting & Results',
+      title: 'Creating a Room',
+      description: 'Start a planning session by clicking "Create Room". As the host, you\'ll have additional controls:',
+      list: [
+        { text: 'Reset votes: Clear all estimates to start a new round' },
+        { text: 'Share link: Generate and copy a room link to invite others' },
+        { text: 'See who has voted: Track participation in real-time' }
+      ]
+    },
+    {
+      title: 'Joining a Room',
+      description: 'When you have a room link, you can join as:',
+      list: [
+        { text: 'Player: Actively participate in voting on all items' },
+        { text: 'Spectator: Observe the session without influencing estimates (great for stakeholders)' }
+      ]
+    },
+    {
+      title: 'Voting Process',
       description:
-        'Choose your estimate by selecting a card. Once everyone votes, cards are revealed and the average score is calculated automatically.'
+        'Select a card that represents your estimate. Cards remain hidden until everyone votes, preventing bias.',
+      list: [
+        { text: 'Change vote: You can modify your estimate before all votes are revealed' },
+        { text: 'Results are displayed with an automatically calculated average' },
+        { text: "Cards flip and reveal everyone's votes simultaneously for transparency" }
+      ]
+    },
+    {
+      title: 'Best Practices',
+      description: 'Get the most out of your planning poker sessions:',
+      list: [
+        { text: 'Discuss after revealing: Address significant estimate differences' },
+        { text: 'Keep sessions focused: Aim for 5-10 items per session' },
+        { text: "Vote independently: Form your own opinion before seeing others' votes" }
+      ]
     }
   ];
 
