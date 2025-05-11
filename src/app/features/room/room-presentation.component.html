@@ -6,7 +6,9 @@
     [isSpectator]="state.isSpectator"
     [isHost]="state.isHost"
     [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
-    [showRevealButton]="(usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1"
+    [showRevealButton]="
+      (usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1 && usersVotedCount !== usersConnectedCount
+    "
     (copyInviteLink)="copyInviteLink.emit()"
     (leave)="leave.emit()"
     (toggleSpectator)="toggleSpectator.emit()"
