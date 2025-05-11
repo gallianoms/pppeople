@@ -33,16 +33,27 @@ export class HelpModalComponent implements OnInit {
       description: 'Start a planning session by clicking "Create Room". As the host, you\'ll have additional controls:',
       list: [
         { text: 'Reset votes: Clear all estimates to start a new round' },
-        { text: 'Share link: Generate and copy a room link to invite others' },
-        { text: 'See who has voted: Track participation in real-time' }
+        { text: 'Share link: Generate and copy a room link to invite others (green button)' },
+        { text: 'See who has voted: Track participation in real-time' },
+        { text: 'Watch/Vote mode: Switch between voting and spectating as needed (blue button)' }
       ]
     },
     {
       title: 'Joining a Room',
-      description: 'When you have a room link, you can join as:',
+      description: 'When you have a room link, you can join and participate in these modes:',
       list: [
-        { text: 'Player: Actively participate in voting on all items' },
-        { text: 'Spectator: Observe the session without influencing estimates (great for stakeholders)' }
+        { text: 'Vote mode: Actively participate in voting on all items' },
+        { text: 'Watch mode: Observe the session without influencing estimates (great for stakeholders)' },
+        { text: 'Switch anytime: You can change between modes using the blue button at the top right' }
+      ]
+    },
+    {
+      title: 'Role Switching',
+      description: 'Everyone (including the host) can switch between voting and spectating:',
+      list: [
+        { text: 'Use the blue "Watch mode"/"Vote mode" button in the top right corner' },
+        { text: 'Switching to Watch mode removes your vote and card from the current round' },
+        { text: 'You cannot switch roles when all votes are revealed - wait for a new voting round' }
       ]
     },
     {
@@ -61,7 +72,8 @@ export class HelpModalComponent implements OnInit {
       list: [
         { text: 'Discuss after revealing: Address significant estimate differences' },
         { text: 'Keep sessions focused: Aim for 5-10 items per session' },
-        { text: "Vote independently: Form your own opinion before seeing others' votes" }
+        { text: "Vote independently: Form your own opinion before seeing others' votes" },
+        { text: 'Use Watch mode when you want to observe without influencing the voting process' }
       ]
     }
   ];
