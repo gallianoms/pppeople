@@ -31,6 +31,7 @@ export class RoomPresentationComponent {
   @Input() usersConnectedCount: number | null = 0;
   @Input() usersVotedCount: number | null = 0;
   @Input() averageVotes = 0;
+  @Input() forceReveal = false;
 
   @Output() valueSelected = new EventEmitter<number | string>();
   @Output() deleteVote = new EventEmitter<void>();
@@ -38,6 +39,7 @@ export class RoomPresentationComponent {
   @Output() copyInviteLink = new EventEmitter<void>();
   @Output() leave = new EventEmitter<void>();
   @Output() toggleSpectator = new EventEmitter<void>();
+  @Output() forceRevealCards = new EventEmitter<void>();
 
   @HostListener('window:beforeunload')
   handleWindowClose(): void {
@@ -48,5 +50,12 @@ export class RoomPresentationComponent {
 
   hasNullVotes(votes: (number | null)[]): boolean {
     return votes.some(vote => vote === null);
+  }
+
+  shouldRevealCards(): boolean {
+    return (
+      this.forceReveal ||
+      ((this.usersVotedCount ?? 0) === (this.usersConnectedCount ?? 0) && (this.usersConnectedCount ?? 0) > 0)
+    );
   }
 }

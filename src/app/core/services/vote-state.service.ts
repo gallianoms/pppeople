@@ -18,13 +18,15 @@ export class VoteStateService {
     usersConnectedCount: number;
     usersVotedCount: number;
     averageVote: number;
+    forceReveal: boolean;
   }> {
     const votes$ = this.votingService.getVotes(roomId);
     const usersConnectedCount$ = this.participantService.getActiveParticipantsCount(roomId);
     const usersVotedCount$ = this.votingService.getVotedParticipantsCount(roomId);
+    const forceReveal$ = this.votingService.getForceRevealStatus(roomId);
 
-    return combineLatest([votes$, usersConnectedCount$, usersVotedCount$]).pipe(
-      map(([votes, connected, voted]) => {
+    return combineLatest([votes$, usersConnectedCount$, usersVotedCount$, forceReveal$]).pipe(
+      map(([votes, connected, voted, forceReveal]) => {
         if (connected === voted && connected > 0 && this.checkUnanimousVotes(votes)) {
           this.confettiService.trigger();
         }
@@ -32,7 +34,8 @@ export class VoteStateService {
           votes,
           usersConnectedCount: connected,
           usersVotedCount: voted,
-          averageVote: this.calculateAverage(votes)
+          averageVote: this.calculateAverage(votes),
+          forceReveal
         };
       })
     );

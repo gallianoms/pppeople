@@ -5,7 +5,7 @@ import {
   IconInfoCircle,
   IconBrandLinkedin,
   IconDoorExit,
-  IconClipboard,
+  IconSpade,
   IconClipboardCheck,
   IconX,
   IconPlus,
@@ -21,7 +21,7 @@ import { routes } from './app.routes';
 const icons = {
   IconInfoCircle,
   IconBrandLinkedin,
-  IconClipboard,
+  IconSpade,
   IconClipboardCheck,
   IconDoorExit,
   IconX,

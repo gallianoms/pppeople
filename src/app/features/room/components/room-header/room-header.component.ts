@@ -13,7 +13,10 @@ export class RoomHeaderComponent {
   public readonly copyingLink = input(false);
   public readonly isSpectator = input(false);
   public readonly canToggleSpectator = input(true);
+  public readonly isHost = input(false);
+  public readonly showRevealButton = input(false);
   public readonly copyInviteLink = output<void>();
   public readonly leave = output<void>();
   public readonly toggleSpectator = output<void>();
+  public readonly forceRevealCards = output<void>();
 }

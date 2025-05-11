@@ -27,6 +27,7 @@ export class RoomContainerComponent implements OnInit {
   public usersVotedCount$!: Observable<number>;
   public votes$!: Observable<number[]>;
   public averageVotes$!: Observable<number>;
+  public forceReveal$!: Observable<boolean>;
 
   private location = inject(Location);
   private router = inject(Router);
@@ -76,6 +77,7 @@ export class RoomContainerComponent implements OnInit {
     this.usersConnectedCount$ = voteState$.pipe(map(state => state.usersConnectedCount));
     this.usersVotedCount$ = voteState$.pipe(map(state => state.usersVotedCount));
     this.averageVotes$ = voteState$.pipe(map(state => state.averageVote));
+    this.forceReveal$ = voteState$.pipe(map(state => state.forceReveal));
 
     this.votingService.getUserVote(this.state.roomId, this.state.userId).subscribe(vote => {
       if (vote === null) {
@@ -125,6 +127,26 @@ export class RoomContainerComponent implements OnInit {
       this.selectedNumber = null;
     } catch (error) {
       console.error('Error resetting votes:', error);
+    }
+  }
+
+  public async onForceReveal(): Promise<void> {
+    try {
+      // Verify conditions for revealing cards
+      const usersVoted = await firstValueFrom(this.usersVotedCount$.pipe(map(count => count || 0)));
+      const usersConnected = await firstValueFrom(this.usersConnectedCount$.pipe(map(count => count || 0)));
+
+      // Don't reveal if:
+      // 1. No votes yet
+      // 2. Only one participant
+      // 3. All participants have already voted (cards already revealed)
+      if (usersVoted <= 0 || usersConnected <= 1 || usersVoted === usersConnected) {
+        return;
+      }
+
+      await this.votingService.forceRevealCards(this.state.roomId, this.state.userId);
+    } catch (error) {
+      console.error('Error forcing card reveal:', error);
     }
   }
 

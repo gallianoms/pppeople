@@ -4,10 +4,13 @@
   <app-room-header
     [copyingLink]="copyingLink"
     [isSpectator]="state.isSpectator"
+    [isHost]="state.isHost"
     [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
+    [showRevealButton]="(usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1"
     (copyInviteLink)="copyInviteLink.emit()"
     (leave)="leave.emit()"
     (toggleSpectator)="toggleSpectator.emit()"
+    (forceRevealCards)="forceRevealCards.emit()"
   ></app-room-header>
 
   <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
@@ -41,7 +44,7 @@
             [vote]="vote"
             [showNullVote]="hasNullVotes(votes)"
             [estimationType]="state.estimationType || 'fibonacci'"
-            [allVoted]="(usersVotedCount ?? 0) === (usersConnectedCount ?? 0) && (usersConnectedCount ?? 0) > 0"
+            [allVoted]="shouldRevealCards()"
           ></app-vote-card>
         }
       }
@@ -66,14 +69,16 @@
     ></app-vote-controls>
   }
 
-  <app-room-stats
-    [average]="averageVotes"
-    [isHost]="state.isHost"
-    [isSpectator]="state.isSpectator"
-    [canChangeVote]="selectedNumber !== null && usersConnectedCount !== usersVotedCount"
-    (deleteVote)="deleteVote.emit()"
-    (resetVotes)="resetVotes.emit()"
-  ></app-room-stats>
+  <div class="flex flex-col items-center">
+    <app-room-stats
+      [average]="averageVotes"
+      [isHost]="state.isHost"
+      [isSpectator]="state.isSpectator"
+      [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
+      (deleteVote)="deleteVote.emit()"
+      (resetVotes)="resetVotes.emit()"
+    ></app-room-stats>
+  </div>
 
   <div class="absolute bottom-4 right-4 z-10 hidden md:block">
     <app-social-links-footer />

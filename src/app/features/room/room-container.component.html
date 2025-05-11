@@ -9,10 +9,12 @@
   [usersConnectedCount]="usersConnectedCount$ | async"
   [usersVotedCount]="usersVotedCount$ | async"
   [averageVotes]="(averageVotes$ | async) ?? 0"
+  [forceReveal]="(forceReveal$ | async) ?? false"
   (valueSelected)="onValueSelect($event)"
   (deleteVote)="deleteMyVote()"
   (resetVotes)="onResetVotes()"
   (copyInviteLink)="copyInviteLink()"
   (leave)="leaveRoom()"
   (toggleSpectator)="toggleSpectator()"
+  (forceRevealCards)="onForceReveal()"
 ></app-room-presentation>

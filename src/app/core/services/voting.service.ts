@@ -10,6 +10,10 @@ interface ParticipantData {
   vote: number | null;
 }
 
+interface RoomData {
+  forceReveal?: boolean;
+}
+
 type Participants = Record<string, ParticipantData>;
 type ParticipantUpdates = Record<string, ParticipantData['vote']>;
 
@@ -86,6 +90,8 @@ export class VotingService {
       }
     });
 
+    // Reset force reveal when resetting votes
+    await this.firebaseService.updateData(`rooms/${roomId}`, { forceReveal: false });
     await this.firebaseService.updateData(this.firebaseService.getParticipantsPath(roomId), updates);
   }
 
@@ -93,5 +99,24 @@ export class VotingService {
     return this.firebaseService.createObservable(this.firebaseService.getVotePath(roomId, userId), snapshot =>
       snapshot.exists() ? snapshot.val() : null
     );
+  }
+
+  public async forceRevealCards(roomId: string, userId: string): Promise<void> {
+    const isHost = await this.authService.checkIsHost(roomId, userId);
+
+    if (!isHost) {
+      throw new Error('Only the host can force reveal cards');
+    }
+
+    await this.firebaseService.updateData(`rooms/${roomId}`, { forceReveal: true });
+  }
+
+  public getForceRevealStatus(roomId: string): Observable<boolean> {
+    return this.firebaseService.createObservable(`rooms/${roomId}`, snapshot => {
+      if (!snapshot.exists()) return false;
+
+      const roomData: RoomData = snapshot.val();
+      return roomData.forceReveal === true;
+    });
   }
 }

@@ -44,6 +44,26 @@
     <p class="text-gray-300">{{ isSpectator() ? 'Vote mode' : 'Watch mode' }}</p>
   </div>
 
+  @if (isHost()) {
+    <div
+      role="button"
+      tabindex="0"
+      [class.opacity-50]="!showRevealButton()"
+      [class.cursor-not-allowed]="!showRevealButton()"
+      class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-pink-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-pink-500/20 transition-all duration-300 w-auto min-w-48"
+      (click)="forceRevealCards.emit()"
+      (keyup.enter)="forceRevealCards.emit()"
+      [attr.aria-disabled]="!showRevealButton()"
+      aria-label="Reveal cards"
+    >
+      <i-tabler
+        name="spade"
+        class="text-gray-300"
+      ></i-tabler>
+      <p class="text-gray-300">Reveal cards</p>
+    </div>
+  }
+
   <div
     role="button"
     tabindex="0"
