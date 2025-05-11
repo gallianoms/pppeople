@@ -29,6 +29,24 @@
   <div
     role="button"
     tabindex="0"
+    [class.opacity-50]="!canToggleSpectator()"
+    [class.cursor-not-allowed]="!canToggleSpectator()"
+    class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-sky-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-sky-500/20 transition-all duration-300 w-auto min-w-48"
+    (click)="toggleSpectator.emit()"
+    (keyup.enter)="toggleSpectator.emit()"
+    [attr.aria-disabled]="!canToggleSpectator()"
+    aria-label="Toggle spectator mode"
+  >
+    <i-tabler
+      [name]="isSpectator() ? 'edit' : 'eye'"
+      class="text-gray-300"
+    ></i-tabler>
+    <p class="text-gray-300">{{ isSpectator() ? 'Vote mode' : 'Watch mode' }}</p>
+  </div>
+
+  <div
+    role="button"
+    tabindex="0"
     class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-gray-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-gray-500/20 transition-all duration-300 w-auto min-w-48"
     (click)="leave.emit()"
     (keyup.enter)="leave.emit()"

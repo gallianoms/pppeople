@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RoomConfig } from '../../core/types/room.types';
 import { VoteStateService } from '../../core/services/vote-state.service';
@@ -8,6 +8,7 @@ import { UIStateService } from '../../core/services/ui-state.service';
 import { VotingService } from '../../core/services/voting.service';
 import { RoomPresentationComponent } from './room-presentation.component';
 import { Router } from '@angular/router';
+import { RoomManagementService } from '../../core/services/room-management.service';
 
 @Component({
   selector: 'app-room-container',
@@ -32,6 +33,7 @@ export class RoomContainerComponent implements OnInit {
   private votingService = inject(VotingService);
   private voteStateService = inject(VoteStateService);
   private uiStateService = inject(UIStateService);
+  private roomManagementService = inject(RoomManagementService);
 
   public ngOnInit(): void {
     // Check location state first, then fall back to history state, then sessionStorage
@@ -132,5 +134,30 @@ export class RoomContainerComponent implements OnInit {
 
   public leaveRoom(): void {
     this.uiStateService.leaveRoom(this.state.roomId, this.state.userId, this.state.isHost);
+  }
+
+  public async toggleSpectator(): Promise<void> {
+    // Get latest values from observables
+    const usersConnected = await firstValueFrom(this.usersConnectedCount$.pipe(map(count => count || 0)));
+    const usersVoted = await firstValueFrom(this.usersVotedCount$.pipe(map(count => count || 0)));
+
+    // Don't allow changing to spectator when all votes are revealed
+    if (usersConnected && usersVoted && usersConnected === usersVoted && usersConnected > 0) {
+      // Button should be disabled in the UI, this is just a fallback
+      return;
+    }
+
+    // Toggle the spectator status
+    this.state.isSpectator = !this.state.isSpectator;
+
+    // Update the room configuration in session storage
+    sessionStorage.setItem('roomConfig', JSON.stringify(this.state));
+
+    // Update spectator status in Firebase
+    await this.votingService.updateSpectatorStatus(this.state.roomId, this.state.userId, this.state.isSpectator);
+
+    // Reset the UI state whether changing to spectator or voter
+    this.selectedNumber = null;
+    this.selectedSize = null;
   }
 }

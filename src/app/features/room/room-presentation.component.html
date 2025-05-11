@@ -3,8 +3,11 @@
 >
   <app-room-header
     [copyingLink]="copyingLink"
+    [isSpectator]="state.isSpectator"
+    [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
     (copyInviteLink)="copyInviteLink.emit()"
     (leave)="leave.emit()"
+    (toggleSpectator)="toggleSpectator.emit()"
   ></app-room-header>
 
   <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">

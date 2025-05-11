@@ -32,6 +32,13 @@ export class VotingService {
     await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), { vote: null });
   }
 
+  public async updateSpectatorStatus(roomId: string, userId: string, isSpectator: boolean): Promise<void> {
+    // When changing to spectator, also remove any existing vote
+    const updates = isSpectator ? { isSpectator, vote: null } : { isSpectator };
+
+    await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), updates);
+  }
+
   public getVotedParticipantsCount(roomId: string): Observable<number> {
     return this.firebaseService.createObservable(this.firebaseService.getParticipantsPath(roomId), snapshot => {
       if (!snapshot.exists()) return 0;

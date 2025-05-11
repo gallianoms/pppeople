@@ -6,7 +6,7 @@ interface BaseRoomConfig {
 
 interface HostConfig extends BaseRoomConfig {
   isHost: true;
-  isSpectator: false;
+  isSpectator: boolean;
 }
 
 interface ParticipantConfig extends BaseRoomConfig {

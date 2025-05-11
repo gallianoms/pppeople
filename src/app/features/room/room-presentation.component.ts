@@ -37,6 +37,7 @@ export class RoomPresentationComponent {
   @Output() resetVotes = new EventEmitter<void>();
   @Output() copyInviteLink = new EventEmitter<void>();
   @Output() leave = new EventEmitter<void>();
+  @Output() toggleSpectator = new EventEmitter<void>();
 
   @HostListener('window:beforeunload')
   handleWindowClose(): void {

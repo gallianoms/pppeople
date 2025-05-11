@@ -11,6 +11,9 @@ import { TablerIconComponent } from 'angular-tabler-icons';
 })
 export class RoomHeaderComponent {
   public readonly copyingLink = input(false);
+  public readonly isSpectator = input(false);
+  public readonly canToggleSpectator = input(true);
   public readonly copyInviteLink = output<void>();
   public readonly leave = output<void>();
+  public readonly toggleSpectator = output<void>();
 }
