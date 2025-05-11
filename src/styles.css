@@ -152,6 +152,19 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  /* Buy Me A Coffee button hover effect */
+  .coffee-button-hover {
+    transition:
+      transform 0.3s ease,
+      filter 0.3s ease;
+    display: inline-block;
+  }
+
+  .coffee-button-hover:hover {
+    transform: scale(1.05) rotate(1deg);
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.5));
+  }
+
   /* Radio button custom styling */
   [type='radio'] {
     -webkit-appearance: none !important;
