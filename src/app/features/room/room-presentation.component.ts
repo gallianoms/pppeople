@@ -5,7 +5,6 @@ import { RoomHeaderComponent } from './components/room-header/room-header.compon
 import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
-import { TablerIconComponent } from 'angular-tabler-icons';
 import { SocialLinksFooterComponent } from '../../shared/components/social-links-footer/social-links-footer.component';
 
 @Component({
@@ -17,7 +16,6 @@ import { SocialLinksFooterComponent } from '../../shared/components/social-links
     VoteControlsComponent,
     RoomStatsComponent,
     VoteCardComponent,
-    TablerIconComponent,
     SocialLinksFooterComponent
   ],
   templateUrl: './room-presentation.component.html'
