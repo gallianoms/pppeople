@@ -39,16 +39,21 @@ export class RoomContainerComponent implements OnInit {
   private firebaseService = inject(FirebaseConnectionService);
 
   public async ngOnInit(): Promise<void> {
+    console.log('RoomContainerComponent: Initializing...');
+
     // Check location state first, then fall back to history state, then sessionStorage
     const locationState = this.location.getState() as RoomConfig;
     const historyState = history.state as RoomConfig;
+    console.log('Location state:', locationState);
+    console.log('History state:', historyState);
 
-    // Try to get room config from sessionStorage as last resort
+    // Try to get room config from sessionStorage
     let sessionState: RoomConfig | null = null;
     const storedConfig = sessionStorage.getItem('roomConfig');
     if (storedConfig) {
       try {
         sessionState = JSON.parse(storedConfig) as RoomConfig;
+        console.log('Loaded session state from storage:', sessionState);
       } catch (e) {
         console.error('Failed to parse room config from sessionStorage', e);
       }
@@ -56,18 +61,28 @@ export class RoomContainerComponent implements OnInit {
 
     // Use location state if valid, otherwise use history state, then session state
     if (locationState?.roomId && locationState?.userId) {
+      console.log('Using location state');
       this.state = locationState;
     } else if (historyState?.roomId && historyState?.userId) {
+      console.log('Using history state');
       this.state = historyState;
     } else if (sessionState?.roomId && sessionState?.userId) {
+      console.log('Using session state');
       this.state = sessionState;
-      // Clean up after successful use
-      sessionStorage.removeItem('roomConfig');
+      // Don't remove from sessionStorage here as we might need it for reconnection
     } else {
-      // If no valid state found, redirect to welcome page
+      console.log('No valid state found, redirecting to welcome');
       this.router.navigate(['/welcome']);
       return;
     }
+
+    // Store the state in sessionStorage for potential reconnection
+    const stateToStore = {
+      ...this.state,
+      lastActive: Date.now()
+    };
+    console.log('Storing state in sessionStorage:', stateToStore);
+    sessionStorage.setItem('roomConfig', JSON.stringify(stateToStore));
 
     // For host, try to restore the session without checking room existence first
     if (this.state.isHost) {

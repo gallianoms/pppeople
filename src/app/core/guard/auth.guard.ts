@@ -9,6 +9,24 @@ export const authGuard: CanActivateFn = async route => {
 
   // If we have navigation state with roomId and userId, allow access
   if (navigationState && navigationState['roomId'] && navigationState['userId']) {
+    // If we have a session state, try to rejoin the room
+    const storedConfig = sessionStorage.getItem('roomConfig');
+    if (storedConfig) {
+      try {
+        const sessionState = JSON.parse(storedConfig) as { roomId: string; userId: string; isHost: boolean };
+        if (sessionState.roomId === navigationState['roomId'] && sessionState.userId === navigationState['userId']) {
+          // If the session state matches the navigation state, try to rejoin
+          try {
+            await roomManagementService.rejoinRoom(sessionState.roomId, sessionState.userId, false);
+            return true;
+          } catch (error) {
+            console.warn('Failed to rejoin room, continuing with normal flow', error);
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to parse stored room config', e);
+      }
+    }
     return true;
   }
 
