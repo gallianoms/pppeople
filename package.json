@@ -9,7 +9,8 @@
     "test": "ng test",
     "format": "prettier --write \"src/**/*.{ts,html,css,scss}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,css,scss}\"",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "remove:comments": "node scripts/remove-comments.js"
   },
   "private": true,
   "dependencies": {
