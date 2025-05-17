@@ -9,6 +9,7 @@ import { VotingService } from '../../core/services/voting.service';
 import { RoomPresentationComponent } from './room-presentation.component';
 import { Router } from '@angular/router';
 import { RoomManagementService } from '../../core/services/room-management.service';
+import { FirebaseConnectionService } from '../../core/services/firebase-connection.service';
 
 @Component({
   selector: 'app-room-container',
@@ -35,8 +36,9 @@ export class RoomContainerComponent implements OnInit {
   private voteStateService = inject(VoteStateService);
   private uiStateService = inject(UIStateService);
   private roomManagementService = inject(RoomManagementService);
+  private firebaseService = inject(FirebaseConnectionService);
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     // Check location state first, then fall back to history state, then sessionStorage
     const locationState = this.location.getState() as RoomConfig;
     const historyState = history.state as RoomConfig;
@@ -53,11 +55,11 @@ export class RoomContainerComponent implements OnInit {
     }
 
     // Use location state if valid, otherwise use history state, then session state
-    if (locationState && locationState.roomId && locationState.userId) {
+    if (locationState?.roomId && locationState?.userId) {
       this.state = locationState;
-    } else if (historyState && historyState.roomId && historyState.userId) {
+    } else if (historyState?.roomId && historyState?.userId) {
       this.state = historyState;
-    } else if (sessionState && sessionState.roomId && sessionState.userId) {
+    } else if (sessionState?.roomId && sessionState?.userId) {
       this.state = sessionState;
       // Clean up after successful use
       sessionStorage.removeItem('roomConfig');
@@ -67,8 +69,41 @@ export class RoomContainerComponent implements OnInit {
       return;
     }
 
-    if (!this.state.isHost) {
+    // For host, try to restore the session without checking room existence first
+    if (this.state.isHost) {
+      try {
+        // Update the participant's last active time and mark as host
+        await this.firebaseService.updateData(
+          this.firebaseService.getParticipantPath(this.state.roomId, this.state.userId),
+          {
+            lastActive: Date.now(),
+            isHost: true,
+            isSpectator: false
+          }
+        );
+
+        // Update room host reference if needed
+        await this.firebaseService.updateData(`rooms/${this.state.roomId}`, {
+          hostId: this.state.userId,
+          lastActivity: Date.now()
+        });
+      } catch (error) {
+        console.error('Error restoring host session:', error);
+        // Continue even if there's an error - Firebase will handle reconnection
+      }
+    } else {
+      // For participants, set up room deletion listener
       this.uiStateService.setupRoomDeletionListener(this.state.roomId);
+
+      try {
+        // Update the participant's last active time
+        await this.firebaseService.updateData(
+          this.firebaseService.getParticipantPath(this.state.roomId, this.state.userId),
+          { lastActive: Date.now() }
+        );
+      } catch (error) {
+        console.error('Error updating participant status:', error);
+      }
     }
 
     const voteState$ = this.voteStateService.getVoteState(this.state.roomId);

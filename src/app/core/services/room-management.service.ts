@@ -93,4 +93,58 @@ export class RoomManagementService {
     const roomData = await this.firebaseService.getData(this.firebaseService.getRoomPath(roomId));
     return roomData?.estimationType || 'fibonacci';
   }
+
+  public async checkRoomExists(roomId: string): Promise<boolean> {
+    try {
+      const roomData = await this.firebaseService.getData(this.firebaseService.getRoomPath(roomId));
+      return roomData !== null;
+    } catch (error) {
+      console.error('Error checking if room exists:', error);
+      return false;
+    }
+  }
+
+  public async rejoinRoom(roomId: string, userId: string, isSpectator: boolean): Promise<void> {
+    try {
+      // Update the participant's last active timestamp
+      await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), {
+        isSpectator,
+        lastActive: Date.now()
+      });
+    } catch (error) {
+      console.error('Error rejoining room:', error);
+      throw error;
+    }
+  }
+
+  public async restoreHostSession(
+    roomId: string,
+    userId: string,
+    estimationType: 'fibonacci' | 't-shirt' = 'fibonacci'
+  ): Promise<void> {
+    try {
+      // First, check if the room exists
+      const roomExists = await this.checkRoomExists(roomId);
+      if (!roomExists) {
+        throw new Error('Room does not exist');
+      }
+
+      // Update the room with the host information
+      await this.firebaseService.updateData(`rooms/${roomId}`, {
+        hostId: userId,
+        estimationType,
+        lastActivity: Date.now()
+      });
+
+      // Update the participant's data to mark as host
+      await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), {
+        isHost: true,
+        isSpectator: false,
+        lastActive: Date.now()
+      });
+    } catch (error) {
+      console.error('Error restoring host session:', error);
+      throw error;
+    }
+  }
 }

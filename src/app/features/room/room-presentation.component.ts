@@ -43,7 +43,10 @@ export class RoomPresentationComponent {
 
   @HostListener('window:beforeunload')
   handleWindowClose(): void {
-    if (this.state?.roomId && this.state?.userId) {
+    // Don't emit leave event on page refresh
+    const isPageRefresh = performance.navigation?.type === 1; // 1 = TYPE_RELOAD
+
+    if (this.state?.roomId && this.state?.userId && !isPageRefresh) {
       this.leave.emit();
     }
   }
