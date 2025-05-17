@@ -44,7 +44,6 @@ export class VotingService {
   }
 
   public async updateSpectatorStatus(roomId: string, userId: string, isSpectator: boolean): Promise<void> {
-    // When changing to spectator, also remove any existing vote
     const updates = isSpectator ? { isSpectator, vote: null } : { isSpectator };
 
     await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), updates);
@@ -97,7 +96,6 @@ export class VotingService {
       }
     });
 
-    // Reset force reveal when resetting votes
     await this.firebaseService.updateData(`rooms/${roomId}`, { forceReveal: false });
     await this.firebaseService.updateData(this.firebaseService.getParticipantsPath(roomId), updates);
   }

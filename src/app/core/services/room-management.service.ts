@@ -55,7 +55,6 @@ export class RoomManagementService {
     const estimationType = roomData.estimationType || 'fibonacci';
     console.log('Room data:', { roomId, estimationType, existingParticipants: roomData?.participants });
 
-    // Check if we have a stored userId from a previous session
     const storedConfig = sessionStorage.getItem('roomConfig');
     console.log('Stored config from sessionStorage:', storedConfig);
 
@@ -70,7 +69,6 @@ export class RoomManagementService {
             await this.rejoinRoom(roomId, sessionState.userId, isSpectator);
             console.log('Successfully rejoined with existing userId:', sessionState.userId);
 
-            // Update the stored config with fresh data
             const updatedConfig = {
               ...sessionState,
               lastReconnected: Date.now()
@@ -83,7 +81,6 @@ export class RoomManagementService {
             };
           } catch (error) {
             console.warn('Failed to rejoin with existing userId, creating new participant', error);
-            // Continue to create a new participant if rejoining fails
           }
         } else {
           console.log('Session state does not match current room, creating new participant');
@@ -95,7 +92,6 @@ export class RoomManagementService {
       console.log('No stored config found, creating new participant');
     }
 
-    // If we get here, either there was no stored config or rejoining failed
     console.log('Creating new participant for room:', roomId);
     const newParticipantData = {
       isHost: false,
@@ -111,7 +107,6 @@ export class RoomManagementService {
       newParticipantData
     );
 
-    // Store the new participant info in session storage
     const newSessionState = {
       roomId,
       userId,
@@ -177,7 +172,7 @@ export class RoomManagementService {
 
       if (!participantData) {
         console.log('No existing participant found, creating new participant with userId:', userId);
-        // If participant doesn't exist, create a new one with the same userId
+
         const newParticipantData = {
           isHost: false,
           isSpectator,
@@ -189,7 +184,7 @@ export class RoomManagementService {
         await this.firebaseService.setData(participantPath, newParticipantData);
       } else {
         console.log('Updating existing participant with lastActive timestamp');
-        // Update the existing participant's last active timestamp
+
         await this.firebaseService.updateData(participantPath, {
           isSpectator,
           lastActive: Date.now(),
@@ -208,20 +203,17 @@ export class RoomManagementService {
     estimationType: 'fibonacci' | 't-shirt' = 'fibonacci'
   ): Promise<void> {
     try {
-      // First, check if the room exists
       const roomExists = await this.checkRoomExists(roomId);
       if (!roomExists) {
         throw new Error('Room does not exist');
       }
 
-      // Update the room with the host information
       await this.firebaseService.updateData(`rooms/${roomId}`, {
         hostId: userId,
         estimationType,
         lastActivity: Date.now()
       });
 
-      // Update the participant's data to mark as host
       await this.firebaseService.updateData(this.firebaseService.getParticipantPath(roomId, userId), {
         isHost: true,
         isSpectator: false,

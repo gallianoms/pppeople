@@ -61,7 +61,6 @@ export class FirebaseConnectionService {
     });
   }
 
-  // Utility methods for paths
   public getRoomPath(roomId: string): string {
     return `rooms/${roomId}`;
   }

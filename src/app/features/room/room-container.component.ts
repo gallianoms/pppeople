@@ -41,13 +41,11 @@ export class RoomContainerComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     console.log('RoomContainerComponent: Initializing...');
 
-    // Check location state first, then fall back to history state, then sessionStorage
     const locationState = this.location.getState() as RoomConfig;
     const historyState = history.state as RoomConfig;
     console.log('Location state:', locationState);
     console.log('History state:', historyState);
 
-    // Try to get room config from sessionStorage
     let sessionState: RoomConfig | null = null;
     const storedConfig = sessionStorage.getItem('roomConfig');
     if (storedConfig) {
@@ -59,7 +57,6 @@ export class RoomContainerComponent implements OnInit {
       }
     }
 
-    // Use location state if valid, otherwise use history state, then session state
     if (locationState?.roomId && locationState?.userId) {
       console.log('Using location state');
       this.state = locationState;
@@ -69,14 +66,12 @@ export class RoomContainerComponent implements OnInit {
     } else if (sessionState?.roomId && sessionState?.userId) {
       console.log('Using session state');
       this.state = sessionState;
-      // Don't remove from sessionStorage here as we might need it for reconnection
     } else {
       console.log('No valid state found, redirecting to welcome');
       this.router.navigate(['/welcome']);
       return;
     }
 
-    // Store the state in sessionStorage for potential reconnection
     const stateToStore = {
       ...this.state,
       lastActive: Date.now()
@@ -84,10 +79,8 @@ export class RoomContainerComponent implements OnInit {
     console.log('Storing state in sessionStorage:', stateToStore);
     sessionStorage.setItem('roomConfig', JSON.stringify(stateToStore));
 
-    // For host, try to restore the session without checking room existence first
     if (this.state.isHost) {
       try {
-        // Update the participant's last active time and mark as host
         await this.firebaseService.updateData(
           this.firebaseService.getParticipantPath(this.state.roomId, this.state.userId),
           {
@@ -97,21 +90,17 @@ export class RoomContainerComponent implements OnInit {
           }
         );
 
-        // Update room host reference if needed
         await this.firebaseService.updateData(`rooms/${this.state.roomId}`, {
           hostId: this.state.userId,
           lastActivity: Date.now()
         });
       } catch (error) {
         console.error('Error restoring host session:', error);
-        // Continue even if there's an error - Firebase will handle reconnection
       }
     } else {
-      // For participants, set up room deletion listener
       this.uiStateService.setupRoomDeletionListener(this.state.roomId);
 
       try {
-        // Update the participant's last active time
         await this.firebaseService.updateData(
           this.firebaseService.getParticipantPath(this.state.roomId, this.state.userId),
           { lastActive: Date.now() }
@@ -182,14 +171,9 @@ export class RoomContainerComponent implements OnInit {
 
   public async onForceReveal(): Promise<void> {
     try {
-      // Verify conditions for revealing cards
       const usersVoted = await firstValueFrom(this.usersVotedCount$.pipe(map(count => count || 0)));
       const usersConnected = await firstValueFrom(this.usersConnectedCount$.pipe(map(count => count || 0)));
 
-      // Don't reveal if:
-      // 1. No votes yet
-      // 2. Only one participant
-      // 3. All participants have already voted (cards already revealed)
       if (usersVoted <= 0 || usersConnected <= 1 || usersVoted === usersConnected) {
         return;
       }
@@ -209,26 +193,19 @@ export class RoomContainerComponent implements OnInit {
   }
 
   public async toggleSpectator(): Promise<void> {
-    // Get latest values from observables
     const usersConnected = await firstValueFrom(this.usersConnectedCount$.pipe(map(count => count || 0)));
     const usersVoted = await firstValueFrom(this.usersVotedCount$.pipe(map(count => count || 0)));
 
-    // Don't allow changing to spectator when all votes are revealed
     if (usersConnected && usersVoted && usersConnected === usersVoted && usersConnected > 0) {
-      // Button should be disabled in the UI, this is just a fallback
       return;
     }
 
-    // Toggle the spectator status
     this.state.isSpectator = !this.state.isSpectator;
 
-    // Update the room configuration in session storage
     sessionStorage.setItem('roomConfig', JSON.stringify(this.state));
 
-    // Update spectator status in Firebase
     await this.votingService.updateSpectatorStatus(this.state.roomId, this.state.userId, this.state.isSpectator);
 
-    // Reset the UI state whether changing to spectator or voter
     this.selectedNumber = null;
     this.selectedSize = null;
   }

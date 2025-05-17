@@ -79,7 +79,6 @@ export class HelpModalComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Set initialized after component is fully rendered to prevent animation glitches
     setTimeout(() => {
       this.isInitialized = true;
     }, 0);
@@ -104,6 +103,6 @@ export class HelpModalComponent implements OnInit {
 
     setTimeout(() => {
       this.close.emit();
-    }, 500); // Match animation duration
+    }, 500);
   }
 }
