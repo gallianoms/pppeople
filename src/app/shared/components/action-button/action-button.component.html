@@ -1,0 +1,24 @@
+<div
+  role="button"
+  tabindex="0"
+  [class.opacity-50]="disabled()"
+  [class.cursor-not-allowed]="disabled()"
+  class="action-button flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border px-6 py-2 rounded-lg cursor-pointer transition-all duration-300"
+  [class]="buttonTheme"
+  [style.width]="width()"
+  [style.min-width]="width() === 'auto' ? '48px' : 'auto'"
+  (click)="!disabled() && actionClick.emit()"
+  (keyup.enter)="!disabled() && actionClick.emit()"
+  [attr.aria-disabled]="disabled()"
+  [attr.aria-label]="displayLabel"
+>
+  <div class="action-button-content flex items-center justify-center gap-2 relative z-1">
+    @if (displayIcon) {
+      <i-tabler
+        [name]="displayIcon"
+        class="text-gray-300"
+      ></i-tabler>
+    }
+    <p class="text-gray-300">{{ displayLabel }}</p>
+  </div>
+</div>

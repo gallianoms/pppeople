@@ -1,11 +1,11 @@
 import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TablerIconComponent } from 'angular-tabler-icons';
+import { ActionButtonComponent } from '../../../../shared/components/action-button/action-button.component';
 
 @Component({
   selector: 'app-room-header',
   standalone: true,
-  imports: [CommonModule, TablerIconComponent],
+  imports: [CommonModule, ActionButtonComponent],
   templateUrl: './room-header.component.html',
   styleUrls: ['./styles/button-effect.css']
 })

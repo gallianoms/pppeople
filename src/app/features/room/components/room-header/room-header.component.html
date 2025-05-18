@@ -14,83 +14,40 @@
 </div>
 
 <div class="absolute top-8 right-8 flex flex-col gap-2">
-  <div
-    role="button"
-    tabindex="0"
-    class="share-button relative flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-emerald-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-emerald-500/20 transition-all duration-300 w-auto min-w-48"
-    (click)="copyInviteLink.emit()"
-    (keyup.enter)="copyInviteLink.emit()"
-    [attr.aria-label]="copyingLink() ? 'Link copied' : 'Share link'"
-  >
-    <div class="share-button-content flex items-center justify-center gap-2">
-      @if (!copyingLink()) {
-        <i-tabler
-          name="link"
-          class="text-gray-300"
-        ></i-tabler>
-      }
-      @if (copyingLink()) {
-        <i-tabler
-          name="check"
-          class="text-emerald-300"
-        ></i-tabler>
-      }
-      <p class="text-gray-300">
-        {{ copyingLink() ? 'Copied link' : 'Share link' }}
-      </p>
-    </div>
-  </div>
+  <app-action-button
+    [icon]="copyingLink() ? 'check' : 'link'"
+    [label]="copyingLink() ? 'Copied link' : 'Share link'"
+    [theme]="'emerald'"
+    [width]="'auto'"
+    [constantShine]="true"
+    (actionClick)="copyInviteLink.emit()"
+  ></app-action-button>
 
-  <div
-    role="button"
-    tabindex="0"
-    [class.opacity-50]="!canToggleSpectator()"
-    [class.cursor-not-allowed]="!canToggleSpectator()"
-    class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-sky-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-sky-500/20 transition-all duration-300 w-auto min-w-48"
-    (click)="toggleSpectator.emit()"
-    (keyup.enter)="toggleSpectator.emit()"
-    [attr.aria-disabled]="!canToggleSpectator()"
-    aria-label="Toggle spectator mode"
-  >
-    <i-tabler
-      [name]="isSpectator() ? 'edit' : 'eye'"
-      class="text-gray-300"
-    ></i-tabler>
-    <p class="text-gray-300">{{ isSpectator() ? 'Vote mode' : 'Watch mode' }}</p>
-  </div>
+  <app-action-button
+    [icon]="isSpectator() ? 'edit' : 'eye'"
+    [label]="isSpectator() ? 'Vote mode' : 'Watch mode'"
+    [theme]="'sky'"
+    [disabled]="!canToggleSpectator()"
+    [width]="'auto'"
+    (actionClick)="toggleSpectator.emit()"
+  ></app-action-button>
 
   @if (isHost()) {
-    <div
-      role="button"
-      tabindex="0"
-      [class.opacity-50]="!showRevealButton()"
-      [class.cursor-not-allowed]="!showRevealButton()"
-      class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-pink-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-pink-500/20 transition-all duration-300 w-auto min-w-48"
-      (click)="forceRevealCards.emit()"
-      (keyup.enter)="forceRevealCards.emit()"
-      [attr.aria-disabled]="!showRevealButton()"
-      aria-label="Reveal cards"
-    >
-      <i-tabler
-        name="spade"
-        class="text-gray-300"
-      ></i-tabler>
-      <p class="text-gray-300">Reveal cards</p>
-    </div>
+    <app-action-button
+      [icon]="'spade'"
+      [label]="'Reveal cards'"
+      [theme]="'pink'"
+      [disabled]="!showRevealButton()"
+      [width]="'auto'"
+      (actionClick)="forceRevealCards.emit()"
+    ></app-action-button>
   }
 
-  <div
-    role="button"
-    tabindex="0"
-    class="flex items-center justify-center gap-2 bg-gray-800/30 backdrop-blur-xs border border-gray-400/50 px-6 py-2 rounded-lg cursor-pointer hover:bg-gray-500/20 transition-all duration-300 w-auto min-w-48"
-    (click)="leave.emit()"
-    (keyup.enter)="leave.emit()"
-    aria-label="Leave room"
-  >
-    <i-tabler
-      name="door-exit"
-      class="text-gray-300"
-    ></i-tabler>
-    <p class="text-gray-300">Leave room</p>
-  </div>
+  <app-action-button
+    [icon]="'door-exit'"
+    [label]="'Leave room'"
+    [theme]="'gray'"
+    [width]="'auto'"
+    (actionClick)="leave.emit()"
+  ></app-action-button>
 </div>
