@@ -26,7 +26,7 @@
     </div>
 
     <div class="mb-6 min-h-[144px]">
-      <div class="grid grid-cols-6 gap-4 justify-center">
+      <div class="grid grid-cols-5 sm:grid-cols-6 gap-3 sm:gap-4 justify-center">
         @if (votes) {
           @for (vote of votes; track $index) {
             <app-vote-card
