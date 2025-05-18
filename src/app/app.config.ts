@@ -13,7 +13,8 @@ import {
   IconCheck,
   IconLink,
   IconEye,
-  IconEdit
+  IconEdit,
+  IconMenu2
 } from 'angular-tabler-icons/icons';
 
 import { routes } from './app.routes';
@@ -30,7 +31,8 @@ const icons = {
   IconCheck,
   IconLink,
   IconEye,
-  IconEdit
+  IconEdit,
+  IconMenu2
 };
 
 export const appConfig: ApplicationConfig = {

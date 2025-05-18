@@ -1,4 +1,4 @@
-<div class="absolute top-8 left-8">
+<div class="absolute top-8 left-8 coffee-button-container">
   <a
     href="https://www.buymeacoffee.com/jsalvadev"
     target="_blank"
@@ -13,7 +13,8 @@
   </a>
 </div>
 
-<div class="absolute top-8 right-8 flex flex-col gap-2">
+<!-- Desktop buttons -->
+<div class="absolute top-8 right-8 flex flex-col gap-2 desktop-buttons">
   <app-action-button
     [icon]="copyingLink() ? 'check' : 'link'"
     [label]="copyingLink() ? 'Copied link' : 'Share link'"
@@ -50,4 +51,74 @@
     [width]="'auto'"
     (actionClick)="leave.emit()"
   ></app-action-button>
+</div>
+
+<!-- Mobile menu backdrop -->
+<div
+  class="mobile-menu-backdrop"
+  [class.open]="isMobileMenuOpen()"
+  (click)="toggleMobileMenu()"
+  (keyup.enter)="toggleMobileMenu()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Close menu'"
+></div>
+
+<!-- Mobile floating action button -->
+<div class="mobile-fab-container">
+  <div
+    class="mobile-menu"
+    [class.open]="isMobileMenuOpen()"
+  >
+    <app-action-button
+      [icon]="copyingLink() ? 'check' : 'link'"
+      [label]="copyingLink() ? 'Copied link' : 'Share link'"
+      [theme]="'emerald'"
+      [width]="'auto'"
+      [constantShine]="true"
+      (actionClick)="copyInviteLink.emit(); closeMenu()"
+    ></app-action-button>
+
+    <app-action-button
+      [icon]="isSpectator() ? 'edit' : 'eye'"
+      [label]="isSpectator() ? 'Vote mode' : 'Watch mode'"
+      [theme]="'sky'"
+      [disabled]="!canToggleSpectator()"
+      [width]="'auto'"
+      (actionClick)="toggleSpectator.emit(); closeMenu()"
+    ></app-action-button>
+
+    @if (isHost()) {
+      <app-action-button
+        [icon]="'spade'"
+        [label]="'Reveal cards'"
+        [theme]="'pink'"
+        [disabled]="!showRevealButton()"
+        [width]="'auto'"
+        (actionClick)="forceRevealCards.emit(); closeMenu()"
+      ></app-action-button>
+    }
+
+    <app-action-button
+      [icon]="'door-exit'"
+      [label]="'Leave room'"
+      [theme]="'gray'"
+      [width]="'auto'"
+      (actionClick)="leave.emit(); closeMenu()"
+    ></app-action-button>
+  </div>
+
+  <div
+    class="mobile-fab"
+    role="button"
+    (click)="toggleMobileMenu()"
+    (keyup.enter)="toggleMobileMenu()"
+    tabindex="0"
+    [attr.aria-label]="isMobileMenuOpen() ? 'Close menu' : 'Open menu'"
+  >
+    <i-tabler
+      [name]="isMobileMenuOpen() ? 'x' : 'menu-2'"
+      class="text-white"
+    ></i-tabler>
+  </div>
 </div>
