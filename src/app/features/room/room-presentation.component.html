@@ -16,26 +16,11 @@
   ></app-room-header>
 
   <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
-    <div class="overflow-hidden rounded-[40px] shadow-2xl relative group">
-      <div
-        class="absolute inset-0 bg-gradient-to-tr from-blue-500/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      ></div>
-      <div
-        class="absolute -top-20 -right-20 w-40 h-40 bg-blue-400 rounded-lg blur-3xl opacity-30 group-hover:opacity-60 transition-opacity duration-500"
-      ></div>
-      <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white rounded-lg blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-700"
-      ></div>
-
-      <img
-        src="images/planning-poker.webp"
-        alt="Planning Poker"
-        class="h-80 w-auto object-cover transition-transform duration-700 group-hover:scale-105 mask-radial-at-center mask-radial-from-80% mask-radial-to-95%"
-      />
-      <div
-        class="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"
-      ></div>
-    </div>
+    <app-image-card
+      imageSrc="images/planning-poker.webp"
+      imageAlt="Planning Poker"
+      containerClass="h-80"
+    ></app-image-card>
   </div>
 
   <div class="mb-6 min-h-[144px]">

@@ -6,6 +6,7 @@ import { VoteControlsComponent } from './components/vote-controls/vote-controls.
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
 import { SocialLinksFooterComponent } from '../../shared/components/social-links-footer/social-links-footer.component';
+import { ImageCardComponent } from '../../shared/image-card/image-card.component';
 
 @Component({
   selector: 'app-room-presentation',
@@ -16,7 +17,8 @@ import { SocialLinksFooterComponent } from '../../shared/components/social-links
     VoteControlsComponent,
     RoomStatsComponent,
     VoteCardComponent,
-    SocialLinksFooterComponent
+    SocialLinksFooterComponent,
+    ImageCardComponent
   ],
   templateUrl: './room-presentation.component.html'
 })
