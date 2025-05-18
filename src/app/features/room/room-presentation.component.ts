@@ -6,7 +6,7 @@ import { VoteControlsComponent } from './components/vote-controls/vote-controls.
 import { RoomStatsComponent } from './components/room-stats/room-stats.component';
 import { VoteCardComponent } from './components/vote-card/vote-card.component';
 import { SocialLinksFooterComponent } from '../../shared/components/social-links-footer/social-links-footer.component';
-import { ImageCardComponent } from '../../shared/image-card/image-card.component';
+import { ImageCardComponent } from '../../shared/components/image-card/image-card.component';
 import { ContainerComponent } from '../../shared/components/container/container.component';
 
 @Component({
