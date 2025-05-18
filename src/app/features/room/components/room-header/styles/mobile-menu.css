@@ -108,6 +108,14 @@
   }
 }
 
+@media (max-width: 480px) {
+  .mobile-fab-container {
+    bottom: 20px;
+    right: 20px;
+    left: auto;
+  }
+}
+
 @media (min-width: 481px) and (max-width: 768px) {
   .coffee-button-container {
     position: fixed !important;
