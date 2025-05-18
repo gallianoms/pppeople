@@ -100,10 +100,55 @@
   .mobile-fab-container {
     display: block;
   }
+
+  .coffee-button-container {
+    top: 20px;
+    left: 20px;
+    z-index: 80;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .coffee-button-container {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 20px;
+    left: 20px;
+    z-index: 80;
+  }
+
+  .coffee-button-container img {
+    transform: scale(0.9);
+    transition: transform 0.2s ease;
+  }
+
+  .coffee-button-container img:hover {
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 480px) {
   .coffee-button-container {
     display: none;
+  }
+}
+
+/* Ajustes específicos para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .coffee-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 80;
+  }
+
+  .coffee-button-container img {
+    transform: scale(0.85);
+    transition: transform 0.2s ease;
+  }
+
+  .coffee-button-container img:hover {
+    transform: scale(0.95);
+    filter: brightness(1.05);
   }
 }
