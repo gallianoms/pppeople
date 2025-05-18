@@ -16,12 +16,12 @@
       (forceRevealCards)="forceRevealCards.emit()"
     />
 
-    <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
+    <div class="mb-10 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
       <app-image-card
         imageSrc="images/planning-poker.webp"
         imageAlt="Planning Poker"
         containerClass="h-80"
-        mobileClass="h-40"
+        mobileClass="h-60"
       />
     </div>
 
@@ -40,9 +40,9 @@
       </div>
       @if (usersConnectedCount) {
         @if (usersVotedCount) {
-          <p class="text-gray-300 text-center mt-6">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
+          <p class="text-gray-300 text-center mt-10">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
         } @else {
-          <p class="text-gray-300 text-center mt-6">Waiting for players to vote...</p>
+          <p class="text-gray-300 text-center mt-10">Waiting for players to vote...</p>
         }
       }
     </div>

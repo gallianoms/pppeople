@@ -10,6 +10,6 @@ import { CommonModule } from '@angular/common';
 export class ImageCardComponent {
   @Input() imageSrc = 'images/planning-poker.webp';
   @Input() imageAlt = 'Planning Poker';
-  @Input() containerClass = 'h-80';
-  @Input() mobileClass = 'h-48';
+  @Input() containerClass = 'h-48';
+  @Input() mobileClass = 'h-24';
 }
