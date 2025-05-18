@@ -1,71 +1,74 @@
-<div
-  class="min-h-screen flex flex-col items-center pt-8 pb-8 relative animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
->
-  <app-room-header
-    [copyingLink]="copyingLink"
-    [isSpectator]="state.isSpectator"
-    [isHost]="state.isHost"
-    [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
-    [showRevealButton]="
-      (usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1 && usersVotedCount !== usersConnectedCount
-    "
-    (copyInviteLink)="copyInviteLink.emit()"
-    (leave)="leave.emit()"
-    (toggleSpectator)="toggleSpectator.emit()"
-    (forceRevealCards)="forceRevealCards.emit()"
-  />
-
-  <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
-    <app-image-card
-      imageSrc="images/planning-poker.webp"
-      imageAlt="Planning Poker"
-      containerClass="h-80"
+<div class="min-h-screen w-full bg-background">
+  <app-container
+    customClasses="flex flex-col items-center pb-8 relative animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
+  >
+    <app-room-header
+      [copyingLink]="copyingLink"
+      [isSpectator]="state.isSpectator"
+      [isHost]="state.isHost"
+      [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
+      [showRevealButton]="
+        (usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1 && usersVotedCount !== usersConnectedCount
+      "
+      (copyInviteLink)="copyInviteLink.emit()"
+      (leave)="leave.emit()"
+      (toggleSpectator)="toggleSpectator.emit()"
+      (forceRevealCards)="forceRevealCards.emit()"
     />
-  </div>
 
-  <div class="mb-6 min-h-[144px]">
-    <div class="grid grid-cols-6 gap-4 justify-center">
-      @if (votes) {
-        @for (vote of votes; track $index) {
-          <app-vote-card
-            [vote]="vote"
-            [showNullVote]="hasNullVotes(votes)"
-            [estimationType]="state.estimationType || 'fibonacci'"
-            [allVoted]="shouldRevealCards()"
-          />
+    <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
+      <app-image-card
+        imageSrc="images/planning-poker.webp"
+        imageAlt="Planning Poker"
+        containerClass="h-80"
+        mobileClass="h-40"
+      />
+    </div>
+
+    <div class="mb-6 min-h-[144px]">
+      <div class="grid grid-cols-6 gap-4 justify-center">
+        @if (votes) {
+          @for (vote of votes; track $index) {
+            <app-vote-card
+              [vote]="vote"
+              [showNullVote]="hasNullVotes(votes)"
+              [estimationType]="state.estimationType || 'fibonacci'"
+              [allVoted]="shouldRevealCards()"
+            />
+          }
+        }
+      </div>
+      @if (usersConnectedCount) {
+        @if (usersVotedCount) {
+          <p class="text-gray-300 text-center mt-6">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
+        } @else {
+          <p class="text-gray-300 text-center mt-6">Waiting for players to vote...</p>
         }
       }
     </div>
-    @if (usersConnectedCount) {
-      @if (usersVotedCount) {
-        <p class="text-gray-300 text-center mt-6">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
-      } @else {
-        <p class="text-gray-300 text-center mt-6">Waiting for players to vote...</p>
-      }
+
+    @if (!state.isSpectator) {
+      <app-vote-controls
+        [numbers]="numbers"
+        [tshirtSizes]="tshirtSizes"
+        [selectedNumber]="selectedNumber"
+        [selectedSize]="selectedSize"
+        [estimationType]="state.estimationType || 'fibonacci'"
+        (valueSelected)="valueSelected.emit($event)"
+      />
     }
-  </div>
 
-  @if (!state.isSpectator) {
-    <app-vote-controls
-      [numbers]="numbers"
-      [tshirtSizes]="tshirtSizes"
-      [selectedNumber]="selectedNumber"
-      [selectedSize]="selectedSize"
-      [estimationType]="state.estimationType || 'fibonacci'"
-      (valueSelected)="valueSelected.emit($event)"
-    />
-  }
-
-  <div class="flex flex-col items-center">
-    <app-room-stats
-      [average]="averageVotes"
-      [isHost]="state.isHost"
-      [isSpectator]="state.isSpectator"
-      [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
-      (deleteVote)="deleteVote.emit()"
-      (resetVotes)="resetVotes.emit()"
-    />
-  </div>
+    <div class="flex flex-col items-center">
+      <app-room-stats
+        [average]="averageVotes"
+        [isHost]="state.isHost"
+        [isSpectator]="state.isSpectator"
+        [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
+        (deleteVote)="deleteVote.emit()"
+        (resetVotes)="resetVotes.emit()"
+      />
+    </div>
+  </app-container>
 
   <div class="absolute bottom-4 right-4 z-10 hidden md:block">
     <app-social-links-footer />
