@@ -12,7 +12,7 @@ import { SocialLinksFooterComponent } from '../../shared/components/social-links
   selector: 'app-welcome',
   imports: [FormsModule, HelpModalComponent, TablerIconComponent, SocialLinksFooterComponent],
   templateUrl: './welcome.component.html',
-  styleUrls: ['./styles/create-button-effect.css']
+  styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent {
   public showHelpModal = false;
