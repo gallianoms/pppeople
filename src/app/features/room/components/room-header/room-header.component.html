@@ -21,7 +21,7 @@
     [width]="'auto'"
     [constantShine]="true"
     (actionClick)="copyInviteLink.emit()"
-  ></app-action-button>
+  />
 
   <app-action-button
     [icon]="isSpectator() ? 'edit' : 'eye'"
@@ -30,7 +30,7 @@
     [disabled]="!canToggleSpectator()"
     [width]="'auto'"
     (actionClick)="toggleSpectator.emit()"
-  ></app-action-button>
+  />
 
   @if (isHost()) {
     <app-action-button
@@ -40,7 +40,7 @@
       [disabled]="!showRevealButton()"
       [width]="'auto'"
       (actionClick)="forceRevealCards.emit()"
-    ></app-action-button>
+    />
   }
 
   <app-action-button
@@ -49,7 +49,7 @@
     [theme]="'gray'"
     [width]="'auto'"
     (actionClick)="leave.emit()"
-  ></app-action-button>
+  />
 </div>
 
 <div
@@ -74,7 +74,7 @@
       [width]="'auto'"
       [constantShine]="true"
       (actionClick)="copyInviteLink.emit(); closeMenu()"
-    ></app-action-button>
+    />
 
     <app-action-button
       [icon]="isSpectator() ? 'edit' : 'eye'"
@@ -83,7 +83,7 @@
       [disabled]="!canToggleSpectator()"
       [width]="'auto'"
       (actionClick)="toggleSpectator.emit(); closeMenu()"
-    ></app-action-button>
+    />
 
     @if (isHost()) {
       <app-action-button
@@ -93,7 +93,7 @@
         [disabled]="!showRevealButton()"
         [width]="'auto'"
         (actionClick)="forceRevealCards.emit(); closeMenu()"
-      ></app-action-button>
+      />
     }
 
     <app-action-button
@@ -102,7 +102,7 @@
       [theme]="'gray'"
       [width]="'auto'"
       (actionClick)="leave.emit(); closeMenu()"
-    ></app-action-button>
+    />
   </div>
 
   <div
@@ -116,6 +116,6 @@
     <i-tabler
       [name]="isMobileMenuOpen() ? 'x' : 'menu-2'"
       class="text-white"
-    ></i-tabler>
+    />
   </div>
 </div>

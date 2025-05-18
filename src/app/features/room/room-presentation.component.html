@@ -13,14 +13,14 @@
     (leave)="leave.emit()"
     (toggleSpectator)="toggleSpectator.emit()"
     (forceRevealCards)="forceRevealCards.emit()"
-  ></app-room-header>
+  />
 
   <div class="mb-12 animate-scaleIn motion-safe:transition-all motion-safe:duration-300">
     <app-image-card
       imageSrc="images/planning-poker.webp"
       imageAlt="Planning Poker"
       containerClass="h-80"
-    ></app-image-card>
+    />
   </div>
 
   <div class="mb-6 min-h-[144px]">
@@ -32,7 +32,7 @@
             [showNullVote]="hasNullVotes(votes)"
             [estimationType]="state.estimationType || 'fibonacci'"
             [allVoted]="shouldRevealCards()"
-          ></app-vote-card>
+          />
         }
       }
     </div>
@@ -53,7 +53,7 @@
       [selectedSize]="selectedSize"
       [estimationType]="state.estimationType || 'fibonacci'"
       (valueSelected)="valueSelected.emit($event)"
-    ></app-vote-controls>
+    />
   }
 
   <div class="flex flex-col items-center">
@@ -64,7 +64,7 @@
       [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
       (deleteVote)="deleteVote.emit()"
       (resetVotes)="resetVotes.emit()"
-    ></app-room-stats>
+    />
   </div>
 
   <div class="absolute bottom-4 right-4 z-10 hidden md:block">
