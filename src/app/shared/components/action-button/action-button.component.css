@@ -42,7 +42,6 @@ div[role='button'].constant-shine::before {
   opacity: 1;
 }
 
-/* Theme-specific shine gradients */
 div[role='button'].border-emerald-400\/50::before {
   background: linear-gradient(
     90deg,
@@ -88,13 +87,11 @@ div[role='button'].border-gray-400\/50::before {
   }
 }
 
-/* Focus state for accessibility */
 div[role='button']:focus:not(.cursor-not-allowed) {
   outline: none;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
-/* Prevent hover effects when disabled */
 div[role='button'].cursor-not-allowed:hover::before {
   opacity: 0;
 }

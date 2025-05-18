@@ -21,7 +21,6 @@ export class RoomHeaderComponent {
   public readonly toggleSpectator = output<void>();
   public readonly forceRevealCards = output<void>();
 
-  // Mobile menu state
   public isMobileMenuOpen = signal(false);
 
   public toggleMobileMenu(): void {

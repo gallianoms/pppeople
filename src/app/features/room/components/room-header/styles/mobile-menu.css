@@ -1,4 +1,3 @@
-/* Mobile menu styles */
 .mobile-fab-container {
   display: none;
   position: fixed;
@@ -93,7 +92,6 @@
   visibility: visible;
 }
 
-/* Only show the mobile menu on smaller screens */
 @media (max-width: 768px) {
   .desktop-buttons {
     display: none;
@@ -104,7 +102,6 @@
   }
 }
 
-/* Hide the coffee button on very small screens */
 @media (max-width: 480px) {
   .coffee-button-container {
     display: none;
