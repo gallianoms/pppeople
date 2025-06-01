@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, output } from '@angular/core';
 import { TablerIconComponent } from 'angular-tabler-icons';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,7 @@ interface HelpItem {
   templateUrl: './help-modal.component.html'
 })
 export class HelpModalComponent implements OnInit {
-  @Output() close = new EventEmitter<void>();
+  readonly close = output<void>();
   isClosing = false;
   isInitialized = false;
 
@@ -102,7 +102,7 @@ export class HelpModalComponent implements OnInit {
     this.isClosing = true;
 
     setTimeout(() => {
-      this.close.emit();
+      this.close.emit(void 0);
     }, 500);
   }
 }

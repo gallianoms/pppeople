@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Output, input } from '@angular/core';
+import { Component, HostListener, input, output } from '@angular/core';
 
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
@@ -36,13 +36,13 @@ export class RoomPresentationComponent {
   readonly averageVotes = input<number | string>(0);
   readonly forceReveal = input(false);
 
-  @Output() valueSelected = new EventEmitter<number | string>();
-  @Output() deleteVote = new EventEmitter<void>();
-  @Output() resetVotes = new EventEmitter<void>();
-  @Output() copyInviteLink = new EventEmitter<void>();
-  @Output() leave = new EventEmitter<void>();
-  @Output() toggleSpectator = new EventEmitter<void>();
-  @Output() forceRevealCards = new EventEmitter<void>();
+  readonly valueSelected = output<number | string>();
+  readonly deleteVote = output<void>();
+  readonly resetVotes = output<void>();
+  readonly copyInviteLink = output<void>();
+  readonly leave = output<void>();
+  readonly toggleSpectator = output<void>();
+  readonly forceRevealCards = output<void>();
 
   @HostListener('window:beforeunload')
   handleWindowClose(): void {
@@ -50,7 +50,7 @@ export class RoomPresentationComponent {
 
     const state = this.state();
     if (state?.roomId && state?.userId && !isPageRefresh) {
-      this.leave.emit();
+      this.leave.emit(void 0);
     }
   }
 
