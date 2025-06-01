@@ -14,6 +14,7 @@ export class VoteStateService {
   private participantService = inject(ParticipantService);
   private confettiService = inject(ConfettiService);
   private roomManagementService = inject(RoomManagementService);
+  private confettiTriggeredFor: { [roomId: string]: string } = {};
 
   public getVoteState(roomId: string): Observable<{
     votes: number[];
@@ -30,7 +31,9 @@ export class VoteStateService {
     return combineLatest([votes$, usersConnectedCount$, usersVotedCount$, forceReveal$]).pipe(
       switchMap(([votes, connected, voted, forceReveal]) => {
         if (connected === voted && connected > 0 && this.checkUnanimousVotes(votes)) {
-          this.confettiService.trigger();
+          this.triggerConfettiOnce(roomId, votes);
+        } else if (votes.length === 0 || voted === 0) {
+          this.resetConfettiState(roomId);
         }
         return from(this.calculateStatistic(roomId, votes)).pipe(
           map(statistic => ({
@@ -53,6 +56,10 @@ export class VoteStateService {
     }
   }
 
+  public resetConfettiState(roomId: string): void {
+    delete this.confettiTriggeredFor[roomId];
+  }
+
   public hasNullVotes(votes: (number | null)[]): boolean {
     return votes.some(v => v === undefined);
   }
@@ -60,6 +67,16 @@ export class VoteStateService {
   private checkUnanimousVotes(votes: number[]): boolean {
     const validVotes = votes.filter(vote => typeof vote === 'number');
     return validVotes.length > 1 && validVotes.every(vote => vote === validVotes[0]);
+  }
+
+  private triggerConfettiOnce(roomId: string, votes: number[]): void {
+    const voteSignature = votes.sort().join(',');
+    const lastTriggeredFor = this.confettiTriggeredFor[roomId];
+
+    if (lastTriggeredFor !== voteSignature) {
+      this.confettiService.trigger();
+      this.confettiTriggeredFor[roomId] = voteSignature;
+    }
   }
 
   private calculateAverage(votes: number[]): number {

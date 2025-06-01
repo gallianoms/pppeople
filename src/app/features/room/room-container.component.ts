@@ -163,6 +163,7 @@ export class RoomContainerComponent implements OnInit {
   public async onResetVotes(): Promise<void> {
     try {
       await this.votingService.resetVotes(this.state.roomId, this.state.userId);
+      this.voteStateService.resetConfettiState(this.state.roomId);
       this.selectedNumber = null;
     } catch (error) {
       console.error('Error resetting votes:', error);
