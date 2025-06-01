@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output, input } from '@angular/core';
 
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
@@ -24,17 +24,17 @@ import { ContainerComponent } from '../../shared/components/container/container.
   templateUrl: './room-presentation.component.html'
 })
 export class RoomPresentationComponent {
-  @Input() numbers: number[] = [];
-  @Input() tshirtSizes: string[] = [];
-  @Input() selectedNumber: number | null = null;
-  @Input() selectedSize: string | null = null;
-  @Input() state!: RoomConfig;
-  @Input() copyingLink = false;
-  @Input() votes: number[] | null = [];
-  @Input() usersConnectedCount: number | null = 0;
-  @Input() usersVotedCount: number | null = 0;
-  @Input() averageVotes: number | string = 0;
-  @Input() forceReveal = false;
+  readonly numbers = input<number[]>([]);
+  readonly tshirtSizes = input<string[]>([]);
+  readonly selectedNumber = input<number | null>(null);
+  readonly selectedSize = input<string | null>(null);
+  readonly state = input.required<RoomConfig>();
+  readonly copyingLink = input(false);
+  readonly votes = input<(number | null)[] | null>([]);
+  readonly usersConnectedCount = input<number | null>(0);
+  readonly usersVotedCount = input<number | null>(0);
+  readonly averageVotes = input<number | string>(0);
+  readonly forceReveal = input(false);
 
   @Output() valueSelected = new EventEmitter<number | string>();
   @Output() deleteVote = new EventEmitter<void>();
@@ -48,19 +48,21 @@ export class RoomPresentationComponent {
   handleWindowClose(): void {
     const isPageRefresh = performance.navigation?.type === 1;
 
-    if (this.state?.roomId && this.state?.userId && !isPageRefresh) {
+    const state = this.state();
+    if (state?.roomId && state?.userId && !isPageRefresh) {
       this.leave.emit();
     }
   }
 
-  hasNullVotes(votes: (number | null)[]): boolean {
+  hasNullVotes(votes: (number | null)[] | null): boolean {
+    if (!votes) return false;
     return votes.some(vote => vote === null);
   }
 
   shouldRevealCards(): boolean {
     return (
-      this.forceReveal ||
-      ((this.usersVotedCount ?? 0) === (this.usersConnectedCount ?? 0) && (this.usersConnectedCount ?? 0) > 0)
+      this.forceReveal() ||
+      ((this.usersVotedCount() ?? 0) === (this.usersConnectedCount() ?? 0) && (this.usersConnectedCount() ?? 0) > 0)
     );
   }
 }

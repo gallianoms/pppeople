@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 
 @Component({
@@ -8,12 +8,12 @@ import { CommonModule, NgClass } from '@angular/common';
   template: `
     <div
       class="container mx-auto px-4 max-sm:py-4 py-8"
-      [ngClass]="customClasses"
+      [ngClass]="customClasses()"
     >
       <ng-content></ng-content>
     </div>
   `
 })
 export class ContainerComponent {
-  @Input() customClasses = '';
+  readonly customClasses = input('');
 }

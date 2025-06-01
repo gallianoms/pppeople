@@ -60,8 +60,41 @@ export class VoteStateService {
     delete this.confettiTriggeredFor[roomId];
   }
 
+  public getVoteStateForUI(roomId: string): Observable<{
+    votes: (number | null)[];
+    usersConnectedCount: number;
+    usersVotedCount: number;
+    averageVote: number | string;
+    forceReveal: boolean;
+  }> {
+    const allVotes$ = this.votingService.getAllVotes(roomId);
+    const usersConnectedCount$ = this.participantService.getActiveParticipantsCount(roomId);
+    const usersVotedCount$ = this.votingService.getVotedParticipantsCount(roomId);
+    const forceReveal$ = this.votingService.getForceRevealStatus(roomId);
+
+    return combineLatest([allVotes$, usersConnectedCount$, usersVotedCount$, forceReveal$]).pipe(
+      switchMap(([votes, connected, voted, forceReveal]: [(number | null)[], number, number, boolean]) => {
+        const numericVotes = votes.filter(v => v !== null) as number[];
+        if (connected === voted && connected > 0 && this.checkUnanimousVotes(numericVotes)) {
+          this.triggerConfettiOnce(roomId, numericVotes);
+        } else if (votes.length === 0 || voted === 0) {
+          this.resetConfettiState(roomId);
+        }
+        return from(this.calculateStatistic(roomId, numericVotes)).pipe(
+          map((statistic: number | string) => ({
+            votes,
+            usersConnectedCount: connected,
+            usersVotedCount: voted,
+            averageVote: statistic,
+            forceReveal
+          }))
+        );
+      })
+    );
+  }
+
   public hasNullVotes(votes: (number | null)[]): boolean {
-    return votes.some(v => v === undefined);
+    return votes.some(v => v === null);
   }
 
   private checkUnanimousVotes(votes: number[]): boolean {

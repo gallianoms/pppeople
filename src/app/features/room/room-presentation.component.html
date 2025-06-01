@@ -3,12 +3,12 @@
     customClasses="flex flex-col items-center pb-8 relative animate-fadeIn motion-safe:transition-all motion-safe:duration-300"
   >
     <app-room-header
-      [copyingLink]="copyingLink"
-      [isSpectator]="state.isSpectator"
-      [isHost]="state.isHost"
-      [canToggleSpectator]="usersVotedCount !== usersConnectedCount || usersConnectedCount === 0"
+      [copyingLink]="copyingLink()"
+      [isSpectator]="state().isSpectator"
+      [isHost]="state().isHost"
+      [canToggleSpectator]="usersVotedCount() !== usersConnectedCount() || usersConnectedCount() === 0"
       [showRevealButton]="
-        (usersVotedCount ?? 0) > 0 && (usersConnectedCount ?? 0) > 1 && usersVotedCount !== usersConnectedCount
+        (usersVotedCount() ?? 0) > 0 && (usersConnectedCount() ?? 0) > 1 && usersVotedCount() !== usersConnectedCount()
       "
       (copyInviteLink)="copyInviteLink.emit()"
       (leave)="leave.emit()"
@@ -27,44 +27,46 @@
 
     <div class="mb-6 min-h-[144px]">
       <div class="grid grid-cols-5 sm:grid-cols-6 gap-3 sm:gap-4 justify-center">
-        @if (votes) {
-          @for (vote of votes; track $index) {
+        @if (votes()) {
+          @for (vote of votes(); track $index) {
             <app-vote-card
               [vote]="vote"
-              [showNullVote]="hasNullVotes(votes)"
-              [estimationType]="state.estimationType || 'fibonacci'"
+              [showNullVote]="hasNullVotes(votes())"
+              [estimationType]="state().estimationType || 'fibonacci'"
               [allVoted]="shouldRevealCards()"
             />
           }
         }
       </div>
-      @if (usersConnectedCount) {
-        @if (usersVotedCount) {
-          <p class="text-gray-300 text-center mt-10">{{ usersVotedCount }}/{{ usersConnectedCount }} players voted</p>
+      @if (usersConnectedCount()) {
+        @if (usersVotedCount()) {
+          <p class="text-gray-300 text-center mt-10">
+            {{ usersVotedCount() }}/{{ usersConnectedCount() }} players voted
+          </p>
         } @else {
           <p class="text-gray-300 text-center mt-10">Waiting for players to vote...</p>
         }
       }
     </div>
 
-    @if (!state.isSpectator) {
+    @if (!state().isSpectator) {
       <app-vote-controls
-        [numbers]="numbers"
-        [tshirtSizes]="tshirtSizes"
-        [selectedNumber]="selectedNumber"
-        [selectedSize]="selectedSize"
-        [estimationType]="state.estimationType || 'fibonacci'"
+        [numbers]="numbers()"
+        [tshirtSizes]="tshirtSizes()"
+        [selectedNumber]="selectedNumber()"
+        [selectedSize]="selectedSize()"
+        [estimationType]="state().estimationType || 'fibonacci'"
         (valueSelected)="valueSelected.emit($event)"
       />
     }
 
     <div class="flex flex-col items-center">
       <app-room-stats
-        [average]="averageVotes"
-        [isHost]="state.isHost"
-        [isSpectator]="state.isSpectator"
-        [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
-        [estimationType]="state.estimationType || 'fibonacci'"
+        [average]="averageVotes()"
+        [isHost]="state().isHost"
+        [isSpectator]="state().isSpectator"
+        [canChangeVote]="selectedNumber() !== null && !shouldRevealCards()"
+        [estimationType]="state().estimationType || 'fibonacci'"
         [shouldReveal]="shouldRevealCards()"
         (deleteVote)="deleteVote.emit()"
         (resetVotes)="resetVotes.emit()"

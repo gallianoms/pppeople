@@ -10,10 +10,10 @@
   ></div>
 
   <img
-    [src]="imageSrc"
-    [alt]="imageAlt"
+    [src]="imageSrc()"
+    [alt]="imageAlt()"
     class="w-auto object-cover transition-transform duration-700 group-hover:scale-105 mask-radial-at-center mask-radial-from-80% mask-radial-to-95%"
-    [class]="mobileClass + ' sm:' + containerClass"
+    [class]="mobileClass() + ' sm:' + containerClass()"
   />
   <div
     class="absolute top-0 left-0 right-0 h-1/4 bg-gradient-to-b from-white/20 to-transparent pointer-events-none"

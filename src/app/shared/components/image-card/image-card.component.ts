@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-image-card',
@@ -7,8 +7,8 @@ import { Component, Input } from '@angular/core';
   templateUrl: './image-card.component.html'
 })
 export class ImageCardComponent {
-  @Input() imageSrc = 'images/planning-poker.webp';
-  @Input() imageAlt = 'Planning Poker';
-  @Input() containerClass = 'h-48';
-  @Input() mobileClass = 'h-24';
+  readonly imageSrc = input('images/planning-poker.webp');
+  readonly imageAlt = input('Planning Poker');
+  readonly containerClass = input('h-48');
+  readonly mobileClass = input('h-24');
 }

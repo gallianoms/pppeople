@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TablerIconsModule } from 'angular-tabler-icons';
 
@@ -9,5 +9,5 @@ import { TablerIconsModule } from 'angular-tabler-icons';
   imports: [CommonModule, TablerIconsModule]
 })
 export class SocialLinksFooterComponent {
-  @Input() theme: 'light' | 'dark' = 'light';
+  readonly theme = input<'light' | 'dark'>('light');
 }

@@ -26,7 +26,7 @@ export class RoomContainerComponent implements OnInit {
   public copyingLink = false;
   public usersConnectedCount$!: Observable<number>;
   public usersVotedCount$!: Observable<number>;
-  public votes$!: Observable<number[]>;
+  public votes$!: Observable<(number | null)[]>;
   public averageVotes$!: Observable<number | string>;
   public forceReveal$!: Observable<boolean>;
 
@@ -110,7 +110,7 @@ export class RoomContainerComponent implements OnInit {
       }
     }
 
-    const voteState$ = this.voteStateService.getVoteState(this.state.roomId);
+    const voteState$ = this.voteStateService.getVoteStateForUI(this.state.roomId);
 
     this.votes$ = voteState$.pipe(map(state => state.votes));
     this.usersConnectedCount$ = voteState$.pipe(map(state => state.usersConnectedCount));
