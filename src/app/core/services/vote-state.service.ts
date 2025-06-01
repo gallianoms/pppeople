@@ -14,7 +14,7 @@ export class VoteStateService {
   private participantService = inject(ParticipantService);
   private confettiService = inject(ConfettiService);
   private roomManagementService = inject(RoomManagementService);
-  private confettiTriggeredFor: { [roomId: string]: string } = {};
+  private confettiTriggeredFor: Record<string, string> = {};
 
   public getVoteState(roomId: string): Observable<{
     votes: number[];
@@ -29,14 +29,14 @@ export class VoteStateService {
     const forceReveal$ = this.votingService.getForceRevealStatus(roomId);
 
     return combineLatest([votes$, usersConnectedCount$, usersVotedCount$, forceReveal$]).pipe(
-      switchMap(([votes, connected, voted, forceReveal]) => {
+      switchMap(([votes, connected, voted, forceReveal]: [number[], number, number, boolean]) => {
         if (connected === voted && connected > 0 && this.checkUnanimousVotes(votes)) {
           this.triggerConfettiOnce(roomId, votes);
         } else if (votes.length === 0 || voted === 0) {
           this.resetConfettiState(roomId);
         }
         return from(this.calculateStatistic(roomId, votes)).pipe(
-          map(statistic => ({
+          map((statistic: number | string) => ({
             votes,
             usersConnectedCount: connected,
             usersVotedCount: voted,
@@ -87,7 +87,7 @@ export class VoteStateService {
   private calculateMode(votes: number[]): number {
     if (!votes.length) return 0;
 
-    const frequency: { [key: number]: number } = {};
+    const frequency: Record<number, number> = {};
     let maxFreq = 0;
     let mode = 0;
 
@@ -114,7 +114,7 @@ export class VoteStateService {
       try {
         const estimationType = await this.roomManagementService.getRoomEstimationType(roomId);
         return estimationType === 't-shirt' ? '-' : 0;
-      } catch (error) {
+      } catch {
         return 0;
       }
     }
