@@ -34,7 +34,7 @@ export class RoomPresentationComponent {
   @Input() votes: number[] | null = [];
   @Input() usersConnectedCount: number | null = 0;
   @Input() usersVotedCount: number | null = 0;
-  @Input() averageVotes = 0;
+  @Input() averageVotes: number | string = 0;
   @Input() forceReveal = false;
 
   @Output() valueSelected = new EventEmitter<number | string>();

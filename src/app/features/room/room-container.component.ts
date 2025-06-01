@@ -27,7 +27,7 @@ export class RoomContainerComponent implements OnInit {
   public usersConnectedCount$!: Observable<number>;
   public usersVotedCount$!: Observable<number>;
   public votes$!: Observable<number[]>;
-  public averageVotes$!: Observable<number>;
+  public averageVotes$!: Observable<number | string>;
   public forceReveal$!: Observable<boolean>;
 
   private location = inject(Location);

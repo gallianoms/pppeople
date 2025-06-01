@@ -64,6 +64,8 @@
         [isHost]="state.isHost"
         [isSpectator]="state.isSpectator"
         [canChangeVote]="selectedNumber !== null && !shouldRevealCards()"
+        [estimationType]="state.estimationType || 'fibonacci'"
+        [shouldReveal]="shouldRevealCards()"
         (deleteVote)="deleteVote.emit()"
         (resetVotes)="resetVotes.emit()"
       />
