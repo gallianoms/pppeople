@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TablerIconComponent } from 'angular-tabler-icons';
 
 export type ButtonTheme = 'emerald' | 'sky' | 'pink' | 'gray';
@@ -7,7 +7,7 @@ export type ButtonTheme = 'emerald' | 'sky' | 'pink' | 'gray';
 @Component({
   selector: 'app-action-button',
   standalone: true,
-  imports: [CommonModule, TablerIconComponent],
+  imports: [TablerIconComponent],
   templateUrl: './action-button.component.html',
   styleUrls: ['./action-button.component.css']
 })

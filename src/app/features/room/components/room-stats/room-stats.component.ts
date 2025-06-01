@@ -1,10 +1,9 @@
 import { Component, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-room-stats',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './room-stats.component.html'
 })
 export class RoomStatsComponent {

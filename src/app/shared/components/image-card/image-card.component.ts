@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-image-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './image-card.component.html'
 })
 export class ImageCardComponent {

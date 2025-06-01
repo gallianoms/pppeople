@@ -1,5 +1,5 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RoomConfig } from '../../core/types/room.types';
 import { RoomHeaderComponent } from './components/room-header/room-header.component';
 import { VoteControlsComponent } from './components/vote-controls/vote-controls.component';
@@ -13,7 +13,6 @@ import { ContainerComponent } from '../../shared/components/container/container.
   selector: 'app-room-presentation',
   standalone: true,
   imports: [
-    CommonModule,
     RoomHeaderComponent,
     VoteControlsComponent,
     RoomStatsComponent,

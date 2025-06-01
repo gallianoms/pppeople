@@ -7,16 +7,15 @@ import { NotificationService } from '../../../core/services/notification.service
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-      *ngIf="notificationService.notification$ | async as notification"
-      class="casino-notification animate-fadeIn"
-    >
-      <div class="notification-content">
-        <div class="suits">♠️ ♥️</div>
-        <span class="message">{{ notification.message }}</span>
-        <div class="suits">♣️ ♦️</div>
+    @if (notificationService.notification$ | async; as notification) {
+      <div class="casino-notification animate-fadeIn">
+        <div class="notification-content">
+          <div class="suits">♠️ ♥️</div>
+          <span class="message">{{ notification.message }}</span>
+          <div class="suits">♣️ ♦️</div>
+        </div>
       </div>
-    </div>
+    }
   `,
   styles: [
     `

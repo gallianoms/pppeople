@@ -2,19 +2,21 @@
   class="w-16 h-24 bg-gray-900/40 backdrop-blur-xs border border-gray-700/50 rounded-lg relative transition-all duration-300"
   [ngClass]="{ 'border-emerald-500/50': vote() }"
 >
-  <img
-    *ngIf="!allVoted() || showNullVote() || !vote()"
-    src="images/deck-card.webp"
-    alt="Deck Card Back"
-    class="w-[64px] h-[96px]"
-  />
+  @if (!allVoted() || showNullVote() || !vote()) {
+    <img
+      src="images/deck-card.webp"
+      alt="Deck Card Back"
+      class="w-[64px] h-[96px]"
+    />
+  }
 
-  <img
-    *ngIf="allVoted() && !showNullVote() && vote()"
-    [src]="getImageSrc()"
-    [alt]="'Card ' + getDisplayValue()"
-    class="w-[64px] h-[96px]"
-  />
+  @if (allVoted() && !showNullVote() && vote()) {
+    <img
+      [src]="getImageSrc()"
+      [alt]="'Card ' + getDisplayValue()"
+      class="w-[64px] h-[96px]"
+    />
+  }
 
   <div
     class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full"
