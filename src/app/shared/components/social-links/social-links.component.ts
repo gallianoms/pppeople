@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { TablerIconsModule } from 'angular-tabler-icons';
 
 @Component({
-  selector: 'app-social-links-footer',
-  templateUrl: './social-links-footer.component.html',
+  selector: 'app-social-links',
+  templateUrl: './social-links.component.html',
   standalone: true,
   imports: [CommonModule, TablerIconsModule]
 })
-export class SocialLinksFooterComponent {
+export class SocialLinksComponent {
   readonly theme = input<'light' | 'dark'>('light');
 }
