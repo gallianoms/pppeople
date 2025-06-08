@@ -7,7 +7,7 @@ import { RoomManagementService } from '../../core/services/room-management.servi
 import { HelpModalComponent } from '../../shared/components/help-modal/help-modal.component';
 import { TablerIconComponent } from 'angular-tabler-icons';
 import { SocialLinksComponent } from '../../shared/components/social-links/social-links.component';
-import { GlobalLoadingService } from '../../core/services/global-loading.service';
+
 
 
 @Component({
@@ -22,11 +22,8 @@ export class WelcomeComponent {
 
   private router = inject(Router);
   private roomManagementService = inject(RoomManagementService);
-  private globalLoadingService = inject(GlobalLoadingService);
 
   public async createRoom() {
-    this.globalLoadingService.show();
-    
     try {
       const { roomId, hostId } = await this.roomManagementService.createRoom(this.estimationType);
 
@@ -39,8 +36,6 @@ export class WelcomeComponent {
       });
     } catch (error) {
       console.error('Error creating room:', error);
-    } finally {
-      this.globalLoadingService.hide();
     }
   }
 
