@@ -1,3 +1,10 @@
 {
+  "redirects": [
+    {
+      "source": "https://pppeople.vercel.app/:path*",
+      "destination": "https://poker97.vercel.app/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
