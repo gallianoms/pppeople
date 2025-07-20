@@ -8,8 +8,6 @@ import { HelpModalComponent } from '../../shared/components/help-modal/help-moda
 import { TablerIconComponent } from 'angular-tabler-icons';
 import { SocialLinksComponent } from '../../shared/components/social-links/social-links.component';
 
-
-
 @Component({
   selector: 'app-welcome',
   imports: [FormsModule, HelpModalComponent, TablerIconComponent, SocialLinksComponent],

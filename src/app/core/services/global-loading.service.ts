@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class GlobalLoadingService {
   private isLoading$ = new BehaviorSubject<boolean>(false);
-  
+
   public readonly loading$ = this.isLoading$.asObservable();
 
   public show(): void {
@@ -16,6 +16,4 @@ export class GlobalLoadingService {
   public hide(): void {
     this.isLoading$.next(false);
   }
-
-
 }
